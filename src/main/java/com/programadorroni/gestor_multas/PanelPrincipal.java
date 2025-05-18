@@ -12,21 +12,140 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
  * @author isaia
  */
-public class PanelPrincipal extends javax.swing.JPanel {
 
+//Doblemente enlazada
+class Multa implements Comparable<Multa> {
+    int id;
+    String placa, fecha, departamento, descripcion, monto;
+
+    public Multa(int id, String placa, String fecha, String departamento, String descripcion, String monto) {
+        this.id = id;
+        this.placa = placa;
+        this.fecha = fecha;
+        this.departamento = departamento;
+        this.descripcion = descripcion;
+        this.monto = monto;
+    }
+
+    public Object[] toArray() {
+        return new Object[]{id, placa, fecha, departamento, descripcion, monto};
+    }
+
+    @Override
+    public int compareTo(Multa o) {
+        return this.placa.compareToIgnoreCase(o.placa);
+    }
+}
+
+class Nodo {
+    Multa dato;
+    Nodo anterior, siguiente;
+
+    public Nodo(Multa dato) {
+        this.dato = dato;
+    }
+}
+
+class ListaDobleMulta {
+    Nodo cabeza;
+
+    public void insertarOrdenado(Multa multa) {
+        Nodo nuevo = new Nodo(multa);
+        if (cabeza == null) {
+            cabeza = nuevo;
+        } else {
+            Nodo actual = cabeza;
+            Nodo anterior = null;
+            while (actual != null && actual.dato.compareTo(multa) < 0) {
+                anterior = actual;
+                actual = actual.siguiente;
+            }
+            if (anterior == null) {
+                nuevo.siguiente = cabeza;
+                cabeza.anterior = nuevo;
+                cabeza = nuevo;
+            } else {
+                nuevo.siguiente = actual;
+                nuevo.anterior = anterior;
+                anterior.siguiente = nuevo;
+                if (actual != null) actual.anterior = nuevo;
+            }
+        }
+    }
+
+    public Multa buscarPorPlaca(String placa) {
+        Nodo actual = cabeza;
+        while (actual != null) {
+            if (actual.dato.placa.equalsIgnoreCase(placa)) return actual.dato;
+            actual = actual.siguiente;
+        }
+        return null;
+    }
+
+    public boolean eliminarPorID(int id) {
+        Nodo actual = cabeza;
+        while (actual != null) {
+            if (actual.dato.id == id) {
+                if (actual.anterior != null) actual.anterior.siguiente = actual.siguiente;
+                else cabeza = actual.siguiente;
+                if (actual.siguiente != null) actual.siguiente.anterior = actual.anterior;
+                return true;
+            }
+            actual = actual.siguiente;
+        }
+        return false;
+    }
+
+    public void limpiar() {
+        cabeza = null;
+    }
+
+    public Object[][] obtenerDatos() {
+        int size = contar();
+        Object[][] datos = new Object[size][6];
+        Nodo actual = cabeza;
+        int i = 0;
+        while (actual != null) {
+            datos[i++] = actual.dato.toArray();
+            actual = actual.siguiente;
+        }
+        return datos;
+    }
+
+    public int contar() {
+        int count = 0;
+        Nodo actual = cabeza;
+        while (actual != null) {
+            count++;
+            actual = actual.siguiente;
+        }
+        return count;
+    }
+}
+
+
+//Fin Metodo
+//Inicio de clases Panel Principal
+public class PanelPrincipal extends javax.swing.JPanel {
     DefaultTableModel modeloTabla;
     int contadorID = 1;
+    ListaDobleMulta listaMultas = new ListaDobleMulta();
 
     public PanelPrincipal() {
         initComponents();
-        modeloTabla = new DefaultTableModel(
-            new Object[]{"ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO"}, 0
-        );
+        modeloTabla = new DefaultTableModel(new Object[]{"ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO"}, 0);
         Tabla_Multa_1.setModel(modeloTabla);
     }
+    
+     private void refrescarTabla() {
+        modeloTabla.setRowCount(0);
+        for (Object[] fila : listaMultas.obtenerDatos()) {
+            modeloTabla.addRow(fila);
+        }
+    }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,6 +181,7 @@ public class PanelPrincipal extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         Buscar_Fch_1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(204, 204, 204));
 
@@ -103,22 +223,17 @@ public class PanelPrincipal extends javax.swing.JPanel {
                 .addComponent(Asignar_Multa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Descargar_Fich_1)
-                .addContainerGap())
+                .addGap(16, 16, 16))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Asignar_Multa, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(Nuevo_Doc, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(1, 1, 1))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 1, Short.MAX_VALUE)
-                        .addComponent(Descargar_Fich_1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(4, 4, 4))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Asignar_Multa, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(Nuevo_Doc, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(Descargar_Fich_1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5))
         );
 
         Tabla_Multa_1.setModel(new javax.swing.table.DefaultTableModel(
@@ -144,8 +259,17 @@ public class PanelPrincipal extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        Tabla_Multa_1.setEnabled(false);
         Tabla_Multa_1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(Tabla_Multa_1);
+        if (Tabla_Multa_1.getColumnModel().getColumnCount() > 0) {
+            Tabla_Multa_1.getColumnModel().getColumn(0).setResizable(false);
+            Tabla_Multa_1.getColumnModel().getColumn(1).setResizable(false);
+            Tabla_Multa_1.getColumnModel().getColumn(2).setResizable(false);
+            Tabla_Multa_1.getColumnModel().getColumn(3).setResizable(false);
+            Tabla_Multa_1.getColumnModel().getColumn(4).setResizable(false);
+            Tabla_Multa_1.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         EscribirBus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,30 +306,30 @@ public class PanelPrincipal extends javax.swing.JPanel {
                 .addGroup(Panel_Llenado_1Layout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(Panel_Llenado_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
                         .addGroup(Panel_Llenado_1Layout.createSequentialGroup()
                             .addComponent(Buscar_Placa_1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Eliminar_1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(38, 38, 38)
-                            .addComponent(Ticket_1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap())
+                            .addGap(30, 30, 30)
+                            .addComponent(Ticket_1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(15, Short.MAX_VALUE))
             );
             Panel_Llenado_1Layout.setVerticalGroup(
                 Panel_Llenado_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(Panel_Llenado_1Layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(Panel_Llenado_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(Buscar_Placa_1)
                         .addComponent(Eliminar_1)
                         .addComponent(Ticket_1))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap())
             );
 
@@ -230,6 +354,11 @@ public class PanelPrincipal extends javax.swing.JPanel {
             jPanel8.setBackground(new java.awt.Color(255, 255, 255));
 
             Usuario.setText("ADMIN");
+            Usuario.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    UsuarioActionPerformed(evt);
+                }
+            });
 
             User_Indicator.setText("Roni Ruiz");
 
@@ -243,11 +372,11 @@ public class PanelPrincipal extends javax.swing.JPanel {
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(Barra, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 694, Short.MAX_VALUE)
                     .addComponent(User_Indicator, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(Usuario)
-                    .addContainerGap())
+                    .addGap(22, 22, 22))
             );
             jPanel8Layout.setVerticalGroup(
                 jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,7 +409,7 @@ public class PanelPrincipal extends javax.swing.JPanel {
                 .addGroup(DesplegableLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addContainerGap(460, Short.MAX_VALUE))
             );
 
             jLabel4.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
@@ -294,39 +423,58 @@ public class PanelPrincipal extends javax.swing.JPanel {
                 }
             });
 
+            jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+            javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+            jPanel1.setLayout(jPanel1Layout);
+            jPanel1Layout.setHorizontalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 0, Short.MAX_VALUE)
+            );
+            jPanel1Layout.setVerticalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 28, Short.MAX_VALUE)
+            );
+
             javax.swing.GroupLayout Primer_PanelLayout = new javax.swing.GroupLayout(Primer_Panel);
             Primer_Panel.setLayout(Primer_PanelLayout);
             Primer_PanelLayout.setHorizontalGroup(
                 Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(Primer_PanelLayout.createSequentialGroup()
-                    .addComponent(Desplegable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(Primer_PanelLayout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(Primer_PanelLayout.createSequentialGroup()
-                                    .addComponent(Panel_Llenado_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(0, 0, Short.MAX_VALUE))))
-                        .addGroup(Primer_PanelLayout.createSequentialGroup()
-                            .addGap(65, 65, 65)
-                            .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(Primer_PanelLayout.createSequentialGroup()
-                                    .addComponent(MULTAS, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(134, 134, 134)
-                                    .addComponent(TRASPASOS)
-                                    .addGap(154, 154, 154)
-                                    .addComponent(VEHICULOS))
-                                .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(RESUMEN)
-                            .addGap(50, 50, 50))
-                        .addGroup(Primer_PanelLayout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(Buscar_Fch_1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(Primer_PanelLayout.createSequentialGroup()
+                                .addComponent(Desplegable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(Primer_PanelLayout.createSequentialGroup()
+                                        .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(Primer_PanelLayout.createSequentialGroup()
+                                                .addGap(102, 102, 102)
+                                                .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(Primer_PanelLayout.createSequentialGroup()
+                                                .addGap(84, 84, 84)
+                                                .addComponent(MULTAS, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(101, 101, 101)
+                                                .addComponent(TRASPASOS)
+                                                .addGap(131, 131, 131)
+                                                .addComponent(VEHICULOS)
+                                                .addGap(112, 112, 112)
+                                                .addComponent(RESUMEN)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Primer_PanelLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(Primer_PanelLayout.createSequentialGroup()
+                                .addGap(146, 146, 146)
+                                .addComponent(Buscar_Fch_1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(716, 716, 716)))
+                        .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Primer_PanelLayout.createSequentialGroup()
+                                .addGap(146, 146, 146)
+                                .addComponent(Panel_Llenado_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addContainerGap())
             );
             Primer_PanelLayout.setVerticalGroup(
@@ -335,33 +483,34 @@ public class PanelPrincipal extends javax.swing.JPanel {
                     .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(Primer_PanelLayout.createSequentialGroup()
                             .addContainerGap()
+                            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(Primer_PanelLayout.createSequentialGroup()
-                                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
-                                    .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel4)
-                                        .addComponent(Buscar_Fch_1))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Primer_PanelLayout.createSequentialGroup()
                                     .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(MULTAS)
                                         .addComponent(TRASPASOS)
                                         .addComponent(VEHICULOS)
                                         .addComponent(RESUMEN))
-                                    .addGap(73, 73, 73)))
+                                    .addGap(35, 35, 35)
+                                    .addComponent(jLabel4))
+                                .addComponent(Buscar_Fch_1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(Panel_Llenado_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(Desplegable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addContainerGap())
+                        .addGroup(Primer_PanelLayout.createSequentialGroup()
+                            .addComponent(Desplegable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 1, Short.MAX_VALUE)))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             );
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
             this.setLayout(layout);
             layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(Primer_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Primer_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,18 +524,18 @@ public class PanelPrincipal extends javax.swing.JPanel {
 
     private void Nuevo_DocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_DocActionPerformed
         // TODO add your handling code here:
-         JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Crear nuevo documento");
         int userSelection = fileChooser.showSaveDialog(this);
-
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
             try {
                 if (!fileToSave.exists()) {
                     fileToSave.createNewFile();
                     JOptionPane.showMessageDialog(this, "Archivo creado exitosamente.");
-                    modeloTabla.setRowCount(0); // limpia la tabla
+                    listaMultas.limpiar();
                     contadorID = 1;
+                    refrescarTabla();
                 } else {
                     JOptionPane.showMessageDialog(this, "El archivo ya existe.");
                 }
@@ -405,25 +554,17 @@ public class PanelPrincipal extends javax.swing.JPanel {
         JTextField monto = new JTextField();
 
         JPanel panel = new JPanel(new GridLayout(0, 1));
-        panel.add(new JLabel("PLACA:"));
-        panel.add(placa);
-        panel.add(new JLabel("FECHA:"));
-        panel.add(fecha);
-        panel.add(new JLabel("DEPARTAMENTO:"));
-        panel.add(departamento);
-        panel.add(new JLabel("DESCRIPCIÓN:"));
-        panel.add(descripcion);
-        panel.add(new JLabel("MONTO:"));
-        panel.add(monto);
+        panel.add(new JLabel("PLACA:")); panel.add(placa);
+        panel.add(new JLabel("FECHA:")); panel.add(fecha);
+        panel.add(new JLabel("DEPARTAMENTO:")); panel.add(departamento);
+        panel.add(new JLabel("DESCRIPCIÓN:")); panel.add(descripcion);
+        panel.add(new JLabel("MONTO:")); panel.add(monto);
 
-        int result = JOptionPane.showConfirmDialog(null, panel, "Asignar Multa",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
+        int result = JOptionPane.showConfirmDialog(null, panel, "Asignar Multa", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
-            modeloTabla.addRow(new Object[]{
-                contadorID++, placa.getText(), fecha.getText(), departamento.getText(),
-                descripcion.getText(), monto.getText()
-            });
+            Multa nueva = new Multa(contadorID++, placa.getText(), fecha.getText(), departamento.getText(), descripcion.getText(), monto.getText());
+            listaMultas.insertarOrdenado(nueva);
+            refrescarTabla();
         }
     }//GEN-LAST:event_Asignar_MultaActionPerformed
 
@@ -432,21 +573,20 @@ public class PanelPrincipal extends javax.swing.JPanel {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
         int result = fileChooser.showOpenDialog(this);
-
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
-                modeloTabla.setRowCount(0); // Limpia la tabla
+                listaMultas.limpiar();
                 contadorID = 1;
                 while ((line = reader.readLine()) != null) {
                     String[] datos = line.split(",");
                     if (datos.length == 5) {
-                        modeloTabla.addRow(new Object[]{
-                            contadorID++, datos[0], datos[1], datos[2], datos[3], datos[4]
-                        });
+                        Multa m = new Multa(contadorID++, datos[0], datos[1], datos[2], datos[3], datos[4]);
+                        listaMultas.insertarOrdenado(m);
                     }
                 }
+                refrescarTabla();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Error al leer el archivo.");
             }
@@ -459,31 +599,18 @@ public class PanelPrincipal extends javax.swing.JPanel {
 
     private void Buscar_Placa_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_Placa_1ActionPerformed
         // TODO add your handling code here:
-        String placaBuscada = EscribirBus.getText().trim();
+          String placaBuscada = EscribirBus.getText().trim();
         if (placaBuscada.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un número de placa.");
             return;
         }
-
-        DefaultTableModel modeloFiltrado = new DefaultTableModel(
-            new Object[]{"ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO"}, 0
-        );
-
-        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-            String placa = modeloTabla.getValueAt(i, 1).toString();
-            if (placa.equalsIgnoreCase(placaBuscada)) {
-                Object[] fila = new Object[6];
-                for (int j = 0; j < 6; j++) {
-                    fila[j] = modeloTabla.getValueAt(i, j);
-                }
-                modeloFiltrado.addRow(fila);
-            }
-        }
-
-        if (modeloFiltrado.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "No se encontraron registros para la placa ingresada.");
-        } else {
+        Multa resultado = listaMultas.buscarPorPlaca(placaBuscada);
+        DefaultTableModel modeloFiltrado = new DefaultTableModel(new Object[]{"ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO"}, 0);
+        if (resultado != null) {
+            modeloFiltrado.addRow(resultado.toArray());
             Tabla_Multa_1.setModel(modeloFiltrado);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontraron registros para la placa ingresada.");
         }
     }//GEN-LAST:event_Buscar_Placa_1ActionPerformed
 
@@ -518,56 +645,45 @@ public class PanelPrincipal extends javax.swing.JPanel {
     private void Eliminar_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_1ActionPerformed
         // TODO add your handling code here:
         String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID que desea eliminar:");
-    if (idStr == null || idStr.trim().isEmpty()) return;
-
-    try {
-        int id = Integer.parseInt(idStr.trim());
-        boolean encontrado = false;
-
-        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-            int idTabla = Integer.parseInt(modeloTabla.getValueAt(i, 0).toString());
-            if (idTabla == id) {
-                modeloTabla.removeRow(i);
+        if (idStr == null || idStr.trim().isEmpty()) return;
+        try {
+            int id = Integer.parseInt(idStr.trim());
+            if (listaMultas.eliminarPorID(id)) {
                 JOptionPane.showMessageDialog(this, "Registro eliminado correctamente.");
-                encontrado = true;
-                break;
+                refrescarTabla();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró un registro con ese ID.");
             }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido.");
         }
-
-        if (!encontrado) {
-            JOptionPane.showMessageDialog(this, "No se encontró un registro con ese ID.");
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID inválido.");
-    }
     }//GEN-LAST:event_Eliminar_1ActionPerformed
 
     private void Descargar_Fich_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Descargar_Fich_1ActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Guardar archivo de multas");
-    fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
-    int userSelection = fileChooser.showSaveDialog(this);
-
-    if (userSelection == JFileChooser.APPROVE_OPTION) {
-        File archivo = fileChooser.getSelectedFile();
-
-        try (PrintWriter writer = new PrintWriter(new FileWriter(archivo))) {
-            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-                // No incluimos el ID en el archivo para mantener compatibilidad con el cargador actual
-                String linea = modeloTabla.getValueAt(i, 1) + "," +
-                               modeloTabla.getValueAt(i, 2) + "," +
-                               modeloTabla.getValueAt(i, 3) + "," +
-                               modeloTabla.getValueAt(i, 4) + "," +
-                               modeloTabla.getValueAt(i, 5);
-                writer.println(linea);
+        fileChooser.setDialogTitle("Guardar archivo de multas");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            try (PrintWriter writer = new PrintWriter(new FileWriter(archivo))) {
+                Nodo actual = listaMultas.cabeza;
+                while (actual != null) {
+                    Multa m = actual.dato;
+                    writer.println(m.placa + "," + m.fecha + "," + m.departamento + "," + m.descripcion + "," + m.monto);
+                    actual = actual.siguiente;
+                }
+                JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente.");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error al guardar el archivo.");
             }
-            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente.");
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error al guardar el archivo.");
         }
-    }
     }//GEN-LAST:event_Descargar_Fich_1ActionPerformed
+
+    private void UsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_UsuarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -593,6 +709,7 @@ public class PanelPrincipal extends javax.swing.JPanel {
     private javax.swing.JButton VEHICULOS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
