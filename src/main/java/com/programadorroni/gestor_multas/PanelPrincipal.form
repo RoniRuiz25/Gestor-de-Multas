@@ -41,50 +41,49 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="Desplegable" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
-                                      <Component id="Titulo" min="-2" pref="524" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
-                                      <Component id="MULTAS" min="-2" pref="87" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
-                                      <Component id="TRASPASOS" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="131" max="-2" attributes="0"/>
-                                      <Component id="VEHICULOS" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
-                                      <Component id="RESUMEN" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <Component id="Desplegable" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
+                                  <Component id="Titulo" min="-2" pref="524" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                  <Component id="Buscar_Fch_1" min="-2" pref="42" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                          <Component id="MULTAS" min="-2" pref="87" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
+                                          <Component id="TRASPASOS" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="131" max="-2" attributes="0"/>
+                                          <Component id="VEHICULOS" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+                                          <Component id="RESUMEN" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jLabel4" min="-2" pref="158" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                               </Group>
                           </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
-                              <Component id="Buscar_Fch_1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel4" min="-2" pref="158" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="716" max="-2" attributes="0"/>
-                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
-                              <Component id="Panel_Llenado_1" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace min="146" pref="152" max="32767" attributes="0"/>
+                  <Component id="Panel_Llenado_1" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -97,25 +96,23 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="Titulo" min="-2" pref="42" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="MULTAS" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="TRASPASOS" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="VEHICULOS" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="RESUMEN" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="Buscar_Fch_1" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="MULTAS" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="TRASPASOS" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="VEHICULOS" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="RESUMEN" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <Component id="Buscar_Fch_1" min="-2" pref="33" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="Panel_Llenado_1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="Desplegable" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="1" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -138,14 +135,14 @@
                   <Component id="jPanel6" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="Buscar_Placa_1" min="-2" pref="43" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="EscribirBus" min="-2" pref="123" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="Eliminar_1" min="-2" pref="43" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="Eliminar_1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                               <Component id="Ticket_1" min="-2" pref="101" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane1" min="-2" pref="882" max="-2" attributes="0"/>
@@ -162,9 +159,9 @@
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="EscribirBus" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="Buscar_Placa_1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="Eliminar_1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="Buscar_Placa_1" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                           <Component id="Ticket_1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="Eliminar_1" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="180" max="-2" attributes="0"/>
@@ -247,17 +244,23 @@
                 <Component class="javax.swing.JTable" name="Tabla_Multa_1">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="6" rowCount="8">
+                      <Table columnCount="7" rowCount="8">
                         <Column editable="false" title="ID" type="java.lang.Object"/>
                         <Column editable="false" title="PLACA" type="java.lang.Object"/>
                         <Column editable="false" title="FECHA" type="java.lang.Object"/>
                         <Column editable="false" title="DEPARTAMENTO" type="java.lang.Object"/>
                         <Column editable="false" title="DESCRIPCION" type="java.lang.Object"/>
                         <Column editable="false" title="MONTO" type="java.lang.Object"/>
+                        <Column editable="false" title="ESTADO" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                           <Title/>
                           <Editor/>
@@ -305,7 +308,15 @@
             </Component>
             <Component class="javax.swing.JButton" name="Buscar_Placa_1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="0\u005c" containsInvalidXMLChars="true"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="cc" red="ff" type="rgb"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="C:\Users\isaia\Documents\NetBeansProjects\Gestor_Multas\Iconos\icons8-buscar-24.png"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Buscar_Placa_1ActionPerformed"/>
@@ -313,7 +324,15 @@
             </Component>
             <Component class="javax.swing.JButton" name="Eliminar_1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="X"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="cc" red="ff" type="rgb"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="C:\Users\isaia\Documents\NetBeansProjects\Gestor_Multas\Iconos\icons8-eliminar-24.png"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Eliminar_1ActionPerformed"/>
@@ -379,7 +398,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="Barra" min="-2" pref="43" max="-2" attributes="0"/>
-                      <EmptySpace pref="694" max="32767" attributes="0"/>
+                      <EmptySpace pref="750" max="32767" attributes="0"/>
                       <Component id="User_Indicator" min="-2" pref="60" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="Usuario" min="-2" max="-2" attributes="0"/>
@@ -404,7 +423,12 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="Usuario">
               <Properties>
-                <Property name="text" type="java.lang.String" value="ADMIN"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="C:\Users\isaia\Documents\NetBeansProjects\Gestor_Multas\Iconos\icons8-usuario-16.png"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UsuarioActionPerformed"/>
@@ -479,7 +503,15 @@
         </Component>
         <Component class="javax.swing.JButton" name="Buscar_Fch_1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="*"/>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="3d" green="22" red="11" type="rgb"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="C:\Users\isaia\Documents\NetBeansProjects\Gestor_Multas\Iconos\icons8-folder-48.png"/>
+            </Property>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Buscar_Fch_1ActionPerformed"/>
