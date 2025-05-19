@@ -36,14 +36,14 @@ public class PanelMulta extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         Titulo1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        TextPlaca = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
+        Bus_Placa_2 = new javax.swing.JButton();
+        TextBoleta = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        Bus_Boleta_2 = new javax.swing.JButton();
+        Refresh_Placa = new javax.swing.JButton();
+        Refresh_Boleta = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         Titulo = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -54,13 +54,13 @@ public class PanelMulta extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        Factura = new javax.swing.JButton();
+        Emitir_Pago = new javax.swing.JButton();
+        Pagar_Todo = new javax.swing.JRadioButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton8 = new javax.swing.JButton();
+        Tabla_Dat_Multa = new javax.swing.JTable();
+        Guardar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(17, 34, 61));
@@ -150,39 +150,61 @@ public class PanelMulta extends javax.swing.JPanel {
         jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-pago-48.png")); // NOI18N
         jButton1.setBorder(null);
 
+        TextPlaca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextPlacaActionPerformed(evt);
+            }
+        });
+
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Placa");
 
-        jButton2.setBackground(new java.awt.Color(18, 38, 70));
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-buscar-244.png")); // NOI18N
-        jButton2.setBorder(null);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        Bus_Placa_2.setBackground(new java.awt.Color(18, 38, 70));
+        Bus_Placa_2.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-buscar-244.png")); // NOI18N
+        Bus_Placa_2.setBorder(null);
+        Bus_Placa_2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                Bus_Placa_2ActionPerformed(evt);
+            }
+        });
+
+        TextBoleta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextBoletaActionPerformed(evt);
             }
         });
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("ID");
+        jLabel8.setText("Boleta");
 
-        jButton5.setBackground(new java.awt.Color(18, 38, 70));
-        jButton5.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-buscar-244.png")); // NOI18N
-        jButton5.setBorder(null);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        Bus_Boleta_2.setBackground(new java.awt.Color(18, 38, 70));
+        Bus_Boleta_2.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-buscar-244.png")); // NOI18N
+        Bus_Boleta_2.setBorder(null);
+        Bus_Boleta_2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                Bus_Boleta_2ActionPerformed(evt);
             }
         });
 
-        jButton6.setBackground(new java.awt.Color(18, 38, 70));
-        jButton6.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-recargar-16.png")); // NOI18N
-        jButton6.setBorder(null);
+        Refresh_Placa.setBackground(new java.awt.Color(18, 38, 70));
+        Refresh_Placa.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-recargar-16.png")); // NOI18N
+        Refresh_Placa.setBorder(null);
+        Refresh_Placa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Refresh_PlacaActionPerformed(evt);
+            }
+        });
 
-        jButton7.setBackground(new java.awt.Color(18, 38, 70));
-        jButton7.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-recargar-16.png")); // NOI18N
-        jButton7.setBorder(null);
+        Refresh_Boleta.setBackground(new java.awt.Color(18, 38, 70));
+        Refresh_Boleta.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-recargar-16.png")); // NOI18N
+        Refresh_Boleta.setBorder(null);
+        Refresh_Boleta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Refresh_BoletaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -196,25 +218,25 @@ public class PanelMulta extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Titulo1))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(TextBoleta, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(TextPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jButton2)
+                                .addComponent(Bus_Placa_2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton6))
+                                .addComponent(Refresh_Placa))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jButton5)
+                                .addComponent(Bus_Boleta_2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton7)))))
+                                .addComponent(Refresh_Boleta)))))
                 .addContainerGap(89, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -227,16 +249,16 @@ public class PanelMulta extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Bus_Placa_2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Refresh_Placa, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(TextBoleta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel8))
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Bus_Boleta_2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(Refresh_Boleta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(66, 66, 66))
         );
 
@@ -306,14 +328,24 @@ public class PanelMulta extends javax.swing.JPanel {
             .addGap(0, 156, Short.MAX_VALUE)
         );
 
-        jButton3.setBackground(new java.awt.Color(242, 242, 242));
-        jButton3.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-factura-30.png")); // NOI18N
-        jButton3.setToolTipText("");
-        jButton3.setBorder(null);
+        Factura.setBackground(new java.awt.Color(242, 242, 242));
+        Factura.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-factura-30.png")); // NOI18N
+        Factura.setToolTipText("");
+        Factura.setBorder(null);
+        Factura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FacturaActionPerformed(evt);
+            }
+        });
 
-        jButton4.setBackground(new java.awt.Color(242, 242, 242));
-        jButton4.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-card-payment-30.png")); // NOI18N
-        jButton4.setBorder(null);
+        Emitir_Pago.setBackground(new java.awt.Color(242, 242, 242));
+        Emitir_Pago.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-card-payment-30.png")); // NOI18N
+        Emitir_Pago.setBorder(null);
+        Emitir_Pago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Emitir_PagoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -321,9 +353,9 @@ public class PanelMulta extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Emitir_Pago, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Factura, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -331,13 +363,18 @@ public class PanelMulta extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Factura, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Emitir_Pago, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButton1.setText("Pagar Todo");
+        Pagar_Todo.setForeground(new java.awt.Color(255, 255, 255));
+        Pagar_Todo.setText("Pagar Todo");
+        Pagar_Todo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Pagar_TodoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -353,7 +390,7 @@ public class PanelMulta extends javax.swing.JPanel {
                                 .addGap(26, 26, 26))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jRadioButton1)
+                                .addComponent(Pagar_Todo)
                                 .addGap(69, 69, 69)))
                         .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -373,14 +410,14 @@ public class PanelMulta extends javax.swing.JPanel {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                        .addComponent(jRadioButton1))
+                        .addComponent(Pagar_Todo))
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Tabla_Dat_Multa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -388,7 +425,7 @@ public class PanelMulta extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO", "ESTADO"
+                "BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO", "ESTADO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -399,20 +436,25 @@ public class PanelMulta extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(5).setResizable(false);
-            jTable1.getColumnModel().getColumn(6).setResizable(false);
+        jScrollPane1.setViewportView(Tabla_Dat_Multa);
+        if (Tabla_Dat_Multa.getColumnModel().getColumnCount() > 0) {
+            Tabla_Dat_Multa.getColumnModel().getColumn(0).setResizable(false);
+            Tabla_Dat_Multa.getColumnModel().getColumn(1).setResizable(false);
+            Tabla_Dat_Multa.getColumnModel().getColumn(2).setResizable(false);
+            Tabla_Dat_Multa.getColumnModel().getColumn(3).setResizable(false);
+            Tabla_Dat_Multa.getColumnModel().getColumn(4).setResizable(false);
+            Tabla_Dat_Multa.getColumnModel().getColumn(5).setResizable(false);
+            Tabla_Dat_Multa.getColumnModel().getColumn(6).setResizable(false);
         }
 
-        jButton8.setBackground(new java.awt.Color(242, 242, 242));
-        jButton8.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-guardar-16.png")); // NOI18N
-        jButton8.setBorder(null);
+        Guardar.setBackground(new java.awt.Color(242, 242, 242));
+        Guardar.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-guardar-16.png")); // NOI18N
+        Guardar.setBorder(null);
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel9.setText("DATOS GENERALES DE MULTAS");
@@ -428,7 +470,7 @@ public class PanelMulta extends javax.swing.JPanel {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                        .addComponent(jButton8)))
+                        .addComponent(Guardar)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -436,7 +478,7 @@ public class PanelMulta extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -495,30 +537,66 @@ public class PanelMulta extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_UsuarioActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void Bus_Placa_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Placa_2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_Bus_Placa_2ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void Bus_Boleta_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Boleta_2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_Bus_Boleta_2ActionPerformed
+
+    private void TextPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextPlacaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextPlacaActionPerformed
+
+    private void TextBoletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextBoletaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextBoletaActionPerformed
+
+    private void Refresh_PlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_PlacaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Refresh_PlacaActionPerformed
+
+    private void Refresh_BoletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_BoletaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Refresh_BoletaActionPerformed
+
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GuardarActionPerformed
+
+    private void Emitir_PagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Emitir_PagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Emitir_PagoActionPerformed
+
+    private void Pagar_TodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Pagar_TodoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Pagar_TodoActionPerformed
+
+    private void FacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FacturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FacturaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Barra;
+    private javax.swing.JButton Bus_Boleta_2;
+    private javax.swing.JButton Bus_Placa_2;
     private javax.swing.JPanel Desplegable;
+    private javax.swing.JButton Emitir_Pago;
+    private javax.swing.JButton Factura;
+    private javax.swing.JButton Guardar;
+    private javax.swing.JRadioButton Pagar_Todo;
+    private javax.swing.JButton Refresh_Boleta;
+    private javax.swing.JButton Refresh_Placa;
+    private javax.swing.JTable Tabla_Dat_Multa;
+    private javax.swing.JTextField TextBoleta;
+    private javax.swing.JTextField TextPlaca;
     private javax.swing.JLabel Titulo;
     private javax.swing.JLabel Titulo1;
     private javax.swing.JLabel User_Indicator;
     private javax.swing.JButton Usuario;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -537,10 +615,6 @@ public class PanelMulta extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

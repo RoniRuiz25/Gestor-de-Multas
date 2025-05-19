@@ -224,29 +224,29 @@
                               <Component id="Titulo1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="jLabel8" min="-2" pref="52" max="-2" attributes="0"/>
+                                      <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jTextField3" min="-2" pref="128" max="-2" attributes="0"/>
+                                      <Component id="TextBoleta" min="-2" pref="128" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
-                                      <Component id="jLabel2" min="-2" pref="52" max="-2" attributes="0"/>
+                                      <Component id="jLabel2" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jTextField1" min="-2" pref="128" max="-2" attributes="0"/>
+                                      <Component id="TextPlaca" min="-2" pref="128" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Bus_Placa_2" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jButton6" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Refresh_Placa" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
-                                      <Component id="jButton5" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Bus_Boleta_2" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jButton7" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Refresh_Boleta" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -266,18 +266,18 @@
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" max="-2" attributes="0">
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField1" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
-                          <Component id="jButton2" alignment="3" max="32767" attributes="0"/>
-                          <Component id="jButton6" alignment="1" min="-2" pref="26" max="-2" attributes="0"/>
+                          <Component id="TextPlaca" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="Bus_Placa_2" alignment="3" max="32767" attributes="0"/>
+                          <Component id="Refresh_Placa" alignment="1" min="-2" pref="26" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                              <Component id="jTextField3" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                              <Component id="TextBoleta" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jButton5" alignment="1" pref="26" max="32767" attributes="0"/>
-                          <Component id="jButton7" max="32767" attributes="0"/>
+                          <Component id="Bus_Boleta_2" alignment="1" pref="26" max="32767" attributes="0"/>
+                          <Component id="Refresh_Boleta" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
                   </Group>
@@ -309,7 +309,10 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField1">
+            <Component class="javax.swing.JTextField" name="TextPlaca">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextPlacaActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
@@ -322,7 +325,7 @@
                 <Property name="text" type="java.lang.String" value="Placa"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton2">
+            <Component class="javax.swing.JButton" name="Bus_Placa_2">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="46" green="26" red="12" type="rgb"/>
@@ -335,10 +338,13 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Bus_Placa_2ActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField3">
+            <Component class="javax.swing.JTextField" name="TextBoleta">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextBoletaActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
@@ -348,10 +354,10 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="ID"/>
+                <Property name="text" type="java.lang.String" value="Boleta"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton5">
+            <Component class="javax.swing.JButton" name="Bus_Boleta_2">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="46" green="26" red="12" type="rgb"/>
@@ -364,10 +370,10 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Bus_Boleta_2ActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton6">
+            <Component class="javax.swing.JButton" name="Refresh_Placa">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="46" green="26" red="12" type="rgb"/>
@@ -379,8 +385,11 @@
                   <Border info="null"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Refresh_PlacaActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton7">
+            <Component class="javax.swing.JButton" name="Refresh_Boleta">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="46" green="26" red="12" type="rgb"/>
@@ -392,6 +401,9 @@
                   <Border info="null"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Refresh_BoletaActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -416,7 +428,7 @@
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Pagar_Todo" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -444,7 +456,7 @@
                           <Group type="102" attributes="0">
                               <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
                               <EmptySpace pref="22" max="32767" attributes="0"/>
-                              <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
+                              <Component id="Pagar_Todo" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jPanel7" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -575,9 +587,9 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton4" min="-2" pref="46" max="-2" attributes="0"/>
+                          <Component id="Emitir_Pago" min="-2" pref="46" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jButton3" min="-2" pref="48" max="-2" attributes="0"/>
+                          <Component id="Factura" min="-2" pref="48" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -587,8 +599,8 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jButton3" min="-2" pref="27" max="-2" attributes="0"/>
-                              <Component id="jButton4" min="-2" pref="23" max="-2" attributes="0"/>
+                              <Component id="Factura" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="Emitir_Pago" min="-2" pref="23" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -596,7 +608,7 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JButton" name="jButton3">
+                <Component class="javax.swing.JButton" name="Factura">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="f2" green="f2" red="f2" type="rgb"/>
@@ -609,8 +621,11 @@
                       <Border info="null"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FacturaActionPerformed"/>
+                  </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton4">
+                <Component class="javax.swing.JButton" name="Emitir_Pago">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="f2" green="f2" red="f2" type="rgb"/>
@@ -622,16 +637,22 @@
                       <Border info="null"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Emitir_PagoActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+            <Component class="javax.swing.JRadioButton" name="Pagar_Todo">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Pagar Todo"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Pagar_TodoActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -647,7 +668,7 @@
                           <Group type="102" attributes="0">
                               <Component id="jLabel9" min="-2" pref="800" max="-2" attributes="0"/>
                               <EmptySpace pref="38" max="32767" attributes="0"/>
-                              <Component id="jButton8" min="-2" max="-2" attributes="0"/>
+                              <Component id="Guardar" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -659,7 +680,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jButton8" min="-2" pref="19" max="-2" attributes="0"/>
+                          <Component id="Guardar" min="-2" pref="19" max="-2" attributes="0"/>
                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -677,11 +698,11 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="jTable1">
+                <Component class="javax.swing.JTable" name="Tabla_Dat_Multa">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="7" rowCount="4">
-                        <Column editable="false" title="ID" type="java.lang.Object"/>
+                        <Column editable="false" title="BOLETA" type="java.lang.Object"/>
                         <Column editable="false" title="PLACA" type="java.lang.Object"/>
                         <Column editable="false" title="FECHA" type="java.lang.Object"/>
                         <Column editable="false" title="DEPARTAMENTO" type="java.lang.Object"/>
@@ -736,7 +757,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton8">
+            <Component class="javax.swing.JButton" name="Guardar">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="f2" green="f2" red="f2" type="rgb"/>
@@ -748,6 +769,9 @@
                   <Border info="null"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GuardarActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
               <Properties>

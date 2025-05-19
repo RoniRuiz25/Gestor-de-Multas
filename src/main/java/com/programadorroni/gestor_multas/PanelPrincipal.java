@@ -262,7 +262,7 @@ private void mostrarPanelMulta() {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO", "ESTADO"
+                "BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO", "ESTADO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -633,7 +633,7 @@ private void mostrarPanelMulta() {
 
     private void Ticket_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ticket_1ActionPerformed
         // TODO add your handling code here:
-        String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID de la multa:");
+        String idStr = JOptionPane.showInputDialog(this, "Ingrese el Número de Boleta de la Multa:");
         if (idStr == null || idStr.trim().isEmpty()) return;
 
         try {
