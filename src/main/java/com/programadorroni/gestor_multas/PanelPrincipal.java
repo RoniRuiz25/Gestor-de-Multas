@@ -10,6 +10,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import com.programadorroni.gestor_multas.PanelMulta;
 
 /**
  * @author isaia
@@ -128,16 +129,29 @@ class ListaDobleMulta {
 
 //Fin Metodo
 //Inicio de clases Panel Principal
+
 public class PanelPrincipal extends javax.swing.JPanel {
     DefaultTableModel modeloTabla;
     int contadorID = 1;
     ListaDobleMulta listaMultas = new ListaDobleMulta();
 
     public PanelPrincipal() {
-        initComponents();
-        modeloTabla = new DefaultTableModel(new Object[]{"ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO"}, 0);
-        Tabla_Multa_1.setModel(modeloTabla);
-    }
+    initComponents();
+    modeloTabla = new DefaultTableModel(
+        new Object[]{"ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO"}, 0);
+    Tabla_Multa_1.setModel(modeloTabla);
+
+    MULTAS.addActionListener(e -> mostrarPanelMulta());
+}
+
+private void mostrarPanelMulta() {
+    JFrame ventanaMulta = new JFrame("Gestión de Multas");
+    ventanaMulta.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventanaMulta.setContentPane(new PanelMulta());
+    ventanaMulta.setSize(800, 600);
+    ventanaMulta.setLocationRelativeTo(null);
+    ventanaMulta.setVisible(true);
+}
     
      private void refrescarTabla() {
         modeloTabla.setRowCount(0);

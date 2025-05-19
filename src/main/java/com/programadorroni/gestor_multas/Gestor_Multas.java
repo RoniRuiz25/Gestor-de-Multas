@@ -4,6 +4,7 @@ package com.programadorroni.gestor_multas;
  *
  * @author isaia
  */
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
