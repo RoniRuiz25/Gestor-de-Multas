@@ -5,135 +5,23 @@
 package com.programadorroni.gestor_multas;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import com.programadorroni.gestor_multas.PanelMulta;
+import com.programadorroni.gestor_multas.Multa;
+import com.programadorroni.gestor_multas.Nodo;
+import com.programadorroni.gestor_multas.ListaDobleMulta;
 
 /**
  * @author isaia
  */
 
-//Doblemente enlazada
-class Multa implements Comparable<Multa> {
-    int id;
-    String placa, fecha, departamento, descripcion, monto;
-
-    public Multa(int id, String placa, String fecha, String departamento, String descripcion, String monto) {
-        this.id = id;
-        this.placa = placa;
-        this.fecha = fecha;
-        this.departamento = departamento;
-        this.descripcion = descripcion;
-        this.monto = monto;
-    }
-
-    public Object[] toArray() {
-        return new Object[]{id, placa, fecha, departamento, descripcion, monto};
-    }
-
-    @Override
-    public int compareTo(Multa o) {
-        return this.placa.compareToIgnoreCase(o.placa);
-    }
-}
-
-class Nodo {
-    Multa dato;
-    Nodo anterior, siguiente;
-
-    public Nodo(Multa dato) {
-        this.dato = dato;
-    }
-}
-
-class ListaDobleMulta {
-    Nodo cabeza;
-
-    public void insertarOrdenado(Multa multa) {
-        Nodo nuevo = new Nodo(multa);
-        if (cabeza == null) {
-            cabeza = nuevo;
-        } else {
-            Nodo actual = cabeza;
-            Nodo anterior = null;
-            while (actual != null && actual.dato.compareTo(multa) < 0) {
-                anterior = actual;
-                actual = actual.siguiente;
-            }
-            if (anterior == null) {
-                nuevo.siguiente = cabeza;
-                cabeza.anterior = nuevo;
-                cabeza = nuevo;
-            } else {
-                nuevo.siguiente = actual;
-                nuevo.anterior = anterior;
-                anterior.siguiente = nuevo;
-                if (actual != null) actual.anterior = nuevo;
-            }
-        }
-    }
-
-    public Multa buscarPorPlaca(String placa) {
-        Nodo actual = cabeza;
-        while (actual != null) {
-            if (actual.dato.placa.equalsIgnoreCase(placa)) return actual.dato;
-            actual = actual.siguiente;
-        }
-        return null;
-    }
-
-    public boolean eliminarPorID(int id) {
-        Nodo actual = cabeza;
-        while (actual != null) {
-            if (actual.dato.id == id) {
-                if (actual.anterior != null) actual.anterior.siguiente = actual.siguiente;
-                else cabeza = actual.siguiente;
-                if (actual.siguiente != null) actual.siguiente.anterior = actual.anterior;
-                return true;
-            }
-            actual = actual.siguiente;
-        }
-        return false;
-    }
-
-    public void limpiar() {
-        cabeza = null;
-    }
-
-    public Object[][] obtenerDatos() {
-        int size = contar();
-        Object[][] datos = new Object[size][6];
-        Nodo actual = cabeza;
-        int i = 0;
-        while (actual != null) {
-            datos[i++] = actual.dato.toArray();
-            actual = actual.siguiente;
-        }
-        return datos;
-    }
-
-    public int contar() {
-        int count = 0;
-        Nodo actual = cabeza;
-        while (actual != null) {
-            count++;
-            actual = actual.siguiente;
-        }
-        return count;
-    }
-}
-
-
-//Fin Metodo
-//Inicio de clases Panel Principal
-
 public class PanelPrincipal extends javax.swing.JPanel {
     DefaultTableModel modeloTabla;
     int contadorID = 1;
     ListaDobleMulta listaMultas = new ListaDobleMulta();
+    private PanelMulta panelMulta;
 
     public PanelPrincipal() {
     initComponents();
@@ -145,22 +33,23 @@ public class PanelPrincipal extends javax.swing.JPanel {
 }
 
 private void mostrarPanelMulta() {
+    panelMulta = new PanelMulta();
     JFrame ventanaMulta = new JFrame("Gestión de Multas");
     ventanaMulta.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    ventanaMulta.setContentPane(new PanelMulta());
-    ventanaMulta.setSize(800, 600);
+    PanelMulta panelMulta = new PanelMulta(); //  Creamos una instancia
+    ventanaMulta.setContentPane(panelMulta);  // La usamos en el JFrame
+    
+    ventanaMulta.setSize(1100, 600);
     ventanaMulta.setLocationRelativeTo(null);
     ventanaMulta.setVisible(true);
 }
-    
+
      private void refrescarTabla() {
         modeloTabla.setRowCount(0);
         for (Object[] fila : listaMultas.obtenerDatos()) {
             modeloTabla.addRow(fila);
         }
     }
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -196,6 +85,7 @@ private void mostrarPanelMulta() {
         jLabel4 = new javax.swing.JLabel();
         Buscar_Fch_1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 204));
 
@@ -447,15 +337,23 @@ private void mostrarPanelMulta() {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel2.setText("Tiempo de Carga");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 28, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout Primer_PanelLayout = new javax.swing.GroupLayout(Primer_Panel);
@@ -547,7 +445,7 @@ private void mostrarPanelMulta() {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
             try {
-                if (!fileToSave.exists()) {
+                if (!fileToSave.exists()) {            
                     fileToSave.createNewFile();
                     JOptionPane.showMessageDialog(this, "Archivo creado exitosamente.");
                     listaMultas.limpiar();
@@ -587,27 +485,32 @@ private void mostrarPanelMulta() {
 
     private void Buscar_Fch_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_Fch_1ActionPerformed
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
-        int result = fileChooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                String line;
-                listaMultas.limpiar();
-                contadorID = 1;
-                while ((line = reader.readLine()) != null) {
-                    String[] datos = line.split(",");
-                    if (datos.length == 5) {
-                        Multa m = new Multa(contadorID++, datos[0], datos[1], datos[2], datos[3], datos[4]);
-                        listaMultas.insertarOrdenado(m);
-                    }
-                }
-                refrescarTabla();
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(this, "Error al leer el archivo.");
-            }
+         JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
+    int result = fileChooser.showOpenDialog(this);
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File file = fileChooser.getSelectedFile();
+
+        if (panelMulta != null) {
+            panelMulta.setArchivoActual(file); //  Aquí ya funciona correctamente
         }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            listaMultas.limpiar();
+            contadorID = 1;
+            while ((line = reader.readLine()) != null) {
+                String[] datos = line.split(",");
+                if (datos.length == 5) {
+                    Multa m = new Multa(contadorID++, datos[0], datos[1], datos[2], datos[3], datos[4]);
+                    listaMultas.insertarOrdenado(m);
+                }
+            }
+            refrescarTabla();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al leer el archivo.");
+        }
+    }
     }//GEN-LAST:event_Buscar_Fch_1ActionPerformed
 
     private void EscribirBusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscribirBusActionPerformed
@@ -725,6 +628,7 @@ private void mostrarPanelMulta() {
     private javax.swing.JButton Usuario;
     private javax.swing.JButton VEHICULOS;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel6;
