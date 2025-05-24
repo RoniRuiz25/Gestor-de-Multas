@@ -17,39 +17,63 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
  * @author isaia
  */
 
-public class PanelPrincipal extends javax.swing.JPanel {
-    DefaultTableModel modeloTabla;
-    int contadorID = 1;
-    ListaDobleMulta listaMultas = new ListaDobleMulta();
-    private PanelMulta panelMulta;
+    public class PanelPrincipal extends javax.swing.JPanel {
+       
+        private ListaDobleMulta listaMultas;
+        private int contadorID = 1;
 
-    public PanelPrincipal() {
-    initComponents();
-    modeloTabla = new DefaultTableModel(
-        new Object[]{"ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO"}, 0);
-    Tabla_Multa_1.setModel(modeloTabla);
+        public PanelPrincipal() {
+        initComponents();
+        listaMultas = new ListaDobleMulta();
+    }
 
-    MULTAS.addActionListener(e -> mostrarPanelMulta());
-}
+    private void Buscar_Fch_1ActionPerformed(java.awt.event.ActionEvent evt) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
+        int resultado = fileChooser.showOpenDialog(this);
 
-private void mostrarPanelMulta() {
-    panelMulta = new PanelMulta();
-    JFrame ventanaMulta = new JFrame("Gestión de Multas");
-    ventanaMulta.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    PanelMulta panelMulta = new PanelMulta(); //  Creamos una instancia
-    ventanaMulta.setContentPane(panelMulta);  // La usamos en el JFrame
-    
-    ventanaMulta.setSize(1100, 600);
-    ventanaMulta.setLocationRelativeTo(null);
-    ventanaMulta.setVisible(true);
-}
-
-     private void refrescarTabla() {
-        modeloTabla.setRowCount(0);
-        for (Object[] fila : listaMultas.obtenerDatos()) {
-            modeloTabla.addRow(fila);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivoActual = fileChooser.getSelectedFile();
+            cargarDesdeArchivo(archivoActual);
         }
     }
+
+    private void cargarDesdeArchivo(File archivo) {
+        listaMultas.limpiar();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(";");
+                if (datos.length == 7) {
+                    int id = Integer.parseInt(datos[0].trim());
+                    String placa = datos[1].trim();
+                    String fecha = datos[2].trim();
+                    String departamento = datos[3].trim();
+                    String descripcion = datos[4].trim();
+                    double monto = Double.parseDouble(datos[5].trim());
+                    String estado = datos[6].trim();
+
+                    Multa multa = new Multa(id, placa, fecha, departamento, descripcion, monto, estado);
+                    listaMultas.insertarOrdenado(multa);
+                }
+            }
+
+            mostrarEnTabla(listaMultas.obtenerDatos());
+        } catch (IOException | NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void mostrarEnTabla(Object[][] datos) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"BOLETA", "Placa", "Fecha", "Departamento", "Descripción", "Monto", "Estado"});
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
+        Tabla_Multa_1.setModel(modelo);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,9 +107,9 @@ private void mostrarPanelMulta() {
         Desplegable = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        Buscar_Fch_1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        Buscar_Fch = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
 
@@ -121,9 +145,9 @@ private void mostrarPanelMulta() {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(158, 158, 158)
                 .addComponent(Nuevo_Doc)
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Asignar_Multa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Descargar_Fich_1)
@@ -212,19 +236,21 @@ private void mostrarPanelMulta() {
         Panel_Llenado_1Layout.setHorizontalGroup(
             Panel_Llenado_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(Panel_Llenado_1Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_Llenado_1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(Panel_Llenado_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(Panel_Llenado_1Layout.createSequentialGroup()
-                        .addComponent(Buscar_Placa_1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_Llenado_1Layout.createSequentialGroup()
+                        .addComponent(Buscar_Placa_1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(992, 992, 992)
                         .addComponent(Eliminar_1)
-                        .addGap(43, 43, 43)
-                        .addComponent(Ticket_1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(Ticket_1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_Llenado_1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         Panel_Llenado_1Layout.setVerticalGroup(
             Panel_Llenado_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,11 +258,11 @@ private void mostrarPanelMulta() {
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(Panel_Llenado_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(Panel_Llenado_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Ticket_1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Eliminar_1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Buscar_Placa_1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Ticket_1)
-                    .addComponent(Eliminar_1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Buscar_Placa_1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -280,9 +306,9 @@ private void mostrarPanelMulta() {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(162, 162, 162)
                 .addComponent(Barra, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 750, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(User_Indicator, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Usuario)
@@ -319,21 +345,12 @@ private void mostrarPanelMulta() {
             .addGroup(DesplegableLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(460, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Agregar Fichero Existente");
-
-        Buscar_Fch_1.setBackground(new java.awt.Color(17, 34, 61));
-        Buscar_Fch_1.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-folder-48.png")); // NOI18N
-        Buscar_Fch_1.setBorder(null);
-        Buscar_Fch_1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Buscar_Fch_1ActionPerformed(evt);
-            }
-        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -356,6 +373,15 @@ private void mostrarPanelMulta() {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        Buscar_Fch.setBackground(new java.awt.Color(17, 34, 61));
+        Buscar_Fch.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-folder-48.png")); // NOI18N
+        Buscar_Fch.setBorder(null);
+        Buscar_Fch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Buscar_FchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout Primer_PanelLayout = new javax.swing.GroupLayout(Primer_Panel);
         Primer_Panel.setLayout(Primer_PanelLayout);
         Primer_PanelLayout.setHorizontalGroup(
@@ -370,53 +396,45 @@ private void mostrarPanelMulta() {
                                 .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(Primer_PanelLayout.createSequentialGroup()
                                 .addGap(12, 12, 12)
-                                .addComponent(Buscar_Fch_1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(Primer_PanelLayout.createSequentialGroup()
-                                        .addGap(30, 30, 30)
-                                        .addComponent(MULTAS, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(101, 101, 101)
-                                        .addComponent(TRASPASOS)
-                                        .addGap(131, 131, 131)
-                                        .addComponent(VEHICULOS)
-                                        .addGap(112, 112, 112)
-                                        .addComponent(RESUMEN))
-                                    .addGroup(Primer_PanelLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Primer_PanelLayout.createSequentialGroup()
+                                .addComponent(Buscar_Fch, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(705, Short.MAX_VALUE))
+                    .addGroup(Primer_PanelLayout.createSequentialGroup()
+                        .addGap(123, 123, 123)
+                        .addComponent(MULTAS, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(230, 230, 230)
+                        .addComponent(TRASPASOS)
+                        .addGap(250, 250, 250)
+                        .addComponent(VEHICULOS)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Primer_PanelLayout.createSequentialGroup()
-                .addGap(146, 152, Short.MAX_VALUE)
-                .addComponent(Panel_Llenado_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(RESUMEN)
+                        .addGap(146, 146, 146))))
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Panel_Llenado_1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         Primer_PanelLayout.setVerticalGroup(
             Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Primer_PanelLayout.createSequentialGroup()
                 .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Primer_PanelLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(24, 24, 24)
                         .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(90, 90, 90)
                         .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(MULTAS)
                             .addComponent(TRASPASOS)
                             .addComponent(VEHICULOS)
                             .addComponent(RESUMEN))
-                        .addGap(18, 18, 18)
-                        .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(Buscar_Fch_1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                        .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(Buscar_Fch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Panel_Llenado_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Primer_PanelLayout.createSequentialGroup()
-                        .addComponent(Desplegable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(Desplegable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -437,81 +455,95 @@ private void mostrarPanelMulta() {
         // TODO add your handling code here:
     }//GEN-LAST:event_MULTASActionPerformed
 
+    private void refrescarTabla() {
+    Object[][] datos = listaMultas.obtenerDatos();
+    String[] columnas = {"BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCIÓN", "MONTO", "ESTADO"};
+    DefaultTableModel modelo = new DefaultTableModel(datos, columnas);
+    Tabla_Multa_1.setModel(modelo);
+    }
+    
     private void Nuevo_DocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo_DocActionPerformed
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Crear nuevo documento");
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
-            try {
-                if (!fileToSave.exists()) {            
-                    fileToSave.createNewFile();
-                    JOptionPane.showMessageDialog(this, "Archivo creado exitosamente.");
+      JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Crear nuevo documento");
+
+    int userSelection = fileChooser.showSaveDialog(this);
+    if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+
+        // Asegurar extensión .txt
+        if (!fileToSave.getName().toLowerCase().endsWith(".txt")) {
+            fileToSave = new File(fileToSave.getAbsolutePath() + ".txt");
+        }
+
+        try {
+            if (!fileToSave.exists()) {
+                boolean creado = fileToSave.createNewFile();
+                if (creado) {
+                    JOptionPane.showMessageDialog(this, "Archivo creado exitosamente: " + fileToSave.getName());
+
+                    // Limpiar la lista doble y reiniciar ID
                     listaMultas.limpiar();
                     contadorID = 1;
+
+                    // Refrescar tabla vacía
                     refrescarTabla();
+
+                    // Opcional: guardar el archivo en una variable si deseas usarlo más tarde
+                    // archivoActual = fileToSave;
                 } else {
-                    JOptionPane.showMessageDialog(this, "El archivo ya existe.");
+                    JOptionPane.showMessageDialog(this, "No se pudo crear el archivo.");
                 }
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(this, "Error al crear el archivo.");
+            } else {
+                JOptionPane.showMessageDialog(this, "El archivo ya existe.");
             }
+        } catch (IOException e) {
+            e.printStackTrace(); // Muestra error en consola
+            JOptionPane.showMessageDialog(this, "Error al crear el archivo: " + e.getMessage());
         }
+    }
     }//GEN-LAST:event_Nuevo_DocActionPerformed
 
     private void Asignar_MultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Asignar_MultaActionPerformed
         // TODO add your handling code here:
         JTextField placa = new JTextField();
-        JTextField fecha = new JTextField();
-        JTextField departamento = new JTextField();
-        JTextField descripcion = new JTextField();
-        JTextField monto = new JTextField();
+    JTextField fecha = new JTextField();
+    JTextField departamento = new JTextField();
+    JTextField descripcion = new JTextField();
+    JTextField monto = new JTextField();
+    JTextField estado = new JTextField();
 
-        JPanel panel = new JPanel(new GridLayout(0, 1));
-        panel.add(new JLabel("PLACA:")); panel.add(placa);
-        panel.add(new JLabel("FECHA:")); panel.add(fecha);
-        panel.add(new JLabel("DEPARTAMENTO:")); panel.add(departamento);
-        panel.add(new JLabel("DESCRIPCIÓN:")); panel.add(descripcion);
-        panel.add(new JLabel("MONTO:")); panel.add(monto);
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel("PLACA:")); panel.add(placa);
+    panel.add(new JLabel("FECHA:")); panel.add(fecha);
+    panel.add(new JLabel("DEPARTAMENTO:")); panel.add(departamento);
+    panel.add(new JLabel("DESCRIPCIÓN:")); panel.add(descripcion);
+    panel.add(new JLabel("MONTO:")); panel.add(monto);
+    panel.add(new JLabel("ESTADO:")); panel.add(estado);
 
-        int result = JOptionPane.showConfirmDialog(null, panel, "Asignar Multa", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            Multa nueva = new Multa(contadorID++, placa.getText(), fecha.getText(), departamento.getText(), descripcion.getText(), monto.getText());
+    int result = JOptionPane.showConfirmDialog(null, panel, "Asignar Multa", JOptionPane.OK_CANCEL_OPTION);
+    if (result == JOptionPane.OK_OPTION) {
+        try {
+            double montoValor = Double.parseDouble(monto.getText());
+
+            Multa nueva = new Multa(
+                contadorID++,
+                placa.getText(),
+                fecha.getText(),
+                departamento.getText(),
+                descripcion.getText(),
+                montoValor,
+                estado.getText()
+            );
+
             listaMultas.insertarOrdenado(nueva);
             refrescarTabla();
-        }
-    }//GEN-LAST:event_Asignar_MultaActionPerformed
 
-    private void Buscar_Fch_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_Fch_1ActionPerformed
-        // TODO add your handling code here:
-         JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
-    int result = fileChooser.showOpenDialog(this);
-    if (result == JFileChooser.APPROVE_OPTION) {
-        File file = fileChooser.getSelectedFile();
-
-        if (panelMulta != null) {
-            panelMulta.setArchivoActual(file); //  Aquí ya funciona correctamente
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            listaMultas.limpiar();
-            contadorID = 1;
-            while ((line = reader.readLine()) != null) {
-                String[] datos = line.split(",");
-                if (datos.length == 5) {
-                    Multa m = new Multa(contadorID++, datos[0], datos[1], datos[2], datos[3], datos[4]);
-                    listaMultas.insertarOrdenado(m);
-                }
-            }
-            refrescarTabla();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error al leer el archivo.");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El monto debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    }//GEN-LAST:event_Buscar_Fch_1ActionPerformed
+    }//GEN-LAST:event_Asignar_MultaActionPerformed
 
     private void EscribirBusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscribirBusActionPerformed
         // TODO add your handling code here:
@@ -519,7 +551,7 @@ private void mostrarPanelMulta() {
 
     private void Buscar_Placa_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_Placa_1ActionPerformed
         // TODO add your handling code here:
-          String placaBuscada = EscribirBus.getText().trim();
+            String placaBuscada = EscribirBus.getText().trim();
         if (placaBuscada.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un número de placa.");
             return;
@@ -536,35 +568,38 @@ private void mostrarPanelMulta() {
 
     private void Ticket_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ticket_1ActionPerformed
         // TODO add your handling code here:
-        String idStr = JOptionPane.showInputDialog(this, "Ingrese el Número de Boleta de la Multa:");
-        if (idStr == null || idStr.trim().isEmpty()) return;
+           String idStr = JOptionPane.showInputDialog(this, "Ingrese el número de BOLETA:");
+    if (idStr == null || idStr.trim().isEmpty()) return;
 
-        try {
-            int id = Integer.parseInt(idStr.trim());
-            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-                int idTabla = Integer.parseInt(modeloTabla.getValueAt(i, 0).toString());
-                if (idTabla == id) {
-                    String ticket = "----- TICKET DE PAGO -----\n"
-                            + "ID: " + id + "\n"
-                            + "PLACA: " + modeloTabla.getValueAt(i, 1) + "\n"
-                            + "FECHA: " + modeloTabla.getValueAt(i, 2) + "\n"
-                            + "DEPARTAMENTO: " + modeloTabla.getValueAt(i, 3) + "\n"
-                            + "DESCRIPCIÓN: " + modeloTabla.getValueAt(i, 4) + "\n"
-                            + "MONTO: Q" + modeloTabla.getValueAt(i, 5) + "\n"
-                            + "---------------------------";
-                    JOptionPane.showMessageDialog(this, ticket);
-                    return;
-                }
+    try {
+        int id = Integer.parseInt(idStr.trim());
+        Nodo actual = listaMultas.cabeza;
+        while (actual != null) {
+            if (actual.dato.id == id) {
+                String ticket = "----- TICKET DE PAGO -----\n"
+                        + "BOLETA: " + actual.dato.id + "\n"
+                        + "PLACA: " + actual.dato.placa + "\n"
+                        + "FECHA: " + actual.dato.fecha + "\n"
+                        + "DEPARTAMENTO: " + actual.dato.departamento + "\n"
+                        + "DESCRIPCIÓN: " + actual.dato.descripcion + "\n"
+                        + "MONTO: Q" + actual.dato.monto + "\n"
+                        + "ESTADO: " + actual.dato.estado + "\n"
+                        + "---------------------------";
+                JOptionPane.showMessageDialog(this, ticket);
+                return;
             }
-            JOptionPane.showMessageDialog(this, "No se encontró una multa con ese ID.");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "ID inválido.");
+            actual = actual.siguiente;
         }
+
+        JOptionPane.showMessageDialog(this, "No se encontró una multa con ese número de BOLETA.");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Número de BOLETA inválido.");
+    }
     }//GEN-LAST:event_Ticket_1ActionPerformed
 
     private void Eliminar_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_1ActionPerformed
         // TODO add your handling code here:
-        String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID que desea eliminar:");
+         String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID que desea eliminar:");
         if (idStr == null || idStr.trim().isEmpty()) return;
         try {
             int id = Integer.parseInt(idStr.trim());
@@ -581,7 +616,7 @@ private void mostrarPanelMulta() {
 
     private void Descargar_Fich_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Descargar_Fich_1ActionPerformed
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
+          JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Guardar archivo de multas");
         fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
         int userSelection = fileChooser.showSaveDialog(this);
@@ -605,11 +640,51 @@ private void mostrarPanelMulta() {
         // TODO add your handling code here:
     }//GEN-LAST:event_UsuarioActionPerformed
 
+    private void Buscar_FchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_FchActionPerformed
+        // TODO add your handling code here:
+       JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
+    int result = fileChooser.showOpenDialog(this);
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File archivoActual = fileChooser.getSelectedFile();
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivoActual))) {
+            String line;
+            listaMultas.limpiar();
+            contadorID = 1;
+            while ((line = reader.readLine()) != null) {
+                String[] datos = line.split(",");
+                if (datos.length == 7) { // Ahora son 7 campos, incluyendo "estado"
+                    try {
+                        double monto = Double.parseDouble(datos[5]); // Conversión del monto
+                        Multa m = new Multa(
+                            contadorID++,
+                            datos[0],  // placa
+                            datos[1],  // fecha
+                            datos[2],  // departamento
+                            datos[3],  // descripción
+                            monto,     // monto convertido a double
+                            datos[6]   // estado
+                        );
+                        listaMultas.insertarOrdenado(m);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, "Error en el formato del monto: " + datos[5]);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Línea con formato inválido:\n" + line);
+                }
+            }
+            refrescarTabla();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al leer el archivo.");
+        }
+    }
+
+    }//GEN-LAST:event_Buscar_FchActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Asignar_Multa;
     private javax.swing.JButton Barra;
-    private javax.swing.JButton Buscar_Fch_1;
+    private javax.swing.JButton Buscar_Fch;
     private javax.swing.JButton Buscar_Placa_1;
     private javax.swing.JButton Descargar_Fich_1;
     private javax.swing.JPanel Desplegable;

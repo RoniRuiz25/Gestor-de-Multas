@@ -9,7 +9,7 @@ package com.programadorroni.gestor_multas;
  * @author isaia
  */
 public class NodoMulta {
-    public String id;
+     public String id;
     public String placa;
     public String fecha;
     public String departamento;

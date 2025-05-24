@@ -4,6 +4,9 @@
  */
 package com.programadorroni.gestor_multas;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListaDobleMulta {
     public Nodo cabeza;
 
@@ -31,6 +34,17 @@ public class ListaDobleMulta {
         }
     }
 
+    public Multa buscarPorBoleta(int boleta) {
+    Nodo actual = cabeza;
+    while (actual != null) {
+        if (actual.dato.id == boleta) {
+            return actual.dato;
+        }
+        actual = actual.siguiente;
+    }
+    return null;
+}
+
     public Multa buscarPorPlaca(String placa) {
         Nodo actual = cabeza;
         while (actual != null) {
@@ -38,6 +52,27 @@ public class ListaDobleMulta {
             actual = actual.siguiente;
         }
         return null;
+    }
+
+    public Multa buscarPorID(int id) {
+    Nodo actual = cabeza;
+    while (actual != null) {
+        if (actual.dato.id == id) return actual.dato;
+        actual = actual.siguiente;
+    }
+    return null;
+}
+    
+    public Object[][] buscarMultasPorPlaca(String placa) {
+        List<Object[]> lista = new ArrayList<>();
+        Nodo actual = cabeza;
+        while (actual != null) {
+            if (actual.dato.placa.equalsIgnoreCase(placa)) {
+                lista.add(actual.dato.toArray());
+            }
+            actual = actual.siguiente;
+        }
+        return lista.toArray(new Object[0][]);
     }
 
     public boolean eliminarPorID(int id) {
@@ -60,7 +95,7 @@ public class ListaDobleMulta {
 
     public Object[][] obtenerDatos() {
         int size = contar();
-        Object[][] datos = new Object[size][6];
+        Object[][] datos = new Object[size][7]; // Incluye campo 'estado'
         Nodo actual = cabeza;
         int i = 0;
         while (actual != null) {
@@ -69,6 +104,7 @@ public class ListaDobleMulta {
         }
         return datos;
     }
+    
 
     public int contar() {
         int count = 0;

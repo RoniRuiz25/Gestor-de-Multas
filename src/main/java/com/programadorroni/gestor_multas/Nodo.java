@@ -9,10 +9,13 @@ package com.programadorroni.gestor_multas;
  * @author isaia
  */
 public class Nodo {
-    public Multa dato;
-    public Nodo anterior, siguiente;
+     public Multa dato;
+    public Nodo siguiente;
+    public Nodo anterior;
 
     public Nodo(Multa dato) {
         this.dato = dato;
+        this.siguiente = null;
+        this.anterior = null;
     }
 }
