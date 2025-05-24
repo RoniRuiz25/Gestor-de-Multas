@@ -26,7 +26,7 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         initComponents();
         listaMultas = new ListaDobleMulta();
     }
-
+        
     private void Buscar_Fch_1ActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
@@ -37,6 +37,8 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
             cargarDesdeArchivo(archivoActual);
         }
     }
+    
+    
 
     private void cargarDesdeArchivo(File archivo) {
         listaMultas.limpiar();
@@ -455,6 +457,38 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         // TODO add your handling code here:
     }//GEN-LAST:event_MULTASActionPerformed
 
+    public void cargarArchivoConBoleta(File archivo) {
+     DefaultTableModel modelo = (DefaultTableModel) Tabla_Multa_1.getModel();
+    modelo.setRowCount(0); // Limpiar la tabla
+
+    int contadorBoleta = 1; // Empezamos en 1
+
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(","); // Asegúrate que el archivo use comas como separador
+            if (datos.length == 6) {
+                Object[] fila = new Object[7];
+                fila[0] = contadorBoleta++;       // BOLETA
+                fila[1] = datos[0].trim();         // PLACA
+                fila[2] = datos[1].trim();         // FECHA
+                fila[3] = datos[2].trim();         // DEPARTAMENTO
+                fila[4] = datos[3].trim();         // DESCRIPCION
+                fila[5] = datos[4].trim();         // MONTO
+                fila[6] = datos[5].trim();         // ESTADO
+
+                modelo.addRow(fila);
+            } else {
+                System.out.println("Línea con formato incorrecto: " + linea);
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al leer el archivo.");
+    }
+}
+
+    
     private void refrescarTabla() {
     Object[][] datos = listaMultas.obtenerDatos();
     String[] columnas = {"BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCIÓN", "MONTO", "ESTADO"};
@@ -642,43 +676,53 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
 
     private void Buscar_FchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_FchActionPerformed
         // TODO add your handling code here:
-       JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser();
     fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
     int result = fileChooser.showOpenDialog(this);
     if (result == JFileChooser.APPROVE_OPTION) {
         File archivoActual = fileChooser.getSelectedFile();
+        listaMultas.limpiar(); // Borra la lista enlazada antes de cargar
+        contadorID = 1; // Reinicia el contador de BOLETA
+
+        int lineasMalFormateadas = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(archivoActual))) {
             String line;
-            listaMultas.limpiar();
-            contadorID = 1;
             while ((line = reader.readLine()) != null) {
                 String[] datos = line.split(",");
-                if (datos.length == 7) { // Ahora son 7 campos, incluyendo "estado"
+                if (datos.length == 6) { // Ahora se espera solo 6 campos
                     try {
-                        double monto = Double.parseDouble(datos[5]); // Conversión del monto
+                        double monto = Double.parseDouble(datos[4].trim());
                         Multa m = new Multa(
-                            contadorID++,
-                            datos[0],  // placa
-                            datos[1],  // fecha
-                            datos[2],  // departamento
-                            datos[3],  // descripción
-                            monto,     // monto convertido a double
-                            datos[6]   // estado
+                            contadorID++,           // BOLETA generado automáticamente
+                            datos[0].trim(),        // PLACA
+                            datos[1].trim(),        // FECHA
+                            datos[2].trim(),        // DEPARTAMENTO
+                            datos[3].trim(),        // DESCRIPCION
+                            monto,                  // MONTO
+                            datos[5].trim()         // ESTADO
                         );
                         listaMultas.insertarOrdenado(m);
                     } catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(this, "Error en el formato del monto: " + datos[5]);
+                        lineasMalFormateadas++;
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Línea con formato inválido:\n" + line);
+                    lineasMalFormateadas++;
                 }
             }
-            refrescarTabla();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error al leer el archivo.");
+            return;
+        }
+
+        refrescarTabla(); // Este método debe actualizar la JTable con los datos cargados
+
+        if (lineasMalFormateadas > 0) {
+            JOptionPane.showMessageDialog(this, 
+                "Carga completada con advertencias.\n" + 
+                "Líneas ignoradas por formato incorrecto: " + lineasMalFormateadas,
+                "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
-
     }//GEN-LAST:event_Buscar_FchActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
