@@ -35,7 +35,7 @@ public class Multa implements Comparable<Multa> {
         return Integer.compare(this.id, otra.id); // Orden por ID
     }
 
-    // Getters (implementación correcta)
+    // Getters
     public String getPlaca() {
         return placa;
     }

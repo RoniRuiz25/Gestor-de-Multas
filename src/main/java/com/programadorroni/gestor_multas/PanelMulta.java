@@ -16,6 +16,7 @@ public class PanelMulta extends javax.swing.JPanel {
 
     public PanelMulta() {
         initComponents();
+        
     }
 
     public void setArchivoActual(File archivo) {
@@ -670,7 +671,7 @@ public class PanelMulta extends javax.swing.JPanel {
     }//GEN-LAST:event_UsuarioActionPerformed
 
     private void Bus_Placa_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Placa_2ActionPerformed
-       
+    
     }//GEN-LAST:event_Bus_Placa_2ActionPerformed
 
     private void Bus_Boleta_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Boleta_2ActionPerformed
@@ -717,6 +718,7 @@ public class PanelMulta extends javax.swing.JPanel {
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         // TODO add your handling code here:
+      
     }//GEN-LAST:event_GuardarActionPerformed
 
     private void Emitir_PagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Emitir_PagoActionPerformed

@@ -18,4 +18,12 @@ public class Nodo {
         this.siguiente = null;
         this.anterior = null;
     }
+
+    public Multa getDato() {
+    return dato;
+}
+
+public Nodo getSiguiente() {
+    return siguiente;
+}
 }

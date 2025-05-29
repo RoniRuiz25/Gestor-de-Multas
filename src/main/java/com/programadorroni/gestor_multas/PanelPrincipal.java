@@ -16,7 +16,6 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
 /**
  * @author isaia
  */
-
     public class PanelPrincipal extends javax.swing.JPanel {
        
         private ListaDobleMulta listaMultas;
@@ -28,18 +27,16 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
     }
         
     private void Buscar_Fch_1ActionPerformed(java.awt.event.ActionEvent evt) {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
-        int resultado = fileChooser.showOpenDialog(this);
+         JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos de texto", "txt"));
+    int resultado = fileChooser.showOpenDialog(this);
 
-        if (resultado == JFileChooser.APPROVE_OPTION) {
-            File archivoActual = fileChooser.getSelectedFile();
-            cargarDesdeArchivo(archivoActual);
-        }
+    if (resultado == JFileChooser.APPROVE_OPTION) {
+        File archivoActual = fileChooser.getSelectedFile();
+        cargarDesdeArchivo(archivoActual);
+    }
     }
     
-    
-
     private void cargarDesdeArchivo(File archivo) {
         listaMultas.limpiar();
 
@@ -67,6 +64,7 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         }
     }
 
+        
     private void mostrarEnTabla(Object[][] datos) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"BOLETA", "Placa", "Fecha", "Departamento", "Descripción", "Monto", "Estado"});
@@ -452,42 +450,44 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
             .addComponent(Primer_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void MULTASActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MULTASActionPerformed
         // TODO add your handling code here:
+        Primer_Panel.removeAll();                   // Limpia lo que haya en Primer_Panel
+    Primer_Panel.setLayout(new BorderLayout()); // Ajusta el layout para que PanelMulta ocupe todo el espacio
+
+    PanelMulta panelMulta = new PanelMulta();   // Crear instancia del PanelMulta (asegúrate de tener su constructor sin args)
+    
+    Primer_Panel.add(panelMulta, BorderLayout.CENTER);
+    Primer_Panel.revalidate();  // Refrescar la UI
+    Primer_Panel.repaint();
     }//GEN-LAST:event_MULTASActionPerformed
-
+    
+    private void actualizarTabla(JTable tabla) {
+    Object[][] datos = listaMultas.obtenerDatos();
+    String[] columnas = {"BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCIÓN", "MONTO", "ESTADO"};
+    tabla.setModel(new DefaultTableModel(datos, columnas));
+}
     public void cargarArchivoConBoleta(File archivo) {
-     DefaultTableModel modelo = (DefaultTableModel) Tabla_Multa_1.getModel();
-    modelo.setRowCount(0); // Limpiar la tabla
-
-    int contadorBoleta = 1; // Empezamos en 1
+      listaMultas.limpiar();
 
     try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
         String linea;
+        int id = 1;
         while ((linea = br.readLine()) != null) {
-            String[] datos = linea.split(","); // Asegúrate que el archivo use comas como separador
-            if (datos.length == 6) {
-                Object[] fila = new Object[7];
-                fila[0] = contadorBoleta++;       // BOLETA
-                fila[1] = datos[0].trim();         // PLACA
-                fila[2] = datos[1].trim();         // FECHA
-                fila[3] = datos[2].trim();         // DEPARTAMENTO
-                fila[4] = datos[3].trim();         // DESCRIPCION
-                fila[5] = datos[4].trim();         // MONTO
-                fila[6] = datos[5].trim();         // ESTADO
-
-                modelo.addRow(fila);
-            } else {
-                System.out.println("Línea con formato incorrecto: " + linea);
+            String[] partes = linea.split(",");
+            if (partes.length == 6) {
+                Multa multa = new Multa(id++, partes[0], partes[1], partes[2], partes[3],
+                                        Double.parseDouble(partes[4]), partes[5]);
+                listaMultas.insertarOrdenado(multa);
             }
         }
-    } catch (IOException e) {
+    } catch (IOException | NumberFormatException e) {
         e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error al leer el archivo.");
     }
-}
 
+    actualizarTabla(Tabla_Multa_1);
+}
     
     private void refrescarTabla() {
     Object[][] datos = listaMultas.obtenerDatos();
@@ -570,8 +570,8 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
                 estado.getText()
             );
 
-            listaMultas.insertarOrdenado(nueva);
-            refrescarTabla();
+            listaMultas.insertarOrdenado(nueva); // Inserta ordenado
+            refrescarTabla();                     // Refresca la tabla con nuevo orden
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "El monto debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -586,18 +586,23 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
     private void Buscar_Placa_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_Placa_1ActionPerformed
         // TODO add your handling code here:
             String placaBuscada = EscribirBus.getText().trim();
-        if (placaBuscada.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un número de placa.");
-            return;
-        }
-        Multa resultado = listaMultas.buscarPorPlaca(placaBuscada);
-        DefaultTableModel modeloFiltrado = new DefaultTableModel(new Object[]{"ID", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO"}, 0);
-        if (resultado != null) {
-            modeloFiltrado.addRow(resultado.toArray());
-            Tabla_Multa_1.setModel(modeloFiltrado);
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontraron registros para la placa ingresada.");
-        }
+    if (placaBuscada.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese un número de placa.");
+        return;
+    }
+
+    Multa resultado = listaMultas.buscarPorPlaca(placaBuscada);
+
+    DefaultTableModel modeloFiltrado = new DefaultTableModel(
+        new Object[]{"BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCIÓN", "MONTO", "ESTADO"}, 0
+    );
+
+    if (resultado != null) {
+        modeloFiltrado.addRow(resultado.toArray());
+        Tabla_Multa_1.setModel(modeloFiltrado);
+    } else {
+        JOptionPane.showMessageDialog(this, "No se encontraron registros para la placa ingresada.");
+    }
     }//GEN-LAST:event_Buscar_Placa_1ActionPerformed
 
     private void Ticket_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ticket_1ActionPerformed
@@ -754,4 +759,5 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
 }
