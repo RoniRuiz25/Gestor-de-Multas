@@ -33,7 +33,7 @@ public class ListaDobleMulta {
             }
         }
     }
-
+    
     public Multa buscarPorBoleta(int boleta) {
     Nodo actual = cabeza;
     while (actual != null) {
@@ -104,8 +104,7 @@ public class ListaDobleMulta {
         }
         return datos;
     }
-    
-
+     
     public int contar() {
         int count = 0;
         Nodo actual = cabeza;

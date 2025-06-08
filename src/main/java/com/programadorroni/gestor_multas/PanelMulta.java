@@ -15,8 +15,7 @@ public class PanelMulta extends javax.swing.JPanel {
     private File archivoActual;
 
     public PanelMulta() {
-        initComponents();
-        
+        initComponents();  
     }
 
     public void setArchivoActual(File archivo) {
@@ -24,42 +23,62 @@ public class PanelMulta extends javax.swing.JPanel {
     }
     
         public void cargarDesdeArchivo(File archivo) {
-          archivoActual = archivo;
-    listaMultas.limpiar();
+         listaMultas.limpiar();
+    DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
+    modelo.setRowCount(0);
 
     try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
         String linea;
+        int id = 1;
         while ((linea = br.readLine()) != null) {
-            String[] datos = linea.split(";");
-            if (datos.length == 7) {
-                int boleta = Integer.parseInt(datos[0].trim());
-                String placa = datos[1].trim();
-                String fecha = datos[2].trim();
-                String departamento = datos[3].trim();
-                String descripcion = datos[4].trim();
-                double monto = Double.parseDouble(datos[5].trim()); // conversión correcta
-                String estado = datos[6].trim();
-
-                Multa multa = new Multa(boleta, placa, fecha, departamento, descripcion, monto, estado);
+            String[] partes = linea.split(",");
+            if (partes.length == 6) {
+                Multa multa = new Multa(id, partes[0].trim(), partes[1].trim(), partes[2].trim(), partes[3].trim(), Double.parseDouble(partes[4].trim()), partes[5].trim());
                 listaMultas.insertarOrdenado(multa);
+                modelo.addRow(multa.toArray());
+                id++;
             }
         }
-        mostrarEnTabla(listaMultas.obtenerDatos());
     } catch (IOException | NumberFormatException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error al cargar archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Error al cargar el archivo: " + e.getMessage());
     }
         }
 
     private void mostrarEnTabla(Object[][] datos) {
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.setColumnIdentifiers(new String[]{"Boleta", "Placa", "Fecha", "Departamento", "Descripción", "Monto", "Estado"});
-        for (Object[] fila : datos) {
-            modelo.addRow(fila);
-        }
-        Tabla_Dat_Multa.setModel(modelo);
+         DefaultTableModel modelo = new DefaultTableModel();
+    modelo.setColumnIdentifiers(new String[]{"BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO", "ESTADO"});
+    for (Object[] fila : datos) {
+        modelo.addRow(fila);
+    }
+    Tabla_Dat_Multa.setModel(modelo);
     }
 
+    private void actualizarTabla(JTable tabla) {
+    Object[][] datos = listaMultas.obtenerDatos();
+    String[] columnas = {"BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCIÓN", "MONTO", "ESTADO"};
+    tabla.setModel(new DefaultTableModel(datos, columnas));
+}
+    public void cargarArchivoConBoleta(File archivo) {
+      listaMultas.limpiar();
+
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        int id = 1;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(",");
+            if (partes.length == 6) {
+                Multa multa = new Multa(id++, partes[0], partes[1], partes[2], partes[3],
+                                        Double.parseDouble(partes[4]), partes[5]);
+                listaMultas.insertarOrdenado(multa);
+            }
+        }
+    } catch (IOException | NumberFormatException e) {
+        e.printStackTrace();
+    }
+
+    actualizarTabla(Tabla_Dat_Multa);
+}
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -671,7 +690,19 @@ public class PanelMulta extends javax.swing.JPanel {
     }//GEN-LAST:event_UsuarioActionPerformed
 
     private void Bus_Placa_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Placa_2ActionPerformed
-    
+     String placa = TextPlaca.getText().trim();
+
+    if (!placa.isEmpty()) {
+        Object[][] resultados = listaMultas.buscarMultasPorPlaca(placa);
+
+        if (resultados.length == 0) {
+            JOptionPane.showMessageDialog(this, "No se encontraron registros con esa placa.");
+        } else {
+            mostrarEnTabla(resultados); // Este método debería cargar los datos en la JTable
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Ingrese una placa para buscar.");
+    }
     }//GEN-LAST:event_Bus_Placa_2ActionPerformed
 
     private void Bus_Boleta_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Boleta_2ActionPerformed
@@ -735,6 +766,15 @@ public class PanelMulta extends javax.swing.JPanel {
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
         // TODO add your handling code here:
+        java.awt.Container parent = this.getParent();
+
+    // Reemplazar el contenido del contenedor con el PanelPrincipal
+    if (parent instanceof javax.swing.JPanel) {
+        parent.removeAll();
+        parent.add(new PanelPrincipal()); // Asegúrate de importar la clase si está en otro paquete
+        parent.revalidate();
+        parent.repaint();
+    }
     }//GEN-LAST:event_HomeActionPerformed
 
     private void Buscar_Fch_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_Fch_2ActionPerformed

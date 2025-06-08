@@ -64,7 +64,6 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         }
     }
 
-        
     private void mostrarEnTabla(Object[][] datos) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"BOLETA", "Placa", "Fecha", "Departamento", "Descripción", "Monto", "Estado"});
@@ -281,10 +280,20 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         Titulo.setText("Gestor de Multas");
 
         TRASPASOS.setText("TRASPASOS");
+        TRASPASOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TRASPASOSActionPerformed(evt);
+            }
+        });
 
         RESUMEN.setText("RESUMEN");
 
         VEHICULOS.setText("VEHICULOS");
+        VEHICULOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VEHICULOSActionPerformed(evt);
+            }
+        });
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -729,6 +738,36 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         }
     }
     }//GEN-LAST:event_Buscar_FchActionPerformed
+
+    private void VEHICULOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VEHICULOSActionPerformed
+        // TODO add your handling code here:
+        Primer_Panel.removeAll();
+    Primer_Panel.setLayout(new BorderLayout()); // Ajusta el layout para que PanelVehiculos ocupe todo el espacio
+
+    // Crear instancia del PanelVehiculos
+    PanelVehiculos panelVehiculos = new PanelVehiculos();
+
+    // Agregarlo al panel principal
+    Primer_Panel.add(panelVehiculos, BorderLayout.CENTER);
+    Primer_Panel.revalidate();  // Refrescar la UI
+    Primer_Panel.repaint();
+    }//GEN-LAST:event_VEHICULOSActionPerformed
+
+    private void TRASPASOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TRASPASOSActionPerformed
+        // TODO add your handling code here:
+        Primer_Panel.removeAll();
+    Primer_Panel.setLayout(new BorderLayout()); // Ajusta el layout para que PanelVehiculos ocupe todo el espacio
+
+    // Crear instancia del PanelVehiculos
+    PanelTraspaso panelTraspaso = new PanelTraspaso();
+
+    // Agregarlo al panel principal
+    Primer_Panel.add(panelTraspaso, BorderLayout.CENTER);
+    Primer_Panel.revalidate();  // Refrescar la UI
+    Primer_Panel.repaint();
+        
+        
+    }//GEN-LAST:event_TRASPASOSActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Asignar_Multa;

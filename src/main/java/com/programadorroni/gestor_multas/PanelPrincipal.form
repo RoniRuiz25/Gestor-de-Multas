@@ -364,6 +364,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="TRASPASOS"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TRASPASOSActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="RESUMEN">
           <Properties>
@@ -374,6 +377,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="VEHICULOS"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VEHICULOSActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel8">
           <Properties>
