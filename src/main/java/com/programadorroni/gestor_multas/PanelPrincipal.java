@@ -471,7 +471,7 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
     Primer_Panel.revalidate();  // Refrescar la UI
     Primer_Panel.repaint();
     }//GEN-LAST:event_MULTASActionPerformed
-    
+                
     private void actualizarTabla(JTable tabla) {
     Object[][] datos = listaMultas.obtenerDatos();
     String[] columnas = {"BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCIÓN", "MONTO", "ESTADO"};
@@ -755,18 +755,26 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
 
     private void TRASPASOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TRASPASOSActionPerformed
         // TODO add your handling code here:
-        Primer_Panel.removeAll();
-    Primer_Panel.setLayout(new BorderLayout()); // Ajusta el layout para que PanelVehiculos ocupe todo el espacio
+            try {
+            System.out.println("Botón TRASPASOS presionado");
 
-    // Crear instancia del PanelVehiculos
-    PanelTraspaso panelTraspaso = new PanelTraspaso();
+            // Obtener el contenedor padre (por ejemplo el JFrame)
+            java.awt.Container parent = getParent();
 
-    // Agregarlo al panel principal
-    Primer_Panel.add(panelTraspaso, BorderLayout.CENTER);
-    Primer_Panel.revalidate();  // Refrescar la UI
-    Primer_Panel.repaint();
-        
-        
+            // Asegurar que el contenedor no sea null
+            if (parent != null) {
+                parent.removeAll(); // Quita todos los componentes actuales
+                parent.setLayout(new BorderLayout()); // Asegura un layout adecuado
+                parent.add(new PanelTraspaso(), BorderLayout.CENTER); // Agrega el nuevo panel
+                parent.revalidate(); // Revalida el nuevo contenido
+                parent.repaint();   // Redibuja la interfaz
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo obtener el panel contenedor.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Imprime el error en la consola
+            JOptionPane.showMessageDialog(null, "Error al cargar PanelTraspaso: " + ex.getMessage());
+        }
     }//GEN-LAST:event_TRASPASOSActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
