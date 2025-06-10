@@ -26,7 +26,9 @@ public class Traspaso {
     }
 
     // Getters
-    public String getPlaca() { return placa; }
+   public String getPlaca() {
+    return placa != null ? placa.trim().toUpperCase() : "";
+}
     public String getDpiAnterior() { return dpiAnterior; }
     public String getNombreAnterior() { return nombreAnterior; }
     public String getFechaAnterior() { return fechaAnterior; }

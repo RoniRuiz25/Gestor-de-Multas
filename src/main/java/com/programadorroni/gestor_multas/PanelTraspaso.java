@@ -36,6 +36,15 @@ public class PanelTraspaso extends javax.swing.JPanel {
     });
 }
    
+    private ArbolBinarioTraspaso construirArbolDesdeListaCircular() {
+    ArbolBinarioTraspaso arbol = new ArbolBinarioTraspaso();
+    for (Traspaso t : listaCircular.obtenerTodos()) {
+        arbol.insertar(t);
+    }
+    return arbol;
+}
+
+    
     private void setArchivoActual(File file) {
     archivoActual = file;
     listaCircular = new ListaCircular(); // Reiniciar
@@ -939,20 +948,23 @@ public class PanelTraspaso extends javax.swing.JPanel {
 
     private void PreOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreOrdenActionPerformed
         // TODO add your handling code here:
-         List<Traspaso> ordenados = listaCircular.recorrerPreOrden();
+         ArbolBinarioTraspaso arbol = construirArbolDesdeListaCircular();
+    List<Traspaso> ordenados = (List<Traspaso>) arbol.recorrerPreOrden();
     llenarTablaConLista(ordenados);
     }//GEN-LAST:event_PreOrdenActionPerformed
 
     private void PosOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PosOrdenActionPerformed
         // TODO add your handling code here:
-        List<Traspaso> ordenados = listaCircular.recorrerInOrden();
-        llenarTablaConLista(ordenados);
+        ArbolBinarioTraspaso arbol = construirArbolDesdeListaCircular();
+    List<Traspaso> ordenados = (List<Traspaso>) arbol.recorrerPosOrden();
+    llenarTablaConLista(ordenados);
     }//GEN-LAST:event_PosOrdenActionPerformed
 
     private void InOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InOrdenActionPerformed
         // TODO add your handling code here:
-        List<Traspaso> ordenados = listaCircular.recorrerPosOrden();
-        llenarTablaConLista(ordenados);
+        ArbolBinarioTraspaso arbol = construirArbolDesdeListaCircular();
+    List<Traspaso> ordenados = (List<Traspaso>) arbol.recorrerInOrden();
+    llenarTablaConLista(ordenados);
     }//GEN-LAST:event_InOrdenActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
