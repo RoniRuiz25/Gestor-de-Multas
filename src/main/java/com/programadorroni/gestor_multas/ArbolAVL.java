@@ -11,24 +11,44 @@ import java.util.*;
  * @author isaia
  */
 public class ArbolAVL implements Arbol {
+
+    @Override
+    public List<Vehiculo> posOrden() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     class Nodo {
-        String placa;
+        Vehiculo vehiculo;
         int altura;
         Nodo izq, der;
 
-        Nodo(String placa) {
-            this.placa = placa;
+        Nodo(Vehiculo vehiculo) {
+            this.vehiculo = vehiculo;
             this.altura = 1;
         }
     }
 
     private Nodo raiz;
 
-    // ==== MÉTODO PÚBLICO ====
-
     @Override
-    public void insertar(String placa) {
-        raiz = insertarRec(raiz, placa);
+    public void insertar(Vehiculo vehiculo) {
+        raiz = insertarRec(raiz, vehiculo);
+    }
+
+    private Nodo insertarRec(Nodo nodo, Vehiculo vehiculo) {
+        if (nodo == null) return new Nodo(vehiculo);
+
+        int cmp = vehiculo.getPlaca().compareTo(nodo.vehiculo.getPlaca());
+        if (cmp < 0) {
+            nodo.izq = insertarRec(nodo.izq, vehiculo);
+        } else if (cmp > 0) {
+            nodo.der = insertarRec(nodo.der, vehiculo);
+        } else {
+            return nodo; // duplicado
+        }
+
+        actualizarAltura(nodo);
+        return balancear(nodo);
     }
 
     @Override
@@ -36,75 +56,57 @@ public class ArbolAVL implements Arbol {
         return buscarRec(raiz, placa);
     }
 
-    @Override
-    public String[] inOrden() {
-        List<String> lista = new ArrayList<>();
-        inOrdenRec(raiz, lista);
-        return lista.toArray(new String[0]);
-    }
-
-    @Override
-    public String[] preOrden() {
-        List<String> lista = new ArrayList<>();
-        preOrdenRec(raiz, lista);
-        return lista.toArray(new String[0]);
-    }
-
-    @Override
-    public String[] postOrden() {
-        List<String> lista = new ArrayList<>();
-        postOrdenRec(raiz, lista);
-        return lista.toArray(new String[0]);
-    }
-
-    // ==== LÓGICA INTERNA ====
-
-    private Nodo insertarRec(Nodo nodo, String placa) {
-        if (nodo == null) return new Nodo(placa);
-
-        if (placa.compareTo(nodo.placa) < 0) {
-            nodo.izq = insertarRec(nodo.izq, placa);
-        } else if (placa.compareTo(nodo.placa) > 0) {
-            nodo.der = insertarRec(nodo.der, placa);
-        } else {
-            return nodo; // no permite duplicados
-        }
-
-        actualizarAltura(nodo);
-        return balancear(nodo);
-    }
-
     private boolean buscarRec(Nodo nodo, String placa) {
         if (nodo == null) return false;
-        if (placa.equals(nodo.placa)) return true;
-        return placa.compareTo(nodo.placa) < 0 ? buscarRec(nodo.izq, placa) : buscarRec(nodo.der, placa);
+        int cmp = placa.compareTo(nodo.vehiculo.getPlaca());
+        if (cmp == 0) return true;
+        else if (cmp < 0) return buscarRec(nodo.izq, placa);
+        else return buscarRec(nodo.der, placa);
     }
 
-    private void inOrdenRec(Nodo nodo, List<String> lista) {
+    @Override
+    public List<Vehiculo> inOrden() {
+        List<Vehiculo> lista = new ArrayList<>();
+        inOrdenRec(raiz, lista);
+        return lista;
+    }
+
+    private void inOrdenRec(Nodo nodo, List<Vehiculo> lista) {
         if (nodo != null) {
             inOrdenRec(nodo.izq, lista);
-            lista.add(nodo.placa);
+            lista.add(nodo.vehiculo);
             inOrdenRec(nodo.der, lista);
         }
     }
 
-    private void preOrdenRec(Nodo nodo, List<String> lista) {
+    @Override
+    public List<Vehiculo> preOrden() {
+        List<Vehiculo> lista = new ArrayList<>();
+        preOrdenRec(raiz, lista);
+        return lista;
+    }
+
+    private void preOrdenRec(Nodo nodo, List<Vehiculo> lista) {
         if (nodo != null) {
-            lista.add(nodo.placa);
+            lista.add(nodo.vehiculo);
             preOrdenRec(nodo.izq, lista);
             preOrdenRec(nodo.der, lista);
         }
     }
 
-    private void postOrdenRec(Nodo nodo, List<String> lista) {
+    public List<Vehiculo> postOrden() {
+        List<Vehiculo> lista = new ArrayList<>();
+        postOrdenRec(raiz, lista);
+        return lista;
+    }
+
+    private void postOrdenRec(Nodo nodo, List<Vehiculo> lista) {
         if (nodo != null) {
             postOrdenRec(nodo.izq, lista);
             postOrdenRec(nodo.der, lista);
-            lista.add(nodo.placa);
+            lista.add(nodo.vehiculo);
         }
     }
-
-    // ==== MÉTODOS DE BALANCEO ====
 
     private void actualizarAltura(Nodo nodo) {
         nodo.altura = 1 + Math.max(altura(nodo.izq), altura(nodo.der));

@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -31,6 +32,18 @@ public class PanelVehiculos extends javax.swing.JPanel {
 private void setArchivoActual(File file) {
     this.archivoActual = file;
 }
+
+private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.setColumnIdentifiers(new String[]{"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"});
+
+    for (Vehiculo v : lista) {
+        modelo.addRow(v.toRow());
+    }
+
+    Tabla_Dat_Traspaso.setModel(modelo);
+}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -701,10 +714,13 @@ private void setArchivoActual(File file) {
                     String multas = partes[6].trim();
                     String traspasos = partes[7].trim();
 
-                    // Insertar en el árbol
-                    arbolSeleccionado.insertar(placa);
+                    // Crear objeto Vehiculo
+                    Vehiculo vehiculo = new Vehiculo(placa, dpi, nombre, marca, modeloCarro, año, multas, traspasos);
 
-                    // Agregar fila a tabla
+                    // Insertar en el árbol
+                    arbolSeleccionado.insertar(vehiculo);
+
+                    // Agregar fila a la tabla
                     modelo.addRow(new Object[]{placa, dpi, nombre, marca, modeloCarro, año, multas, traspasos});
                 }
             }
@@ -713,28 +729,42 @@ private void setArchivoActual(File file) {
             ex.printStackTrace();
         }
 
-        // ASIGNACIÓN CORRECTA DEL MODELO A LA TABLA CORRECTA
+        // Asignar modelo a la JTable
         Tabla_Dat_Traspaso.setModel(modelo);
     }
     }//GEN-LAST:event_Buscar_Fch_2ActionPerformed
 
     private void PosOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PosOrdenActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_PosOrdenActionPerformed
-
-    private void InOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InOrdenActionPerformed
-        // TODO add your handling code here:
          if (arbolSeleccionado == null) {
         JOptionPane.showMessageDialog(this, "Seleccione AVL o ABB");
         return;
     }
 
-    String[] ordenado = arbolSeleccionado.inOrden();
-    // Aquí llenas la tabla con el arreglo 'ordenado'
+    List<Vehiculo> lista = arbolSeleccionado.posOrden();
+    actualizarTablaDesdeLista(lista);
+    }//GEN-LAST:event_PosOrdenActionPerformed
+
+    private void InOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InOrdenActionPerformed
+        // TODO add your handling code here:
+        if (arbolSeleccionado == null) {
+        JOptionPane.showMessageDialog(this, "Seleccione AVL o ABB");
+        return;
+    }
+
+    List<Vehiculo> lista = arbolSeleccionado.inOrden();
+    actualizarTablaDesdeLista(lista);
     }//GEN-LAST:event_InOrdenActionPerformed
 
     private void PreOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreOrdenActionPerformed
         // TODO add your handling code here:
+        if (arbolSeleccionado == null) {
+        JOptionPane.showMessageDialog(this, "Seleccione AVL o ABB");
+        return;
+    }
+
+    List<Vehiculo> lista = arbolSeleccionado.preOrden();
+    actualizarTablaDesdeLista(lista);
     }//GEN-LAST:event_PreOrdenActionPerformed
 
     private void AsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsignarActionPerformed

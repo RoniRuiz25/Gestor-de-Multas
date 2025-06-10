@@ -4,14 +4,18 @@
  */
 package com.programadorroni.gestor_multas;
 
+import java.util.List;
+
 /**
  *
  * @author isaia
  */
 public interface Arbol {
-    void insertar(String placa);
+    void insertar(Vehiculo vehiculo);
     boolean buscar(String placa);
-    String[] inOrden();
-    String[] preOrden();
-    String[] postOrden();
+    List<Vehiculo> inOrden();
+    List<Vehiculo> preOrden();
+    List<Vehiculo> postOrden();
+
+    public List<Vehiculo> posOrden();
 }

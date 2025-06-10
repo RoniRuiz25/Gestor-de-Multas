@@ -10,9 +10,13 @@ package com.programadorroni.gestor_multas;
  */
 class NodoArbol {
 
-    Traspaso dato;
+   Vehiculo dato;
     NodoArbol izquierdo;
     NodoArbol derecho;
-    
-}
 
+    public NodoArbol(Vehiculo dato) {
+        this.dato = dato;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
