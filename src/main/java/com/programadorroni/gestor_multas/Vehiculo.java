@@ -66,4 +66,8 @@ public class Vehiculo {
     public Object[] toRow() {
         return new Object[]{placa, dpi, nombre, marca, modelo, año, multas, traspasos};
     }
+
+    Object getAnio() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

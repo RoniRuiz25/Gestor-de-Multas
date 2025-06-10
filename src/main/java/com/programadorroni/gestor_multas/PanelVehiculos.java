@@ -683,10 +683,11 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     int result = fileChooser.showOpenDialog(this);
 
     if (result == JFileChooser.APPROVE_OPTION) {
-        File file = fileChooser.getSelectedFile();
-        setArchivoActual(file); // ahora implementado correctamente
+        long inicio = System.nanoTime(); // Tiempo inicial
 
-        // Verificación de radio buttons
+        File file = fileChooser.getSelectedFile();
+        setArchivoActual(file);
+
         if (BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
             arbolSeleccionado = new ArbolAVL();
         } else if (BOTON_ABB.isSelected() && !BOTON_AVL.isSelected()) {
@@ -696,7 +697,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             return;
         }
 
-        // Modelo de tabla
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"});
 
@@ -705,23 +705,13 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(",");
                 if (partes.length == 8) {
-                    String placa = partes[0].trim();
-                    String dpi = partes[1].trim();
-                    String nombre = partes[2].trim();
-                    String marca = partes[3].trim();
-                    String modeloCarro = partes[4].trim();
-                    String año = partes[5].trim();
-                    String multas = partes[6].trim();
-                    String traspasos = partes[7].trim();
-
-                    // Crear objeto Vehiculo
-                    Vehiculo vehiculo = new Vehiculo(placa, dpi, nombre, marca, modeloCarro, año, multas, traspasos);
-
-                    // Insertar en el árbol
+                    Vehiculo vehiculo = new Vehiculo(
+                        partes[0].trim(), partes[1].trim(), partes[2].trim(),
+                        partes[3].trim(), partes[4].trim(), partes[5].trim(),
+                        partes[6].trim(), partes[7].trim()
+                    );
                     arbolSeleccionado.insertar(vehiculo);
-
-                    // Agregar fila a la tabla
-                    modelo.addRow(new Object[]{placa, dpi, nombre, marca, modeloCarro, año, multas, traspasos});
+                    modelo.addRow(vehiculo.toRow());
                 }
             }
         } catch (IOException ex) {
@@ -729,42 +719,57 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             ex.printStackTrace();
         }
 
-        // Asignar modelo a la JTable
         Tabla_Dat_Traspaso.setModel(modelo);
+
+        long fin = System.nanoTime(); // Tiempo final
+        long duracion = fin - inicio;
+        JOptionPane.showMessageDialog(this, "Carga finalizada en " + duracion / 1_000_000 + " ms (" + duracion + " ns)");
     }
     }//GEN-LAST:event_Buscar_Fch_2ActionPerformed
 
     private void PosOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PosOrdenActionPerformed
         // TODO add your handling code here:
-         if (arbolSeleccionado == null) {
+        if (arbolSeleccionado == null) {
         JOptionPane.showMessageDialog(this, "Seleccione AVL o ABB");
         return;
     }
 
-    List<Vehiculo> lista = arbolSeleccionado.posOrden();
+    long inicio = System.nanoTime();
+    List<Vehiculo> lista = arbolSeleccionado.postOrden();
     actualizarTablaDesdeLista(lista);
+    long fin = System.nanoTime();
+
+    JOptionPane.showMessageDialog(this, "PosOrden ejecutado en " + (fin - inicio) / 1_000_000 + " ms (" + (fin - inicio) + " ns)");
     }//GEN-LAST:event_PosOrdenActionPerformed
 
     private void InOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InOrdenActionPerformed
         // TODO add your handling code here:
-        if (arbolSeleccionado == null) {
+       if (arbolSeleccionado == null) {
         JOptionPane.showMessageDialog(this, "Seleccione AVL o ABB");
         return;
     }
 
+    long inicio = System.nanoTime();
     List<Vehiculo> lista = arbolSeleccionado.inOrden();
     actualizarTablaDesdeLista(lista);
+    long fin = System.nanoTime();
+
+    JOptionPane.showMessageDialog(this, "InOrden ejecutado en " + (fin - inicio) / 1_000_000 + " ms (" + (fin - inicio) + " ns)");
     }//GEN-LAST:event_InOrdenActionPerformed
 
     private void PreOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreOrdenActionPerformed
         // TODO add your handling code here:
-        if (arbolSeleccionado == null) {
+       if (arbolSeleccionado == null) {
         JOptionPane.showMessageDialog(this, "Seleccione AVL o ABB");
         return;
     }
 
+    long inicio = System.nanoTime();
     List<Vehiculo> lista = arbolSeleccionado.preOrden();
     actualizarTablaDesdeLista(lista);
+    long fin = System.nanoTime();
+
+    JOptionPane.showMessageDialog(this, "PreOrden ejecutado en " + (fin - inicio) / 1_000_000 + " ms (" + (fin - inicio) + " ns)");
     }//GEN-LAST:event_PreOrdenActionPerformed
 
     private void AsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsignarActionPerformed

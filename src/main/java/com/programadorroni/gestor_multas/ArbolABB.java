@@ -86,17 +86,17 @@ public class ArbolABB implements Arbol {
         }
     }
 
-    @Override
+    
     public List<Vehiculo> postOrden() {
         List<Vehiculo> lista = new ArrayList<>();
-        postOrdenRec(raiz, lista);
-        return lista;
+    posOrdenRec(raiz, lista);
+    return lista;
     }
 
-    private void postOrdenRec(Nodo nodo, List<Vehiculo> lista) {
+    private void posOrdenRec(Nodo nodo, List<Vehiculo> lista) {
         if (nodo != null) {
-            postOrdenRec(nodo.izq, lista);
-            postOrdenRec(nodo.der, lista);
+            posOrdenRec(nodo.izq, lista);
+            posOrdenRec(nodo.der, lista);
             lista.add(nodo.vehiculo);
         }
     }
