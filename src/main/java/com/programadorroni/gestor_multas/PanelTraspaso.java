@@ -5,10 +5,13 @@
 package com.programadorroni.gestor_multas;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -43,8 +46,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
     }
     return arbol;
 }
-
-    
+   
     private void setArchivoActual(File file) {
     archivoActual = file;
     listaCircular = new ListaCircular(); // Reiniciar
@@ -412,7 +414,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
                 .addGroup(Desplegable1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Home1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addContainerGap(504, Short.MAX_VALUE))
+                .addContainerGap(528, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(18, 38, 70));
@@ -694,7 +696,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
                         .addComponent(Guardar)))
                 .addContainerGap())
         );
@@ -913,7 +915,53 @@ public class PanelTraspaso extends javax.swing.JPanel {
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         // TODO add your handling code here:
+       long inicio = System.nanoTime(); // Iniciar conteo de tiempo
 
+    if (archivoActual == null) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
+        int result = fileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            archivoActual = fileChooser.getSelectedFile();
+            if (!archivoActual.getName().toLowerCase().endsWith(".txt")) {
+                archivoActual = new File(archivoActual.getAbsolutePath() + ".txt");
+            }
+        } else {
+            return; // Cancelado por el usuario
+        }
+    }
+
+    try (PrintWriter writer = new PrintWriter(archivoActual)) {
+        DefaultTableModel model = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
+        int filas = model.getRowCount();
+        int columnas = model.getColumnCount();
+
+        for (int i = 0; i < filas; i++) {
+            StringBuilder linea = new StringBuilder();
+            for (int j = 1; j < columnas; j++) { // Comenzamos desde j = 1 para evitar la columna BOLETA
+                linea.append(model.getValueAt(i, j));
+                if (j < columnas - 1) {
+                    linea.append(",");
+                }
+            }
+            writer.println(linea.toString());
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al guardar el archivo");
+        return;
+    }
+
+    long fin = System.nanoTime(); // Fin de tiempo
+    long tiempoNano = fin - inicio;
+    long tiempoMili = tiempoNano / 1_000_000;
+
+    JOptionPane.showMessageDialog(this,
+        "Archivo guardado correctamente.\n" +
+        "Tiempo de guardado:\n" +
+        "- " + tiempoMili + " milisegundos\n" +
+        "- " + tiempoNano + " nanosegundos");
     }//GEN-LAST:event_GuardarActionPerformed
 
     private void TextBoleta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextBoleta1ActionPerformed

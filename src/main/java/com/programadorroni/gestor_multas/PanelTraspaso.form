@@ -503,7 +503,7 @@
                           <Component id="Home1" alignment="1" min="-2" pref="28" max="-2" attributes="0"/>
                           <Component id="jLabel12" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="504" max="32767" attributes="0"/>
+                      <EmptySpace pref="528" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -938,7 +938,7 @@
                           <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel17" min="-2" pref="800" max="-2" attributes="0"/>
-                              <EmptySpace pref="229" max="32767" attributes="0"/>
+                              <EmptySpace pref="281" max="32767" attributes="0"/>
                               <Component id="Guardar" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>

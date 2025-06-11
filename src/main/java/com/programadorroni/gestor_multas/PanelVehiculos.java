@@ -42,11 +42,12 @@ private void setArchivoActual(File file) {
 }
 
 private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
-    DefaultTableModel modelo = new DefaultTableModel();
-    modelo.setColumnIdentifiers(new String[]{"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"});
+   String[] columnas = {"BOLETA", "PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"};
+    DefaultTableModel modelo = new DefaultTableModel(null, columnas);
+        Iterable<Vehiculo> listaVehiculos = null;
 
-    for (Vehiculo v : lista) {
-        modelo.addRow(v.toRow());
+    for (Vehiculo v : listaVehiculos) {
+        modelo.addRow(v.toRow());  // Asume que Vehiculo tiene método toRow() que devuelve Object[]
     }
 
     Tabla_Dat_Traspaso.setModel(modelo);
@@ -430,7 +431,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                             .addComponent(jLabel17))
                         .addComponent(Buscar_Placa_1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(Refresh_Placa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(10, 10, 10)
+                .addGap(11, 11, 11)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -627,9 +628,9 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                                         .addComponent(Asignar)
                                         .addGap(18, 18, 18)
                                         .addComponent(Edit)))
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(Eliminar_1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 67, Short.MAX_VALUE))
+                                .addGap(32, 32, 32))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -650,29 +651,32 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(5, 5, 5)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel18)
-                                        .addComponent(BOTON_AVL)
-                                        .addComponent(BOTON_ABB))
-                                    .addComponent(Buscar_Fch_2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(Eliminar_1)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel25)
-                                        .addComponent(jLabel24))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(PreOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(PosOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(InOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(Asignar, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(Edit, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(5, 5, 5)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(12, 12, 12)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jLabel18)
+                                                .addComponent(BOTON_AVL)
+                                                .addComponent(BOTON_ABB))
+                                            .addComponent(Buscar_Fch_2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel25)
+                                            .addComponent(jLabel24))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(PreOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(PosOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(InOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Asignar, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Edit, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(Eliminar_1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)))
@@ -1103,7 +1107,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
     private void Eliminar_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_1ActionPerformed
         // TODO add your handling code here:
-        String placaEliminar = TextPlaca.getText().trim();
+       String placaEliminar = TextPlaca.getText().trim();
 
     if (placaEliminar.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Ingrese la placa del vehículo a eliminar.");
@@ -1119,8 +1123,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     long inicio = System.nanoTime();
 
     if (BOTON_AVL.isSelected()) {
-        eliminado = ArbolAVL.eliminar(placaEliminar); // debe retornar true si se eliminó
-    } else {
+        eliminado = ArbolAVL.eliminar(placaEliminar);  // Instancia, no clase
+    } else if (BOTON_ABB.isSelected()) {
         eliminado = ArbolABB.eliminar(placaEliminar);
     }
 
@@ -1132,10 +1136,18 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                 ? ArbolAVL.inOrden()
                 : ArbolABB.inOrden();
 
-        actualizarTablaDesdeLista(listaActualizada);
-        JOptionPane.showMessageDialog(null, "Vehículo eliminado correctamente.\nTiempo: " + tiempo + " ns.");
+        actualizarTablaDesdeLista(listaActualizada);  // Refresca la JTable
+
+        // Mostrar los dos mensajes separados
+        JOptionPane.showMessageDialog(null,
+            "Vehículo eliminado correctamente.\nTiempo: " + (tiempo / 1_000_000.0) + " ms.");
+
+        JOptionPane.showMessageDialog(null,
+            "✅ La información se ha eliminado del árbol y la tabla ha sido actualizada.");
+
+        TextPlaca.setText("");
     } else {
-        JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
+        JOptionPane.showMessageDialog(null, "❌ Vehículo no encontrado o ya eliminado.");
     }
     }//GEN-LAST:event_Eliminar_1ActionPerformed
 

@@ -749,7 +749,47 @@ public class PanelMulta extends javax.swing.JPanel {
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         // TODO add your handling code here:
-      
+      JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Guardar archivo de multas");
+    fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
+
+    int userSelection = fileChooser.showSaveDialog(this);
+    if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File archivo = fileChooser.getSelectedFile();
+
+        // Asegura que tenga la extensión .txt
+        if (!archivo.getName().toLowerCase().endsWith(".txt")) {
+            archivo = new File(archivo.getAbsolutePath() + ".txt");
+        }
+
+        long inicio = System.nanoTime(); // Tiempo inicial
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(archivo))) {
+            DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
+            int filas = modelo.getRowCount();
+            int columnas = modelo.getColumnCount();
+
+            for (int i = 0; i < filas; i++) {
+                StringBuilder linea = new StringBuilder();
+                for (int j = 1; j < columnas; j++) { // Saltamos la columna BOLETA (índice 0)
+                    linea.append(modelo.getValueAt(i, j).toString());
+                    if (j < columnas - 1) {
+                        linea.append(",");
+                    }
+                }
+                writer.println(linea.toString());
+            }
+
+            long fin = System.nanoTime(); // Tiempo final
+            long duracion = fin - inicio;
+            long duracionMs = duracion / 1_000_000; // Convertir a milisegundos
+
+            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente en:\n" + archivo.getAbsolutePath()
+                    + "\nTiempo de guardado: " + duracionMs + " milisegundos.");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error al guardar el archivo: " + ex.getMessage());
+        }
+    }
     }//GEN-LAST:event_GuardarActionPerformed
 
     private void Emitir_PagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Emitir_PagoActionPerformed

@@ -34,6 +34,7 @@ private Vehiculo buscarVehiculoRec(Nodo nodo, String placa) {
     }
 }
 
+
   public boolean eliminar(String placa) {
     if (buscarVehiculo(placa) != null) {
         raiz = eliminarRec(raiz, placa); // usa el método recursivo real
@@ -41,13 +42,55 @@ private Vehiculo buscarVehiculoRec(Nodo nodo, String placa) {
     }
     return false;
 }
-
+/**
     private Nodo eliminarRec(Nodo raiz, String placa) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+ */
+private Nodo eliminarRec(Nodo nodo, String placa) {
+    if (nodo == null) return null;
 
+    int cmp = placa.compareTo(nodo.vehiculo.getPlaca());
 
-    
+    if (cmp < 0) {
+        nodo.izq = eliminarRec(nodo.izq, placa);
+    } else if (cmp > 0) {
+        nodo.der = eliminarRec(nodo.der, placa);
+    } else {
+        // Nodo encontrado
+        if (nodo.izq == null || nodo.der == null) {
+            Nodo temp = nodo.izq != null ? nodo.izq : nodo.der;
+            if (temp == null) {
+                // Sin hijos
+                nodo = null;
+            } else {
+                // Un hijo
+                nodo = temp;
+            }
+        } else {
+            // Dos hijos: buscar sucesor (mínimo en el subárbol derecho)
+            Nodo temp = minValueNodo(nodo.der);
+            nodo.vehiculo = temp.vehiculo;
+            nodo.der = eliminarRec(nodo.der, temp.vehiculo.getPlaca());
+        }
+    }
+
+    // Si el nodo quedó null, retorna
+    if (nodo == null) return null;
+
+    // Actualizar altura y balancear
+    actualizarAltura(nodo);
+    return balancear(nodo);
+}
+
+private Nodo minValueNodo(Nodo nodo) {
+    Nodo current = nodo;
+    while (current.izq != null) {
+        current = current.izq;
+    }
+    return current;
+}
+
     class Nodo {
         Vehiculo vehiculo;
         int altura;
