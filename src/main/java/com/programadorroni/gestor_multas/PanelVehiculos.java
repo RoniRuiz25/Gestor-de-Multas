@@ -29,7 +29,6 @@ public class PanelVehiculos extends javax.swing.JPanel {
     private File archivoActual;
     private ArbolAVL ArbolAVL = new ArbolAVL();
     private ArbolABB ArbolABB = new ArbolABB();
-
     
     /**
      * Creates new form PanelVehiculos
@@ -96,6 +95,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         Guardar = new javax.swing.JButton();
         EscribirBus = new javax.swing.JTextField();
         Buscar_Placa_1 = new javax.swing.JButton();
+        Refresh_Placa = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         TextPlaca = new javax.swing.JTextField();
         Bus_Placa_2 = new javax.swing.JButton();
@@ -387,6 +387,15 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             }
         });
 
+        Refresh_Placa.setBackground(new java.awt.Color(242, 242, 242));
+        Refresh_Placa.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-recargar-16.png")); // NOI18N
+        Refresh_Placa.setBorder(null);
+        Refresh_Placa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Refresh_PlacaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -394,16 +403,20 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1100, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(Buscar_Placa_1)
+                        .addGap(8, 8, 8)
+                        .addComponent(Refresh_Placa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Guardar)))
-                .addContainerGap())
+                        .addComponent(Guardar)
+                        .addGap(15, 15, 15))))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -415,9 +428,11 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel17))
-                        .addComponent(Buscar_Placa_1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
+                        .addComponent(Buscar_Placa_1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Refresh_Placa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel5.setBackground(new java.awt.Color(18, 38, 70));
@@ -679,7 +694,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private void Home1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Home1ActionPerformed
         // TODO add your handling code here:
         java.awt.Container parent = this.getParent();
-
         // Reemplazar el contenido del contenedor con el PanelPrincipal
         if (parent instanceof javax.swing.JPanel) {
             parent.removeAll();
@@ -772,10 +786,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             JOptionPane.showMessageDialog(this, "Seleccione solo un árbol (AVL o ABB).");
             return;
         }
-
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"});
-
         // Nueva lista para almacenar todos los vehículos antes de insertarlos al árbol
         List<Vehiculo> listaVehiculos = new ArrayList<>();
 
@@ -797,12 +809,10 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + ex.getMessage());
             ex.printStackTrace();
         }
-
         // Insertar todos los vehículos al árbol seleccionado
         for (Vehiculo v : listaVehiculos) {
             arbolSeleccionado.insertar(v);
         }
-
         // Mostrar en JTable
         Tabla_Dat_Traspaso.setModel(modelo);
 
@@ -818,7 +828,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         JOptionPane.showMessageDialog(this, "Seleccione AVL o ABB");
         return;
     }
-
     long inicio = System.nanoTime();
     List<Vehiculo> lista = arbolSeleccionado.postOrden();
     actualizarTablaDesdeLista(lista);
@@ -868,7 +877,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         JOptionPane.showMessageDialog(null, "Seleccione un árbol (AVL o ABB).");
         return;
     }
-
     // Crear campos de entrada
     JTextField campoPlaca = new JTextField();
     JTextField campoDPI = new JTextField();
@@ -878,7 +886,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     JTextField campoAnio = new JTextField();
     JTextField campoMultas = new JTextField();
     JTextField campoTraspasos = new JTextField();
-
     // Armar panel con campos
     JPanel panel = new JPanel(new GridLayout(0, 1));
     panel.add(new JLabel("PLACA:"));
@@ -897,7 +904,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     panel.add(campoMultas);
     panel.add(new JLabel("TRASPASOS:"));
     panel.add(campoTraspasos);
-
     // Mostrar cuadro de diálogo
     int result = JOptionPane.showConfirmDialog(null, panel, "Ingresar Vehículo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
@@ -960,7 +966,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
         return;
     }
-
     // Crear campos prellenados
     JTextField campoPlaca = new JTextField(resultado.getPlaca());
     JTextField campoDPI = new JTextField(resultado.getDpi());
@@ -1002,7 +1007,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                 campoMultas.getText().trim(),
                 campoTraspasos.getText().trim()
         );
-
         if (BOTON_AVL.isSelected()) {
             ArbolAVL.insertar(nuevo);
         } else {
@@ -1099,8 +1103,95 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
     private void Eliminar_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_1ActionPerformed
         // TODO add your handling code here:
+        String placaEliminar = TextPlaca.getText().trim();
+
+    if (placaEliminar.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Ingrese la placa del vehículo a eliminar.");
+        return;
+    }
+
+    if (!BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(null, "Seleccione un árbol (AVL o ABB).");
+        return;
+    }
+
+    boolean eliminado = false;
+    long inicio = System.nanoTime();
+
+    if (BOTON_AVL.isSelected()) {
+        eliminado = ArbolAVL.eliminar(placaEliminar); // debe retornar true si se eliminó
+    } else {
+        eliminado = ArbolABB.eliminar(placaEliminar);
+    }
+
+    long fin = System.nanoTime();
+    long tiempo = fin - inicio;
+
+    if (eliminado) {
+        List<Vehiculo> listaActualizada = BOTON_AVL.isSelected()
+                ? ArbolAVL.inOrden()
+                : ArbolABB.inOrden();
+
+        actualizarTablaDesdeLista(listaActualizada);
+        JOptionPane.showMessageDialog(null, "Vehículo eliminado correctamente.\nTiempo: " + tiempo + " ns.");
+    } else {
+        JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
+    }
     }//GEN-LAST:event_Eliminar_1ActionPerformed
 
+    private void Refresh_PlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_PlacaActionPerformed
+        // TODO add your handling code here:
+        if (BOTON_AVL.isSelected() && BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(this, "Por favor, seleccione solo un árbol (AVL o ABB).");
+        return;
+    }
+
+    if (!BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(this, "Por favor, seleccione un árbol para refrescar.");
+        return;
+    }
+
+    long inicio = System.nanoTime(); // Tiempo de inicio
+
+    List<Vehiculo> listaVehiculos = null;
+
+    if (BOTON_AVL.isSelected()) {
+        if (arbolSeleccionado instanceof ArbolAVL) {
+            listaVehiculos = ((ArbolAVL) arbolSeleccionado).inOrden();  // obtiene toda la info ordenada
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: árbol AVL no encontrado.");
+            return;
+        }
+    } else if (BOTON_ABB.isSelected()) {
+        if (arbolSeleccionado instanceof ArbolABB) {
+            listaVehiculos = ((ArbolABB) arbolSeleccionado).inOrden();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: árbol ABB no encontrado.");
+            return;
+        }
+    }
+
+    long fin = System.nanoTime(); // Tiempo final
+    long duracion = fin - inicio;
+
+    if (listaVehiculos == null || listaVehiculos.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No hay datos para mostrar. Tiempo: " + duracion / 1_000_000 + " ms (" + duracion + " ns)");
+        return;
+    }
+
+    // Crear modelo y actualizar tabla
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.setColumnIdentifiers(new String[]{"BOLETA", "PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"});
+
+    for (Vehiculo v : listaVehiculos) {
+        modelo.addRow(v.toRow());  // asumo que tienes un método toRow() que devuelve Object[]
+    }
+
+    Tabla_Dat_Traspaso.setModel(modelo);
+
+    // Mostrar mensaje con tiempo
+    JOptionPane.showMessageDialog(this, "Refrescado completado en " + duracion / 1_000_000 + " ms (" + duracion + " ns)");
+    }//GEN-LAST:event_Refresh_PlacaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Asignar;
@@ -1119,6 +1210,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private javax.swing.JButton InOrden;
     private javax.swing.JButton PosOrden;
     private javax.swing.JButton PreOrden;
+    private javax.swing.JButton Refresh_Placa;
     private javax.swing.JTable Tabla_Dat_Traspaso;
     private javax.swing.JTextField TextPlaca;
     private javax.swing.JLabel Titulo2;
@@ -1154,9 +1246,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-
     private void guardarArbolEnArchivo() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
 }

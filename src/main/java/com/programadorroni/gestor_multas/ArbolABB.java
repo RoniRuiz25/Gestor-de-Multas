@@ -31,8 +31,12 @@ private Vehiculo buscarVehiculoRec(Nodo nodo, String placaBuscada) {
     else return buscarVehiculoRec(nodo.der, placaBuscada);
 }
 
-   public void eliminar(String placa) {
-    raiz = eliminarRec(raiz, placa);
+   public boolean eliminar(String placa) {
+    if (buscarVehiculo(placa) != null) {
+        raiz = eliminarRec(raiz, placa); // usa el método recursivo real
+        return true;
+    }
+    return false;
 }
 
     private Nodo eliminarRec(Nodo raiz, String placa) {
