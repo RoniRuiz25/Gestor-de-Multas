@@ -18,4 +18,6 @@ public interface Arbol {
     List<Vehiculo> postOrden();
 
     public List<Vehiculo> posOrden();
+
+    public Vehiculo buscarVehiculo(String placaBuscar);
 }

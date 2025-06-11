@@ -51,6 +51,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     }
 
     Tabla_Dat_Traspaso.setModel(modelo);
+    Tabla_Dat_Traspaso.revalidate();
+    Tabla_Dat_Traspaso.repaint();
 }
 
     /**
@@ -568,6 +570,11 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         Eliminar_1.setBackground(new java.awt.Color(17, 34, 61));
         Eliminar_1.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-eliminar-24.png")); // NOI18N
         Eliminar_1.setBorder(null);
+        Eliminar_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Eliminar_1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -754,14 +761,14 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         setArchivoActual(file);
 
         if (BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
-    arbolSeleccionado = ArbolAVL; // Usa la instancia ya declarada
-    ArbolAVL = new ArbolAVL();    // Reinicia árbol si es necesario
-    arbolSeleccionado = ArbolAVL;
-} else if (BOTON_ABB.isSelected() && !BOTON_AVL.isSelected()) {
-    arbolSeleccionado = ArbolABB;
-    ArbolABB = new ArbolABB();
-    arbolSeleccionado = ArbolABB;
-} else {
+            arbolSeleccionado = ArbolAVL; // Usa la instancia ya declarada
+            ArbolAVL = new ArbolAVL();    // Reinicia árbol si es necesario
+            arbolSeleccionado = ArbolAVL;
+    } else if (BOTON_ABB.isSelected() && !BOTON_AVL.isSelected()) {
+            arbolSeleccionado = ArbolABB;
+            ArbolABB = new ArbolABB();
+            arbolSeleccionado = ArbolABB;
+    } else {
             JOptionPane.showMessageDialog(this, "Seleccione solo un árbol (AVL o ABB).");
             return;
         }
@@ -931,6 +938,89 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
     private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
         // TODO add your handling code here:
+       String placaBuscada = TextPlaca.getText().trim();
+
+    if (placaBuscada.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Ingrese una placa para editar.");
+        return;
+    }
+
+    if (!BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(null, "Seleccione un árbol (AVL o ABB).");
+        return;
+    }
+
+    long inicio = System.nanoTime();
+
+    Vehiculo resultado = BOTON_AVL.isSelected()
+            ? ArbolAVL.buscarVehiculo(placaBuscada)
+            : ArbolABB.buscarVehiculo(placaBuscada);
+
+    if (resultado == null) {
+        JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
+        return;
+    }
+
+    // Crear campos prellenados
+    JTextField campoPlaca = new JTextField(resultado.getPlaca());
+    JTextField campoDPI = new JTextField(resultado.getDpi());
+    JTextField campoNombre = new JTextField(resultado.getNombre());
+    JTextField campoMarca = new JTextField(resultado.getMarca());
+    JTextField campoModelo = new JTextField(resultado.getModelo());
+    JTextField campoAnio = new JTextField(resultado.getAño());
+    JTextField campoMultas = new JTextField(resultado.getMultas());
+    JTextField campoTraspasos = new JTextField(resultado.getTraspasos());
+
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel("PLACA:")); panel.add(campoPlaca);
+    panel.add(new JLabel("DPI:")); panel.add(campoDPI);
+    panel.add(new JLabel("NOMBRE:")); panel.add(campoNombre);
+    panel.add(new JLabel("MARCA:")); panel.add(campoMarca);
+    panel.add(new JLabel("MODELO:")); panel.add(campoModelo);
+    panel.add(new JLabel("AÑO:")); panel.add(campoAnio);
+    panel.add(new JLabel("MULTAS:")); panel.add(campoMultas);
+    panel.add(new JLabel("TRASPASOS:")); panel.add(campoTraspasos);
+
+    int result = JOptionPane.showConfirmDialog(null, panel, "Editar Vehículo",
+            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    if (result == JOptionPane.OK_OPTION) {
+        // Eliminar y volver a insertar
+        if (BOTON_AVL.isSelected()) {
+            ArbolAVL.eliminar(placaBuscada);
+        } else {
+            ArbolABB.eliminar(placaBuscada);
+        }
+
+        Vehiculo nuevo = new Vehiculo(
+                campoPlaca.getText().trim(),
+                campoDPI.getText().trim(),
+                campoNombre.getText().trim(),
+                campoMarca.getText().trim(),
+                campoModelo.getText().trim(),
+                campoAnio.getText().trim(),
+                campoMultas.getText().trim(),
+                campoTraspasos.getText().trim()
+        );
+
+        if (BOTON_AVL.isSelected()) {
+            ArbolAVL.insertar(nuevo);
+        } else {
+            ArbolABB.insertar(nuevo);
+        }
+
+        // Obtener lista actualizada del árbol correspondiente
+        List<Vehiculo> listaActualizada = BOTON_AVL.isSelected()
+                ? ArbolAVL.inOrden()
+                : ArbolABB.inOrden();
+
+        actualizarTablaDesdeLista(listaActualizada);
+
+        long fin = System.nanoTime();
+        long tiempoMs = (fin - inicio) / 1_000_000;
+
+        JOptionPane.showMessageDialog(null, "Vehículo actualizado correctamente.\nTiempo de ejecución: " + tiempoMs + " ms");
+    }
     }//GEN-LAST:event_EditActionPerformed
 
     private void BOTON_AVLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BOTON_AVLActionPerformed
@@ -1007,6 +1097,10 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     Tabla_Dat_Traspaso.setModel(modelo);
     }//GEN-LAST:event_Buscar_Placa_1ActionPerformed
 
+    private void Eliminar_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Eliminar_1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Asignar;
@@ -1060,5 +1154,9 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    private void guardarArbolEnArchivo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 }

@@ -31,6 +31,13 @@ private Vehiculo buscarVehiculoRec(Nodo nodo, String placaBuscada) {
     else return buscarVehiculoRec(nodo.der, placaBuscada);
 }
 
+   public void eliminar(String placa) {
+    raiz = eliminarRec(raiz, placa);
+}
+
+    private Nodo eliminarRec(Nodo raiz, String placa) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
    class Nodo {
         Vehiculo vehiculo;
