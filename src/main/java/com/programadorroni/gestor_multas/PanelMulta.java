@@ -19,9 +19,10 @@ public class PanelMulta extends javax.swing.JPanel {
     }
 
     public void setArchivoActual(File archivo) {
+        this.archivoActual = archivo;
         cargarDesdeArchivo(archivo);
     }
-    
+      
         public void cargarDesdeArchivo(File archivo) {
          listaMultas.limpiar();
     DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
@@ -238,7 +239,7 @@ public class PanelMulta extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(18, 38, 70));
@@ -573,6 +574,18 @@ public class PanelMulta extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null}
             },
             new String [] {
@@ -633,7 +646,7 @@ public class PanelMulta extends javax.swing.JPanel {
                     .addComponent(Guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -654,7 +667,7 @@ public class PanelMulta extends javax.swing.JPanel {
                                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -681,7 +694,9 @@ public class PanelMulta extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -735,15 +750,40 @@ public class PanelMulta extends javax.swing.JPanel {
 
     private void Refresh_PlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_PlacaActionPerformed
         // TODO add your handling code here:
-          if (archivoActual != null) {
-            cargarDesdeArchivo(archivoActual);
-        }
+         if (archivoActual != null) {
+        long inicio = System.nanoTime(); // Tiempo inicial
+
+        cargarDesdeArchivo(archivoActual);  // Recarga el archivo
+        TextPlaca.setText("");              // Limpia campo de búsqueda por placa
+        TextBoleta.setText("");             // Limpia campo de búsqueda por boleta
+
+        long fin = System.nanoTime();       // Tiempo final
+        long duracionNano = fin - inicio;
+        long duracionMs = duracionNano / 1_000_000;
+
+        JOptionPane.showMessageDialog(this, "Tabla recargada exitosamente.\n" +
+                "Tiempo de recarga: " + duracionMs + " ms (" + duracionNano + " ns).");
+    } else {
+        JOptionPane.showMessageDialog(this, "No hay archivo cargado para refrescar.");
+    }
     }//GEN-LAST:event_Refresh_PlacaActionPerformed
 
     private void Refresh_BoletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_BoletaActionPerformed
-        // TODO add your handling code here:
         if (archivoActual != null) {
-        cargarDesdeArchivo(archivoActual);
+        long inicio = System.nanoTime(); // Tiempo inicial
+
+        cargarDesdeArchivo(archivoActual);  // Recarga el archivo
+        TextBoleta.setText("");             // Limpia campo de búsqueda por boleta
+        TextPlaca.setText("");              // Limpia campo de búsqueda por placa
+
+        long fin = System.nanoTime();       // Tiempo final
+        long duracionNano = fin - inicio;
+        long duracionMs = duracionNano / 1_000_000;
+
+        JOptionPane.showMessageDialog(this, "Tabla recargada exitosamente.\n" +
+                "Tiempo de recarga: " + duracionMs + " ms (" + duracionNano + " ns).");
+    } else {
+        JOptionPane.showMessageDialog(this, "No hay archivo cargado para refrescar.");
     }
     }//GEN-LAST:event_Refresh_BoletaActionPerformed
 
