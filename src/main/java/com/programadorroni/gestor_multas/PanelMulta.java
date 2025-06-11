@@ -23,6 +23,8 @@ public class PanelMulta extends javax.swing.JPanel {
         cargarDesdeArchivo(archivo);
     }
       
+    
+    
         public void cargarDesdeArchivo(File archivo) {
          listaMultas.limpiar();
     DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
@@ -118,7 +120,6 @@ public class PanelMulta extends javax.swing.JPanel {
         jPanel6 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         L_Multas = new javax.swing.JLabel();
@@ -128,7 +129,6 @@ public class PanelMulta extends javax.swing.JPanel {
         jPanel9 = new javax.swing.JPanel();
         Factura = new javax.swing.JButton();
         Emitir_Pago = new javax.swing.JButton();
-        Pagar_Todo = new javax.swing.JRadioButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla_Dat_Multa = new javax.swing.JTable();
@@ -401,10 +401,7 @@ public class PanelMulta extends javax.swing.JPanel {
         jLabel3.setText("Multas:");
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Total Pago:");
-
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Motivos:");
+        jLabel4.setText("Total a Pagar:");
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Pagadas:");
@@ -417,7 +414,6 @@ public class PanelMulta extends javax.swing.JPanel {
 
         L_Multas.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         L_Multas.setForeground(new java.awt.Color(255, 255, 255));
-        L_Multas.setText("15");
 
         L_Total_P.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         L_Total_P.setForeground(new java.awt.Color(255, 255, 255));
@@ -425,7 +421,6 @@ public class PanelMulta extends javax.swing.JPanel {
 
         L_Pagadas.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         L_Pagadas.setForeground(new java.awt.Color(255, 255, 255));
-        L_Pagadas.setText("15");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -435,8 +430,7 @@ public class PanelMulta extends javax.swing.JPanel {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(L_Pagadas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
@@ -450,27 +444,25 @@ public class PanelMulta extends javax.swing.JPanel {
                 .addContainerGap(7, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(L_Multas))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(L_Multas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(L_Pagadas))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(L_Pagadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(L_Total_P))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addContainerGap())
+                .addGap(34, 34, 34))
         );
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 377, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -516,15 +508,6 @@ public class PanelMulta extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        Pagar_Todo.setBackground(new java.awt.Color(18, 38, 70));
-        Pagar_Todo.setForeground(new java.awt.Color(255, 255, 255));
-        Pagar_Todo.setText("Pagar Todo");
-        Pagar_Todo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Pagar_TodoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -532,13 +515,8 @@ public class PanelMulta extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(Pagar_Todo))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -555,12 +533,9 @@ public class PanelMulta extends javax.swing.JPanel {
                 .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                        .addComponent(Pagar_Todo))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -714,6 +689,25 @@ public class PanelMulta extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se encontraron registros con esa placa.");
         } else {
             mostrarEnTabla(resultados); // Este método debería cargar los datos en la JTable
+
+            // Contadores de estados
+            int pendientes = 0;
+            int pagadas = 0;
+
+            for (Object[] fila : resultados) {
+                if (fila.length >= 7) {
+                    String estado = fila[6].toString().trim().toUpperCase();
+                    if (estado.equals("PENDIENTE")) {
+                        pendientes++;
+                    } else if (estado.equals("PAGADO")) {
+                        pagadas++;
+                    }
+                }
+            }
+
+            // Actualizar los JLabels con los valores contados
+            L_Multas.setText(String.valueOf(pendientes));
+            L_Pagadas.setText(String.valueOf(pagadas));
         }
     } else {
         JOptionPane.showMessageDialog(this, "Ingrese una placa para buscar.");
@@ -836,10 +830,6 @@ public class PanelMulta extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_Emitir_PagoActionPerformed
 
-    private void Pagar_TodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Pagar_TodoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Pagar_TodoActionPerformed
-
     private void FacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FacturaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_FacturaActionPerformed
@@ -882,7 +872,6 @@ public class PanelMulta extends javax.swing.JPanel {
     private javax.swing.JLabel L_Multas;
     private javax.swing.JLabel L_Pagadas;
     private javax.swing.JLabel L_Total_P;
-    private javax.swing.JRadioButton Pagar_Todo;
     private javax.swing.JButton Refresh_Boleta;
     private javax.swing.JButton Refresh_Placa;
     private javax.swing.JTable Tabla_Dat_Multa;
@@ -900,7 +889,6 @@ public class PanelMulta extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
