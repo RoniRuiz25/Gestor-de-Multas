@@ -18,10 +18,20 @@ public class ArbolABB implements Arbol {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    Vehiculo buscarVehiculo(String placaBuscada) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+  public Vehiculo buscarVehiculo(String placaBuscada) {
+    return buscarVehiculoRec(raiz, placaBuscada);
+}
 
+private Vehiculo buscarVehiculoRec(Nodo nodo, String placaBuscada) {
+    if (nodo == null) return null;
+
+    int cmp = placaBuscada.compareTo(nodo.vehiculo.getPlaca());
+    if (cmp == 0) return nodo.vehiculo;
+    else if (cmp < 0) return buscarVehiculoRec(nodo.izq, placaBuscada);
+    else return buscarVehiculoRec(nodo.der, placaBuscada);
+}
+
+    
    class Nodo {
         Vehiculo vehiculo;
         Nodo izq, der;
@@ -59,6 +69,8 @@ public class ArbolABB implements Arbol {
         else if (cmp < 0) return buscarRec(nodo.izq, placa);
         else return buscarRec(nodo.der, placa);
     }
+    
+    
 
     @Override
     public List<Vehiculo> inOrden() {
@@ -104,4 +116,4 @@ public class ArbolABB implements Arbol {
             lista.add(nodo.vehiculo);
         }
     }
-}
+}   

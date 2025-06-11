@@ -33,6 +33,8 @@ private Vehiculo buscarVehiculoRec(Nodo nodo, String placa) {
         return buscarVehiculoRec(nodo.der, placa);
     }
 }
+
+
     class Nodo {
         Vehiculo vehiculo;
         int altura;
