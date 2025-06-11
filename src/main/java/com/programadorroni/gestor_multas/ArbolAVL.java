@@ -16,7 +16,23 @@ public class ArbolAVL implements Arbol {
     public List<Vehiculo> posOrden() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+public Vehiculo buscarVehiculo(String placa) {
+    return buscarVehiculoRec(raiz, placa);
+}
 
+private Vehiculo buscarVehiculoRec(Nodo nodo, String placa) {
+    if (nodo == null) return null;
+
+    int cmp = placa.compareToIgnoreCase(nodo.vehiculo.getPlaca());
+
+    if (cmp == 0) {
+        return nodo.vehiculo;
+    } else if (cmp < 0) {
+        return buscarVehiculoRec(nodo.izq, placa);
+    } else {
+        return buscarVehiculoRec(nodo.der, placa);
+    }
+}
     class Nodo {
         Vehiculo vehiculo;
         int altura;

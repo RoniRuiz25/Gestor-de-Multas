@@ -29,6 +29,10 @@ public class Vehiculo {
         this.traspasos = traspasos;
     }
 
+    Vehiculo(String placa, String dpi, String nombre, String marca, String modelo, int año, int multas, int traspasos) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     // Getters
     public String getPlaca() {
         return placa;

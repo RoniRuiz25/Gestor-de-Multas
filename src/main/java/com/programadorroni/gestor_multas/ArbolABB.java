@@ -18,6 +18,10 @@ public class ArbolABB implements Arbol {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    Vehiculo buscarVehiculo(String placaBuscada) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
    class Nodo {
         Vehiculo vehiculo;
         Nodo izq, der;

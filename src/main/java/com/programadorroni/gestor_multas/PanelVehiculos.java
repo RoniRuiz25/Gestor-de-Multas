@@ -4,13 +4,18 @@
  */
 package com.programadorroni.gestor_multas;
 
+import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,6 +27,10 @@ public class PanelVehiculos extends javax.swing.JPanel {
 
     private Arbol arbolSeleccionado;
     private File archivoActual;
+    private ArbolAVL ArbolAVL = new ArbolAVL();
+    private ArbolABB ArbolABB = new ArbolABB();
+
+    
     /**
      * Creates new form PanelVehiculos
      */
@@ -669,7 +678,51 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     }//GEN-LAST:event_TextPlacaActionPerformed
 
     private void Bus_Placa_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Placa_2ActionPerformed
-      
+      String placaBuscada = TextPlaca.getText().trim();
+
+    if (placaBuscada.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Ingrese una placa para buscar.");
+        return;
+    }
+
+    if (BOTON_AVL.isSelected() && BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(null, "Seleccione solo un árbol (AVL o ABB).");
+        return;
+    }
+
+    if (!BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(null, "Seleccione un árbol (AVL o ABB).");
+        return;
+    }
+
+    Vehiculo resultado = null;
+
+    long inicio = System.nanoTime();
+
+    if (BOTON_AVL.isSelected()) {
+        resultado = ArbolAVL.buscarVehiculo(placaBuscada);
+    } else if (BOTON_ABB.isSelected()) {
+        resultado = ArbolABB.buscarVehiculo(placaBuscada); // asegúrate de que ABB tenga también ese método
+    }
+
+    long fin = System.nanoTime();
+    long duracion = fin - inicio;
+
+    if (resultado != null) {
+        JOptionPane.showMessageDialog(null,
+                "Vehículo encontrado:\n\n"
+                + "Placa: " + resultado.getPlaca() + "\n"
+                + "DPI: " + resultado.getDpi() + "\n"
+                + "Nombre: " + resultado.getNombre() + "\n"
+                + "Marca: " + resultado.getMarca() + "\n"
+                + "Modelo: " + resultado.getModelo() + "\n"
+                + "Año: " + resultado.getAño() + "\n"
+                + "Multas: " + resultado.getMultas() + "\n"
+                + "Traspasos: " + resultado.getTraspasos() + "\n\n"
+                + "Tiempo de búsqueda: " + duracion + " ns");
+    } else {
+        JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
+    }
     }//GEN-LAST:event_Bus_Placa_2ActionPerformed
 
     private void Refresh_PlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_PlacaActionPerformed
@@ -678,7 +731,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     }//GEN-LAST:event_Refresh_PlacaActionPerformed
 
     private void Buscar_Fch_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_Fch_2ActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
+         JFileChooser fileChooser = new JFileChooser();
     fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
     int result = fileChooser.showOpenDialog(this);
 
@@ -700,6 +753,9 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"});
 
+        // Nueva lista para almacenar todos los vehículos antes de insertarlos al árbol
+        List<Vehiculo> listaVehiculos = new ArrayList<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String linea;
             while ((linea = br.readLine()) != null) {
@@ -710,8 +766,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                         partes[3].trim(), partes[4].trim(), partes[5].trim(),
                         partes[6].trim(), partes[7].trim()
                     );
-                    arbolSeleccionado.insertar(vehiculo);
-                    modelo.addRow(vehiculo.toRow());
+                    listaVehiculos.add(vehiculo);              // Guardar en lista
+                    modelo.addRow(vehiculo.toRow());           // Mostrar en tabla
                 }
             }
         } catch (IOException ex) {
@@ -719,6 +775,12 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             ex.printStackTrace();
         }
 
+        // Insertar todos los vehículos al árbol seleccionado
+        for (Vehiculo v : listaVehiculos) {
+            arbolSeleccionado.insertar(v);
+        }
+
+        // Mostrar en JTable
         Tabla_Dat_Traspaso.setModel(modelo);
 
         long fin = System.nanoTime(); // Tiempo final
@@ -774,7 +836,81 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
     private void AsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsignarActionPerformed
         // TODO add your handling code here:
-        
+        if (BOTON_AVL.isSelected() && BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(null, "Seleccione solo un árbol (AVL o ABB).");
+        return;
+    }
+
+    if (!BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(null, "Seleccione un árbol (AVL o ABB).");
+        return;
+    }
+
+    // Crear campos de entrada
+    JTextField campoPlaca = new JTextField();
+    JTextField campoDPI = new JTextField();
+    JTextField campoNombre = new JTextField();
+    JTextField campoMarca = new JTextField();
+    JTextField campoModelo = new JTextField();
+    JTextField campoAnio = new JTextField();
+    JTextField campoMultas = new JTextField();
+    JTextField campoTraspasos = new JTextField();
+
+    // Armar panel con campos
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel("PLACA:"));
+    panel.add(campoPlaca);
+    panel.add(new JLabel("DPI:"));
+    panel.add(campoDPI);
+    panel.add(new JLabel("NOMBRE:"));
+    panel.add(campoNombre);
+    panel.add(new JLabel("MARCA:"));
+    panel.add(campoMarca);
+    panel.add(new JLabel("MODELO:"));
+    panel.add(campoModelo);
+    panel.add(new JLabel("AÑO:"));
+    panel.add(campoAnio);
+    panel.add(new JLabel("MULTAS:"));
+    panel.add(campoMultas);
+    panel.add(new JLabel("TRASPASOS:"));
+    panel.add(campoTraspasos);
+
+    // Mostrar cuadro de diálogo
+    int result = JOptionPane.showConfirmDialog(null, panel, "Ingresar Vehículo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    if (result == JOptionPane.OK_OPTION) {
+        try {
+            // Leer datos como String
+            String placa = campoPlaca.getText().trim();
+            String dpi = campoDPI.getText().trim();
+            String nombre = campoNombre.getText().trim();
+            String marca = campoMarca.getText().trim();
+            String modelo = campoModelo.getText().trim();
+            String anio = campoAnio.getText().trim();
+            String multas = campoMultas.getText().trim();
+            String traspasos = campoTraspasos.getText().trim();
+
+            // Crear objeto Vehiculo
+            Vehiculo nuevoVehiculo = new Vehiculo(placa, dpi, nombre, marca, modelo, anio, multas, traspasos);
+
+            // Medir tiempo e insertar
+            long inicio = System.nanoTime();
+
+            if (BOTON_AVL.isSelected()) {
+                ArbolAVL.insertar(nuevoVehiculo);
+            } else if (BOTON_ABB.isSelected()) {
+                ArbolABB.insertar(nuevoVehiculo);
+            }
+
+            long fin = System.nanoTime();
+            long duracion = fin - inicio;
+
+            JOptionPane.showMessageDialog(null, "Vehículo ingresado correctamente.\nTiempo: " + duracion + " ns");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al ingresar los datos. Asegúrese de llenar todos los campos correctamente.");
+        }
+    }
     }//GEN-LAST:event_AsignarActionPerformed
 
     private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
