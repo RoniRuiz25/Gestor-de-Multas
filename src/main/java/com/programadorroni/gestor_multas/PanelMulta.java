@@ -23,6 +23,27 @@ public class PanelMulta extends javax.swing.JPanel {
         cargarDesdeArchivo(archivo);
     }
       
+    private void guardarCambiosEnArchivo() {
+      String archivo = null;
+   try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
+        Nodo actual = listaMultas.getCabeza();
+        while (actual != null) {
+            Multa m = actual.getDato();
+            String linea = m.getPlaca() + "," +
+                           m.getFecha() + "," +
+                           m.getDepartamento() + "," +
+                           m.getDescripcion() + "," +
+                           m.getMonto() + "," +
+                           m.getEstado();  // Asegúrate de que esto sea el nuevo estado
+
+            writer.write(linea);
+            writer.newLine();
+            actual = actual.getSiguiente();
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar el archivo: " + e.getMessage());
+    }
+}
     
     
         public void cargarDesdeArchivo(File archivo) {
@@ -236,10 +257,10 @@ public class PanelMulta extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addComponent(jLabel10)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(18, 38, 70));
@@ -417,7 +438,6 @@ public class PanelMulta extends javax.swing.JPanel {
 
         L_Total_P.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         L_Total_P.setForeground(new java.awt.Color(255, 255, 255));
-        L_Total_P.setText("15");
 
         L_Pagadas.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         L_Pagadas.setForeground(new java.awt.Color(255, 255, 255));
@@ -433,9 +453,9 @@ public class PanelMulta extends javax.swing.JPanel {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(L_Pagadas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                    .addComponent(L_Pagadas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(L_Multas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(L_Total_P, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(L_Total_P, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
@@ -454,7 +474,7 @@ public class PanelMulta extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(L_Total_P))
+                    .addComponent(L_Total_P, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34))
         );
 
@@ -462,7 +482,7 @@ public class PanelMulta extends javax.swing.JPanel {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 377, Short.MAX_VALUE)
+            .addGap(0, 322, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -514,11 +534,12 @@ public class PanelMulta extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -540,6 +561,8 @@ public class PanelMulta extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        Tabla_Dat_Multa.setBackground(new java.awt.Color(18, 58, 121));
+        Tabla_Dat_Multa.setForeground(new java.awt.Color(255, 255, 255));
         Tabla_Dat_Multa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -609,7 +632,7 @@ public class PanelMulta extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 272, Short.MAX_VALUE)
                         .addComponent(Guardar)))
                 .addContainerGap())
         );
@@ -621,7 +644,7 @@ public class PanelMulta extends javax.swing.JPanel {
                     .addComponent(Guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -669,9 +692,7 @@ public class PanelMulta extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -680,7 +701,7 @@ public class PanelMulta extends javax.swing.JPanel {
     }//GEN-LAST:event_UsuarioActionPerformed
 
     private void Bus_Placa_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Placa_2ActionPerformed
-     String placa = TextPlaca.getText().trim();
+    String placa = TextPlaca.getText().trim();
 
     if (!placa.isEmpty()) {
         Object[][] resultados = listaMultas.buscarMultasPorPlaca(placa);
@@ -690,15 +711,24 @@ public class PanelMulta extends javax.swing.JPanel {
         } else {
             mostrarEnTabla(resultados); // Este método debería cargar los datos en la JTable
 
-            // Contadores de estados
+            // Contadores de estados y total de pendientes
             int pendientes = 0;
             int pagadas = 0;
+            double totalPendientes = 0.0;
 
             for (Object[] fila : resultados) {
                 if (fila.length >= 7) {
                     String estado = fila[6].toString().trim().toUpperCase();
                     if (estado.equals("PENDIENTE")) {
                         pendientes++;
+                        try {
+                            // Sumar el monto si es válido
+                            double monto = Double.parseDouble(fila[5].toString());
+                            totalPendientes += monto;
+                        } catch (NumberFormatException e) {
+                            // Si no se puede convertir el monto, ignorar esta fila
+                            System.err.println("Error al convertir monto: " + fila[5]);
+                        }
                     } else if (estado.equals("PAGADO")) {
                         pagadas++;
                     }
@@ -708,6 +738,9 @@ public class PanelMulta extends javax.swing.JPanel {
             // Actualizar los JLabels con los valores contados
             L_Multas.setText(String.valueOf(pendientes));
             L_Pagadas.setText(String.valueOf(pagadas));
+
+            // Mostrar el total de montos pendientes en el JLabel
+            L_Total_P.setText("Q. " + String.format("%.2f", totalPendientes));
         }
     } else {
         JOptionPane.showMessageDialog(this, "Ingrese una placa para buscar.");
@@ -744,41 +777,27 @@ public class PanelMulta extends javax.swing.JPanel {
 
     private void Refresh_PlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_PlacaActionPerformed
         // TODO add your handling code here:
-         if (archivoActual != null) {
-        long inicio = System.nanoTime(); // Tiempo inicial
+        TextPlaca.setText("");
+    TextBoleta.setText("");
 
-        cargarDesdeArchivo(archivoActual);  // Recarga el archivo
-        TextPlaca.setText("");              // Limpia campo de búsqueda por placa
-        TextBoleta.setText("");             // Limpia campo de búsqueda por boleta
+    long inicio = System.nanoTime();
+    actualizarTabla(Tabla_Dat_Multa);  // usa los datos en memoria, no el archivo
+    long fin = System.nanoTime();
 
-        long fin = System.nanoTime();       // Tiempo final
-        long duracionNano = fin - inicio;
-        long duracionMs = duracionNano / 1_000_000;
-
-        JOptionPane.showMessageDialog(this, "Tabla recargada exitosamente.\n" +
-                "Tiempo de recarga: " + duracionMs + " ms (" + duracionNano + " ns).");
-    } else {
-        JOptionPane.showMessageDialog(this, "No hay archivo cargado para refrescar.");
-    }
+    long duracionMs = (fin - inicio) / 1_000_000;
+    JOptionPane.showMessageDialog(this, "Tabla actualizada.\nDuración: " + duracionMs + " ms");
     }//GEN-LAST:event_Refresh_PlacaActionPerformed
 
     private void Refresh_BoletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_BoletaActionPerformed
-        if (archivoActual != null) {
-        long inicio = System.nanoTime(); // Tiempo inicial
-
-        cargarDesdeArchivo(archivoActual);  // Recarga el archivo
         TextBoleta.setText("");             // Limpia campo de búsqueda por boleta
-        TextPlaca.setText("");              // Limpia campo de búsqueda por placa
+    TextPlaca.setText("");              // Limpia campo de búsqueda por placa
 
-        long fin = System.nanoTime();       // Tiempo final
-        long duracionNano = fin - inicio;
-        long duracionMs = duracionNano / 1_000_000;
+    long inicio = System.nanoTime();    // Tiempo inicial
+    actualizarTabla(Tabla_Dat_Multa);   // Recarga desde los datos en memoria
+    long fin = System.nanoTime();       // Tiempo final
 
-        JOptionPane.showMessageDialog(this, "Tabla recargada exitosamente.\n" +
-                "Tiempo de recarga: " + duracionMs + " ms (" + duracionNano + " ns).");
-    } else {
-        JOptionPane.showMessageDialog(this, "No hay archivo cargado para refrescar.");
-    }
+    long duracionMs = (fin - inicio) / 1_000_000;
+    JOptionPane.showMessageDialog(this, "Tabla recargada.\nDuración: " + duracionMs + " ms");
     }//GEN-LAST:event_Refresh_BoletaActionPerformed
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
@@ -828,6 +847,29 @@ public class PanelMulta extends javax.swing.JPanel {
 
     private void Emitir_PagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Emitir_PagoActionPerformed
         // TODO add your handling code here:
+         DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
+    int filaSeleccionada = Tabla_Dat_Multa.getSelectedRow();
+
+    if (filaSeleccionada >= 0) {
+        // Actualiza el modelo visual
+        modelo.setValueAt("PAGADO", filaSeleccionada, 6);
+
+        // Obtener número de boleta
+        int boleta = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
+
+        // Actualiza el estado en la lista enlazada
+        Multa multa = listaMultas.buscarPorBoleta(boleta);
+        if (multa != null) {
+            multa.setEstado("PAGADO");
+        }
+
+        // Sobrescribe el archivo con los datos actualizados
+        guardarCambiosEnArchivo();
+        
+        JOptionPane.showMessageDialog(this, "Estado cambiado a PAGADO.");
+    } else {
+        JOptionPane.showMessageDialog(this, "Seleccione una fila para emitir el pago.");
+    }
     }//GEN-LAST:event_Emitir_PagoActionPerformed
 
     private void FacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FacturaActionPerformed

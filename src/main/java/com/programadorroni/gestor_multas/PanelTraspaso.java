@@ -140,7 +140,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
         Factura = new javax.swing.JButton();
         Emitir_Pago = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        Bt_Traspaso = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla_Dat_Traspaso = new javax.swing.JTable();
@@ -612,7 +612,12 @@ public class PanelTraspaso extends javax.swing.JPanel {
 
         jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\carro1-.png")); // NOI18N
 
-        jButton2.setText("TRASPASO");
+        Bt_Traspaso.setText("TRASPASO");
+        Bt_Traspaso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bt_TraspasoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -626,7 +631,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
                         .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Bt_Traspaso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel7)))
                 .addContainerGap())
@@ -642,7 +647,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
                         .addComponent(jLabel7)
                         .addGap(33, 33, 33))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(Bt_Traspaso)
                         .addGap(68, 68, 68)))
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1025,8 +1030,13 @@ public class PanelTraspaso extends javax.swing.JPanel {
     llenarTablaConLista(ordenados);
     }//GEN-LAST:event_InOrdenActionPerformed
 
+    private void Bt_TraspasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bt_TraspasoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Bt_TraspasoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Barra;
+    private javax.swing.JButton Bt_Traspaso;
     private javax.swing.JButton Bus_Boleta_2;
     private javax.swing.JButton Bus_Boleta_3;
     private javax.swing.JButton Bus_Placa_2;
@@ -1059,7 +1069,6 @@ public class PanelTraspaso extends javax.swing.JPanel {
     private javax.swing.JLabel User_Indicator;
     private javax.swing.JButton Usuario;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
