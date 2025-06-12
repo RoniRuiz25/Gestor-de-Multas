@@ -26,6 +26,19 @@ public class Multa implements Comparable<Multa> {
         this.estado = estado;
     }
 
+    public Multa buscarPorBoleta(int boleta) {
+        Nodo cabeza = null;
+    Nodo actual = cabeza; // o inicio, como hayas nombrado
+    while (actual != null) {
+        if (actual.getMulta().getBoleta() == boleta) {
+            return actual.getMulta();
+        }
+        actual = actual.getSiguiente();
+    }
+    return null;
+}
+    
+    
     public Object[] toArray() {
         return new Object[]{id, placa, fecha, departamento, descripcion, monto, estado};
     }
@@ -62,5 +75,9 @@ public class Multa implements Comparable<Multa> {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    int getBoleta() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

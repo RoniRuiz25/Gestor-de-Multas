@@ -874,6 +874,63 @@ public class PanelMulta extends javax.swing.JPanel {
 
     private void FacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FacturaActionPerformed
         // TODO add your handling code here:
+             String input = JOptionPane.showInputDialog(this, "Ingrese el número de BOLETA para generar la factura:");
+
+    if (input != null && !input.trim().isEmpty()) {
+        try {
+            int numBoleta = Integer.parseInt(input.trim());
+            DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
+            boolean encontrada = false;
+
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                int boletaFila = Integer.parseInt(modelo.getValueAt(i, 0).toString());
+                if (boletaFila == numBoleta) {
+                    encontrada = true;
+                    String estado = modelo.getValueAt(i, 6).toString().trim().toUpperCase();
+
+                    if (estado.equals("PENDIENTE")) {
+                        JOptionPane.showMessageDialog(this,
+                            "La multa con boleta #" + numBoleta + " está pendiente de pago.\n" +
+                            "Por favor, realice el pago para generar la factura.",
+                            "Multa Pendiente",
+                            JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        // Si no está pendiente, mostrar factura
+                        String placa = modelo.getValueAt(i, 1).toString();
+                        String fecha = modelo.getValueAt(i, 2).toString();
+                        String depto = modelo.getValueAt(i, 3).toString();
+                        String desc = modelo.getValueAt(i, 4).toString();
+                        String monto = modelo.getValueAt(i, 5).toString();
+
+                        String factura = 
+                            "=============================\n" +
+                            "         FACTURA DE PAGO      \n" +
+                            "=============================\n" +
+                            "Boleta: " + numBoleta + "\n" +
+                            "Placa: " + placa + "\n" +
+                            "Fecha: " + fecha + "\n" +
+                            "Departamento: " + depto + "\n" +
+                            "Descripción: " + desc + "\n" +
+                            "Monto: Q" + monto + "\n" +
+                            "-----------------------------\n" +
+                            "Estado: " + estado + "\n" +
+                            "-----------------------------\n" +
+                            "Gracias por su atención.\n" +
+                            "=============================";
+
+                        JOptionPane.showMessageDialog(this, factura, "Factura", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    break;
+                }
+            }
+
+            if (!encontrada) {
+                JOptionPane.showMessageDialog(this, "No se encontró la boleta #" + numBoleta);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Número de boleta inválido.");
+        }
+    }
     }//GEN-LAST:event_FacturaActionPerformed
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
