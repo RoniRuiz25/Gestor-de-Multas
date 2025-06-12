@@ -881,12 +881,61 @@ public class PanelTraspaso extends javax.swing.JPanel {
     }//GEN-LAST:event_TextPlacaActionPerformed
 
     private void Bus_Placa_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Placa_2ActionPerformed
-        
+        String placaBuscar = TextPlaca.getText().trim();
+    if (placaBuscar.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese una placa para buscar.");
+        return;
+    }
+
+    // Buscar en la lista circular los registros con esa placa
+    List<Traspaso> resultados = new java.util.ArrayList<>();
+    for (Traspaso t : listaCircular.obtenerTodos()) {
+        if (t.getPlaca().equalsIgnoreCase(placaBuscar)) {
+            resultados.add(t);
+        }
+    }
+
+    if (resultados.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No se encontraron registros con esa placa.");
+        return;
+    }
+
+    // Llenar la tabla con los resultados filtrados
+    String[] columnas = {"BOLETA", "PLACA", "DPI ANTERIOR", "NOMBRE ANTERIOR", "FECHA", "DPI", "NOMBRE"};
+    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+    int boleta = 1;
+    for (Traspaso t : resultados) {
+        Object[] fila = {
+            boleta++,
+            t.getPlaca(),
+            t.getDpiAnterior(),
+            t.getNombreAnterior(),
+            t.getFechaAnterior(),
+            t.getDpiNuevo(),
+            t.getNombreNuevo()
+        };
+        modelo.addRow(fila);
+    }
+
+    Tabla_Dat_Traspaso.setModel(modelo);
     }//GEN-LAST:event_Bus_Placa_2ActionPerformed
 
     private void Refresh_PlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_PlacaActionPerformed
         // TODO add your handling code here:
-       
+        // Limpiar campos de búsqueda
+    TextPlaca.setText("");
+    TextBoleta.setText("");
+
+    long inicio = System.nanoTime();
+
+    // Actualizar tabla con los datos actuales en la lista circular (memoria)
+    llenarTablaConListaCircular();
+
+    long fin = System.nanoTime();
+
+    long duracionMs = (fin - inicio) / 1_000_000;
+    JOptionPane.showMessageDialog(this, "Tabla actualizada.\nDuración: " + duracionMs + " ms");
     }//GEN-LAST:event_Refresh_PlacaActionPerformed
 
     private void TextPlaca1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextPlaca1ActionPerformed
@@ -985,12 +1034,46 @@ public class PanelTraspaso extends javax.swing.JPanel {
 
     private void Bus_Boleta_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Boleta_3ActionPerformed
         // TODO add your handling code here:
-        
+         String textoBoleta = TextBoleta.getText().trim();
+
+    if (!textoBoleta.isEmpty()) {
+        try {
+            int boleta = Integer.parseInt(textoBoleta);
+
+            // Buscar en la lista circular
+            Vehiculo resultado = listaCircular.buscarPorBoleta(boleta);
+
+            if (resultado == null) {
+                JOptionPane.showMessageDialog(this, "No se encontraron registros con esa boleta.");
+            } else {
+                // Mostrar solo el resultado en la tabla
+                // Se asume que tienes un método que convierte Vehiculo a Object[] o algo similar
+                Object[][] datos = { resultado.toArray() };
+                llenarTablaConDatos(datos);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La boleta debe ser un número entero.");
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Ingrese un número de boleta para buscar");
+    }
     }//GEN-LAST:event_Bus_Boleta_3ActionPerformed
 
     private void Refresh_Boleta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_Boleta1ActionPerformed
         // TODO add your handling code here:
-        
+        // Limpiar campos de búsqueda
+    TextPlaca.setText("");
+    TextBoleta.setText("");
+
+    long inicio = System.nanoTime();
+
+    // Actualizar tabla con los datos actuales en la lista circular (memoria)
+    llenarTablaConListaCircular();
+
+    long fin = System.nanoTime();
+
+    long duracionMs = (fin - inicio) / 1_000_000;
+    JOptionPane.showMessageDialog(this, "Tabla actualizada.\nDuración: " + duracionMs + " ms");
     }//GEN-LAST:event_Refresh_Boleta1ActionPerformed
 
     private void UsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsuarioActionPerformed
@@ -1095,6 +1178,10 @@ public class PanelTraspaso extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void llenarTablaConLista(List<Traspaso> ordenados) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void llenarTablaConDatos(Object[][] datos) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
