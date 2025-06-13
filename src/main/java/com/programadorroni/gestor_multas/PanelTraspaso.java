@@ -4,14 +4,23 @@
  */
 package com.programadorroni.gestor_multas;
 
+import java.awt.Component;
+import java.awt.GridLayout;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -47,6 +56,23 @@ public class PanelTraspaso extends javax.swing.JPanel {
     return arbol;
 }
    
+    private int generarBoletaTraspaso() {
+    DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
+    int max = 0;
+    for (int i = 0; i < modelo.getRowCount(); i++) {
+        Object valor = modelo.getValueAt(i, 0); // Columna de BOLETA
+        if (valor != null) {
+            try {
+                int id = Integer.parseInt(valor.toString());
+                if (id > max) max = id;
+            } catch (NumberFormatException e) {
+                // Ignorar si no es numérico
+            }
+        }
+    }
+    return max + 1;
+}
+  
     private void setArchivoActual(File file) {
     archivoActual = file;
     listaCircular = new ListaCircular(); // Reiniciar
@@ -55,7 +81,24 @@ public class PanelTraspaso extends javax.swing.JPanel {
         while ((linea = reader.readLine()) != null) {
             String[] partes = linea.split(",");
             if (partes.length >= 6) {
-                Traspaso t = new Traspaso(partes[0], partes[1], partes[2], partes[3], partes[4], partes[5]);
+                // Asumiendo que partes[0]..partes[5] son:
+                // PLACA, DPI ANTERIOR, NOMBRE ANTERIOR, FECHA, DPI NUEVO, NOMBRE NUEVO
+                // Y que la columna DEPARTAMENTO viene después (7 columnas en total),
+                // pero dices que vienen 6 columnas en el archivo, entonces DEPARTAMENTO debe ser parte[5]
+                // Por eso aquí asignamos partes[5] a departamento, y DPI NUEVO y NOMBRE NUEVO se ajustarían si hay 7 columnas.
+                
+                // Si DEPARTAMENTO es la 7ª columna, partes.length >= 7 y el último es departamento:
+                String departamento = partes.length >= 7 ? partes[6].trim() : "";
+
+                Traspaso t = new Traspaso(
+                    partes[0].trim(),   // PLACA
+                    partes[1].trim(),   // DPI ANTERIOR
+                    partes[2].trim(),   // NOMBRE ANTERIOR
+                    partes[3].trim(),   // FECHA
+                    partes[4].trim(),   // DPI NUEVO
+                    partes[5].trim(),   // NOMBRE NUEVO
+                    departamento         // DEPARTAMENTO
+                );
                 listaCircular.insertar(t);
             }
         }
@@ -65,11 +108,12 @@ public class PanelTraspaso extends javax.swing.JPanel {
         javax.swing.JOptionPane.showMessageDialog(this, "Error al leer el archivo");
     }
 }
-    
-    private void llenarTablaConListaCircular() {
-    String[] columnas = {"BOLETA", "PLACA", "DPI ANTERIOR", "NOMBRE ANTERIOR", "FECHA", "DPI", "NOMBRE"};
+
+private void llenarTablaConListaCircular() {
+    // Agregamos la columna DEPARTAMENTO en el modelo
+    String[] columnas = {"BOLETA", "PLACA", "DPI ANTERIOR", "NOMBRE ANTERIOR", "FECHA", "DPI", "NOMBRE", "DEPARTAMENTO"};
     javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(columnas, 0);
-    
+
     int boleta = 1;
     for (Traspaso t : listaCircular.obtenerTodos()) {
         Object[] fila = {
@@ -79,7 +123,8 @@ public class PanelTraspaso extends javax.swing.JPanel {
             t.getNombreAnterior(),
             t.getFechaAnterior(),
             t.getDpiNuevo(),
-            t.getNombreNuevo()
+            t.getNombreNuevo(),
+            t.getDepartamento()  // Nueva columna agregada
         };
         modelo.addRow(fila);
     }
@@ -136,9 +181,8 @@ public class PanelTraspaso extends javax.swing.JPanel {
         Titulo = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         Factura = new javax.swing.JButton();
-        Emitir_Pago = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
         Bt_Traspaso = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla_Dat_Traspaso = new javax.swing.JTable();
@@ -556,12 +600,10 @@ public class PanelTraspaso extends javax.swing.JPanel {
             }
         });
 
-        Emitir_Pago.setBackground(new java.awt.Color(242, 242, 242));
-        Emitir_Pago.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-card-payment-30.png")); // NOI18N
-        Emitir_Pago.setBorder(null);
-        Emitir_Pago.addActionListener(new java.awt.event.ActionListener() {
+        Bt_Traspaso.setText("TRASPASO");
+        Bt_Traspaso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Emitir_PagoActionPerformed(evt);
+                Bt_TraspasoActionPerformed(evt);
             }
         });
 
@@ -571,7 +613,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Emitir_Pago, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Bt_Traspaso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Factura, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -580,19 +622,12 @@ public class PanelTraspaso extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Factura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Emitir_Pago, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Bt_Traspaso)
                 .addContainerGap())
         );
 
         jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\carro1-.png")); // NOI18N
-
-        Bt_Traspaso.setText("TRASPASO");
-        Bt_Traspaso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Bt_TraspasoActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -602,12 +637,10 @@ public class PanelTraspaso extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(232, 232, 232)
+                        .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(Bt_Traspaso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel7)))
                 .addContainerGap())
         );
@@ -617,13 +650,8 @@ public class PanelTraspaso extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(33, 33, 33))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(Bt_Traspaso)
-                        .addGap(68, 68, 68)))
+                .addComponent(jLabel7)
+                .addGap(33, 33, 33)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -652,7 +680,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "BOLETA", "PLACA", "DPI ANTERIOR", "NOMBRE ANTERIOR", "FECHA", "DPI", "NOMBRE", "FECHA"
+                "BOLETA", "PLACA", "DPI ANTERIOR", "NOMBRE ANTERIOR", "FECHA", "DPI", "NOMBRE", "DEPARTAMENTO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -815,20 +843,12 @@ public class PanelTraspaso extends javax.swing.JPanel {
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
         // TODO add your handling code here:
-        java.awt.Container parent = this.getParent();
-
-        // Reemplazar el contenido del contenedor con el PanelPrincipal
-        if (parent instanceof javax.swing.JPanel) {
-            parent.removeAll();
-            parent.add(new PanelPrincipal()); // Asegúrate de importar la clase si está en otro paquete
-            parent.revalidate();
-            parent.repaint();
-        }
+    
     }//GEN-LAST:event_HomeActionPerformed
 
     private void Home1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Home1ActionPerformed
         // TODO add your handling code here:
-        java.awt.Container parent = this.getParent();
+       java.awt.Container parent = this.getParent();
         // Reemplazar el contenido del contenedor con el PanelPrincipal
         if (parent instanceof javax.swing.JPanel) {
             parent.removeAll();
@@ -933,11 +953,46 @@ public class PanelTraspaso extends javax.swing.JPanel {
 
     private void FacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FacturaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_FacturaActionPerformed
+        String input = JOptionPane.showInputDialog(this, "Ingrese el número de BOLETA para generar la factura:");
 
-    private void Emitir_PagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Emitir_PagoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Emitir_PagoActionPerformed
+    if (input != null && !input.trim().isEmpty()) {
+        try {
+            int numBoleta = Integer.parseInt(input.trim());
+            DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
+            boolean encontrada = false;
+
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                int boletaFila = Integer.parseInt(modelo.getValueAt(i, 0).toString());
+                if (boletaFila == numBoleta) {
+                    encontrada = true;
+
+                    String placa = modelo.getValueAt(i, 1).toString();
+                    String dpiAnterior = modelo.getValueAt(i, 2).toString();
+                    String nombreAnterior = modelo.getValueAt(i, 3).toString();
+                    String fecha = modelo.getValueAt(i, 4).toString();
+                    String dpiNuevo = modelo.getValueAt(i, 5).toString();
+                    String nombreNuevo = modelo.getValueAt(i, 6).toString();
+                    String departamento = modelo.getValueAt(i, 7).toString(); // Nueva columna
+
+                    // Obtener JFrame padre para pasar al diálogo
+                    Component comp = (Component) evt.getSource();
+                    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(comp);
+
+                    FacturaDialog factura = new FacturaDialog(frame, numBoleta, placa, dpiAnterior, nombreAnterior, fecha, dpiNuevo, nombreNuevo, departamento);
+                    factura.setVisible(true);
+
+                    break;
+                }
+            }
+
+            if (!encontrada) {
+                JOptionPane.showMessageDialog(this, "No se encontró la boleta #" + numBoleta, "Boleta no encontrada", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Número de boleta inválido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    }//GEN-LAST:event_FacturaActionPerformed
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         // TODO add your handling code here:
@@ -1073,6 +1128,58 @@ public class PanelTraspaso extends javax.swing.JPanel {
 
     private void Bt_TraspasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bt_TraspasoActionPerformed
         // TODO add your handling code here:
+        JTextField campoPlaca = new JTextField(10);
+    JTextField campoDpiAnt = new JTextField(10);
+    JTextField campoNombreAnt = new JTextField(10);
+    JTextField campoFecha = new JTextField(10);
+    JTextField campoDpiNuevo = new JTextField(10);
+    JTextField campoNombreNuevo = new JTextField(10);
+    JTextField campoDepartamento = new JTextField(10); // NUEVO CAMPO
+
+    // Crear panel de formulario
+    JPanel panel = new JPanel(new GridLayout(0, 2, 10, 5));
+    panel.add(new JLabel("PLACA:"));
+    panel.add(campoPlaca);
+    panel.add(new JLabel("DPI ANTERIOR:"));
+    panel.add(campoDpiAnt);
+    panel.add(new JLabel("NOMBRE ANTERIOR:"));
+    panel.add(campoNombreAnt);
+    panel.add(new JLabel("FECHA:"));
+    panel.add(campoFecha);
+    panel.add(new JLabel("DPI NUEVO:"));
+    panel.add(campoDpiNuevo);
+    panel.add(new JLabel("NOMBRE NUEVO:"));
+    panel.add(campoNombreNuevo);
+    panel.add(new JLabel("DEPARTAMENTO:"));           // Etiqueta nueva
+    panel.add(campoDepartamento);                      // Campo nuevo
+
+    int resultado = JOptionPane.showConfirmDialog(this, panel, "Nuevo Traspaso",
+            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    if (resultado == JOptionPane.OK_OPTION) {
+        // Obtener datos
+        String placa = campoPlaca.getText().trim();
+        String dpiAnt = campoDpiAnt.getText().trim();
+        String nombreAnt = campoNombreAnt.getText().trim();
+        String fecha = campoFecha.getText().trim();
+        String dpiNuevo = campoDpiNuevo.getText().trim();
+        String nombreNuevo = campoNombreNuevo.getText().trim();
+        String departamento = campoDepartamento.getText().trim();  // NUEVO CAMPO
+
+        if (placa.isEmpty() || dpiAnt.isEmpty() || nombreAnt.isEmpty() ||
+            fecha.isEmpty() || dpiNuevo.isEmpty() || nombreNuevo.isEmpty() ||
+            departamento.isEmpty()) {  // Validar nuevo campo
+            JOptionPane.showMessageDialog(this, "Por favor llena todos los campos.");
+            return;
+        }
+
+        // Crear objeto Traspaso e insertar en lista circular
+        Traspaso nuevoTraspaso = new Traspaso(placa, dpiAnt, nombreAnt, fecha, dpiNuevo, nombreNuevo, departamento);
+        listaCircular.insertar(nuevoTraspaso); // Insertar en la lista circular
+
+        // Actualizar tabla (mejor recargar toda la tabla desde la lista para mantener sincronía)
+        llenarTablaConListaCircular();
+    }
     }//GEN-LAST:event_Bt_TraspasoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1086,7 +1193,6 @@ public class PanelTraspaso extends javax.swing.JPanel {
     private javax.swing.JButton Buscar_Fch_3;
     private javax.swing.JPanel Desplegable;
     private javax.swing.JPanel Desplegable1;
-    private javax.swing.JButton Emitir_Pago;
     private javax.swing.JButton Factura;
     private javax.swing.JButton Guardar;
     private javax.swing.JButton Home;

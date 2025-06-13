@@ -6,8 +6,10 @@ package com.programadorroni.gestor_multas;
 
 import java.awt.GridLayout;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +44,11 @@ private void setArchivoActual(File file) {
 }
 
 private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
-   String[] columnas = {"BOLETA", "PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"};
+    String[] columnas = {"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS", "DEPARTAMENTO"};
     DefaultTableModel modelo = new DefaultTableModel(null, columnas);
-        Iterable<Vehiculo> listaVehiculos = null;
 
-    for (Vehiculo v : listaVehiculos) {
-        modelo.addRow(v.toRow());  // Asume que Vehiculo tiene método toRow() que devuelve Object[]
+    for (Vehiculo v : lista) {
+        modelo.addRow(v.toRow());  // Asegúrate de que toRow() incluya DEPARTAMENTO
     }
 
     Tabla_Dat_Traspaso.setModel(modelo);
@@ -278,7 +279,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(Desplegable1Layout.createSequentialGroup()
-                        .addComponent(Home1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Home1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -337,33 +338,33 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
         Tabla_Dat_Traspaso.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"
+                "PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS", "DEPARTAMENTO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -724,6 +725,57 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         // TODO add your handling code here:
+       if (!BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(null, "Seleccione un árbol (AVL o ABB).");
+        return;
+    }
+
+    // Elegir ubicación para guardar
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Guardar archivo de vehículos");
+    fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto (*.txt)", "txt"));
+    
+    int userSelection = fileChooser.showSaveDialog(this);
+
+    if (userSelection != JFileChooser.APPROVE_OPTION) {
+        return; // Usuario canceló
+    }
+
+    File archivoGuardar = fileChooser.getSelectedFile();
+
+    // Asegurar extensión .txt
+    if (!archivoGuardar.getAbsolutePath().endsWith(".txt")) {
+        archivoGuardar = new File(archivoGuardar.getAbsolutePath() + ".txt");
+    }
+
+    long inicio = System.nanoTime(); // Tiempo de inicio
+
+    List<Vehiculo> listaVehiculos = BOTON_AVL.isSelected()
+            ? ArbolAVL.inOrden()
+            : ArbolABB.inOrden();
+
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoGuardar))) {
+        for (Vehiculo v : listaVehiculos) {
+            String linea = v.getPlaca() + "," + v.getDpi() + "," + v.getNombre() + "," +
+                           v.getDepartamento() + "," + v.getMarca() + "," + v.getModelo() + "," +
+                           v.getAño() + "," + v.getMultas() + "," + v.getTraspasos();
+            writer.write(linea);
+            writer.newLine();
+        }
+        writer.flush();
+
+        long fin = System.nanoTime();
+        long duracionNs = fin - inicio;
+        long duracionMs = duracionNs / 1_000_000;
+
+        JOptionPane.showMessageDialog(null, "Archivo guardado correctamente en:\n" + 
+                archivoGuardar.getAbsolutePath() + 
+                "\nTiempo: " + duracionMs + " ms (" + duracionNs + " ns)");
+
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(null, "Error al guardar el archivo: " + ex.getMessage());
+        ex.printStackTrace();
+    }
     }//GEN-LAST:event_GuardarActionPerformed
 
     private void TextPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextPlacaActionPerformed
@@ -790,50 +842,62 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         setArchivoActual(file);
 
         if (BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
-            arbolSeleccionado = ArbolAVL; // Usa la instancia ya declarada
-            ArbolAVL = new ArbolAVL();    // Reinicia árbol si es necesario
             arbolSeleccionado = ArbolAVL;
-    } else if (BOTON_ABB.isSelected() && !BOTON_AVL.isSelected()) {
+            ArbolAVL = new ArbolAVL();  // Reiniciar árbol AVL
+            arbolSeleccionado = ArbolAVL;
+        } else if (BOTON_ABB.isSelected() && !BOTON_AVL.isSelected()) {
             arbolSeleccionado = ArbolABB;
-            ArbolABB = new ArbolABB();
+            ArbolABB = new ArbolABB();  // Reiniciar árbol ABB
             arbolSeleccionado = ArbolABB;
-    } else {
+        } else {
             JOptionPane.showMessageDialog(this, "Seleccione solo un árbol (AVL o ABB).");
             return;
         }
+
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.setColumnIdentifiers(new String[]{"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"});
-        // Nueva lista para almacenar todos los vehículos antes de insertarlos al árbol
+        modelo.setColumnIdentifiers(new String[]{
+            "PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS", "DEPARTAMENTO"
+        });
+
         List<Vehiculo> listaVehiculos = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(",");
-                if (partes.length == 8) {
+
+                if (partes.length == 9) {
                     Vehiculo vehiculo = new Vehiculo(
-                        partes[0].trim(), partes[1].trim(), partes[2].trim(),
-                        partes[3].trim(), partes[4].trim(), partes[5].trim(),
-                        partes[6].trim(), partes[7].trim()
+                        partes[0].trim(), // PLACA
+                        partes[1].trim(), // DPI
+                        partes[2].trim(), // NOMBRE
+                        partes[3].trim(), // MARCA
+                        partes[4].trim(), // MODELO
+                        partes[5].trim(), // AÑO
+                        partes[6].trim(), // MULTAS
+                        partes[7].trim(), // TRASPASOS
+                        partes[8].trim()  // DEPARTAMENTO
                     );
-                    listaVehiculos.add(vehiculo);              // Guardar en lista
-                    modelo.addRow(vehiculo.toRow());           // Mostrar en tabla
+                    listaVehiculos.add(vehiculo);
+                    modelo.addRow(vehiculo.toRow());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Línea con formato incorrecto:\n" + linea);
                 }
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + ex.getMessage());
             ex.printStackTrace();
         }
-        // Insertar todos los vehículos al árbol seleccionado
+
         for (Vehiculo v : listaVehiculos) {
             arbolSeleccionado.insertar(v);
         }
-        // Mostrar en JTable
+
         Tabla_Dat_Traspaso.setModel(modelo);
 
-        long fin = System.nanoTime(); // Tiempo final
+        long fin = System.nanoTime();
         long duracion = fin - inicio;
-        JOptionPane.showMessageDialog(this, "Carga finalizada en " + duracion / 1_000_000 + " ms (" + duracion + " ns)");
+        JOptionPane.showMessageDialog(this, "Carga finalizada en " + (duracion / 1_000_000) + " ms (" + duracion + " ns)");
     }
     }//GEN-LAST:event_Buscar_Fch_2ActionPerformed
 
@@ -892,15 +956,18 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         JOptionPane.showMessageDialog(null, "Seleccione un árbol (AVL o ABB).");
         return;
     }
+
     // Crear campos de entrada
     JTextField campoPlaca = new JTextField();
     JTextField campoDPI = new JTextField();
     JTextField campoNombre = new JTextField();
+    JTextField campoDepartamento = new JTextField(); // NUEVO
     JTextField campoMarca = new JTextField();
     JTextField campoModelo = new JTextField();
     JTextField campoAnio = new JTextField();
     JTextField campoMultas = new JTextField();
     JTextField campoTraspasos = new JTextField();
+
     // Armar panel con campos
     JPanel panel = new JPanel(new GridLayout(0, 1));
     panel.add(new JLabel("PLACA:"));
@@ -919,6 +986,9 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     panel.add(campoMultas);
     panel.add(new JLabel("TRASPASOS:"));
     panel.add(campoTraspasos);
+    panel.add(new JLabel("DEPARTAMENTO:")); // NUEVO
+    panel.add(campoDepartamento);
+
     // Mostrar cuadro de diálogo
     int result = JOptionPane.showConfirmDialog(null, panel, "Ingresar Vehículo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
@@ -933,11 +1003,13 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             String anio = campoAnio.getText().trim();
             String multas = campoMultas.getText().trim();
             String traspasos = campoTraspasos.getText().trim();
+             String departamento = campoDepartamento.getText().trim(); // NUEVO
 
-            // Crear objeto Vehiculo
-            Vehiculo nuevoVehiculo = new Vehiculo(placa, dpi, nombre, marca, modelo, anio, multas, traspasos);
+            // Crear objeto Vehiculo con nuevo campo
+            Vehiculo nuevoVehiculo = new Vehiculo(
+                placa, dpi, nombre, marca, modelo, anio, multas, traspasos, departamento
+            );
 
-            // Medir tiempo e insertar
             long inicio = System.nanoTime();
 
             if (BOTON_AVL.isSelected()) {
@@ -959,7 +1031,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
     private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
         // TODO add your handling code here:
-       String placaBuscada = TextPlaca.getText().trim();
+        String placaBuscada = TextPlaca.getText().trim();
 
     if (placaBuscada.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Ingrese una placa para editar.");
@@ -981,10 +1053,12 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
         return;
     }
+
     // Crear campos prellenados
     JTextField campoPlaca = new JTextField(resultado.getPlaca());
     JTextField campoDPI = new JTextField(resultado.getDpi());
     JTextField campoNombre = new JTextField(resultado.getNombre());
+    JTextField campoDepartamento = new JTextField(resultado.getDepartamento());
     JTextField campoMarca = new JTextField(resultado.getMarca());
     JTextField campoModelo = new JTextField(resultado.getModelo());
     JTextField campoAnio = new JTextField(resultado.getAño());
@@ -995,6 +1069,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     panel.add(new JLabel("PLACA:")); panel.add(campoPlaca);
     panel.add(new JLabel("DPI:")); panel.add(campoDPI);
     panel.add(new JLabel("NOMBRE:")); panel.add(campoNombre);
+    panel.add(new JLabel("DEPARTAMENTO:")); panel.add(campoDepartamento);
     panel.add(new JLabel("MARCA:")); panel.add(campoMarca);
     panel.add(new JLabel("MODELO:")); panel.add(campoModelo);
     panel.add(new JLabel("AÑO:")); panel.add(campoAnio);
@@ -1005,7 +1080,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
     if (result == JOptionPane.OK_OPTION) {
-        // Eliminar y volver a insertar
+        // Eliminar el anterior y agregar el actualizado
         if (BOTON_AVL.isSelected()) {
             ArbolAVL.eliminar(placaBuscada);
         } else {
@@ -1016,19 +1091,21 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                 campoPlaca.getText().trim(),
                 campoDPI.getText().trim(),
                 campoNombre.getText().trim(),
+                campoDepartamento.getText().trim(),
                 campoMarca.getText().trim(),
                 campoModelo.getText().trim(),
                 campoAnio.getText().trim(),
                 campoMultas.getText().trim(),
                 campoTraspasos.getText().trim()
         );
+
         if (BOTON_AVL.isSelected()) {
             ArbolAVL.insertar(nuevo);
         } else {
             ArbolABB.insertar(nuevo);
         }
 
-        // Obtener lista actualizada del árbol correspondiente
+        // Obtener lista actualizada
         List<Vehiculo> listaActualizada = BOTON_AVL.isSelected()
                 ? ArbolAVL.inOrden()
                 : ArbolABB.inOrden();
@@ -1104,7 +1181,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     long duracion = fin - inicio;
 
     DefaultTableModel modelo = new DefaultTableModel();
-    modelo.setColumnIdentifiers(new String[]{"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"});
+    modelo.setColumnIdentifiers(new String[]{"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS", "DEPARTAMENTO"});
 
     if (encontrado != null) {
         modelo.addRow(encontrado.toRow());
@@ -1204,7 +1281,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
     // Crear modelo y actualizar tabla
     DefaultTableModel modelo = new DefaultTableModel();
-    modelo.setColumnIdentifiers(new String[]{"BOLETA", "PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS"});
+    modelo.setColumnIdentifiers(new String[]{"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS", "DEPARTAMENTO"});
 
     for (Vehiculo v : listaVehiculos) {
         modelo.addRow(v.toRow());  // asumo que tienes un método toRow() que devuelve Object[]
