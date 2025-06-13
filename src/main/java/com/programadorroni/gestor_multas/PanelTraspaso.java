@@ -132,8 +132,6 @@ public class PanelTraspaso extends javax.swing.JPanel {
         jLabel18 = new javax.swing.JLabel();
         Bus_Boleta_3 = new javax.swing.JButton();
         Refresh_Boleta1 = new javax.swing.JButton();
-        Buscar_Fch_3 = new javax.swing.JButton();
-        jLabel14 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         Titulo = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
@@ -150,9 +148,8 @@ public class PanelTraspaso extends javax.swing.JPanel {
         Usuario = new javax.swing.JButton();
         User_Indicator = new javax.swing.JLabel();
         Barra = new javax.swing.JButton();
-        PreOrden = new javax.swing.JButton();
-        PosOrden = new javax.swing.JButton();
-        InOrden = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        Buscar_Fch_3 = new javax.swing.JButton();
 
         Desplegable.setBackground(new java.awt.Color(31, 49, 73));
 
@@ -482,19 +479,6 @@ public class PanelTraspaso extends javax.swing.JPanel {
             }
         });
 
-        Buscar_Fch_3.setBackground(new java.awt.Color(17, 34, 61));
-        Buscar_Fch_3.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-folder-48.png")); // NOI18N
-        Buscar_Fch_3.setBorder(null);
-        Buscar_Fch_3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Buscar_Fch_3ActionPerformed(evt);
-            }
-        });
-
-        jLabel14.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("Agregar Fichero Existente");
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -511,21 +495,16 @@ public class PanelTraspaso extends javax.swing.JPanel {
                                 .addComponent(Bus_Placa_2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(Refresh_Placa))
+                            .addComponent(jLabel18)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(TextBoleta1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(Bus_Boleta_3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Refresh_Boleta1))
-                            .addComponent(jLabel18)))
+                                .addComponent(Refresh_Boleta1))))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(107, 107, 107)
-                        .addComponent(Titulo2))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Buscar_Fch_3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Titulo2)))
                 .addContainerGap(123, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
@@ -552,11 +531,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
                     .addComponent(Bus_Boleta_3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TextBoleta1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Refresh_Boleta1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Buscar_Fch_3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
-                .addGap(40, 40, 40))
+                .addGap(117, 117, 117))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                     .addContainerGap(171, Short.MAX_VALUE)
@@ -768,24 +743,16 @@ public class PanelTraspaso extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        PreOrden.setText("Pre Orden");
-        PreOrden.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PreOrdenActionPerformed(evt);
-            }
-        });
+        jLabel14.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setText("Agregar Fichero Existente");
 
-        PosOrden.setText("Pos Orden");
-        PosOrden.addActionListener(new java.awt.event.ActionListener() {
+        Buscar_Fch_3.setBackground(new java.awt.Color(17, 34, 61));
+        Buscar_Fch_3.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-folder-48.png")); // NOI18N
+        Buscar_Fch_3.setBorder(null);
+        Buscar_Fch_3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PosOrdenActionPerformed(evt);
-            }
-        });
-
-        InOrden.setText("In Orden");
-        InOrden.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InOrdenActionPerformed(evt);
+                Buscar_Fch_3ActionPerformed(evt);
             }
         });
 
@@ -801,12 +768,9 @@ public class PanelTraspaso extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(65, 65, 65)
-                                .addComponent(PreOrden)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(PosOrden)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(InOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(Buscar_Fch_3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -823,14 +787,13 @@ public class PanelTraspaso extends javax.swing.JPanel {
                         .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(1, 1, 1)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(PreOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(PosOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(InOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(Buscar_Fch_3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(Desplegable1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -866,7 +829,6 @@ public class PanelTraspaso extends javax.swing.JPanel {
     private void Home1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Home1ActionPerformed
         // TODO add your handling code here:
         java.awt.Container parent = this.getParent();
-
         // Reemplazar el contenido del contenedor con el PanelPrincipal
         if (parent instanceof javax.swing.JPanel) {
             parent.removeAll();
@@ -925,7 +887,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
         // TODO add your handling code here:
         // Limpiar campos de búsqueda
     TextPlaca.setText("");
-    TextBoleta.setText("");
+    TextBoleta1.setText("");
 
     long inicio = System.nanoTime();
 
@@ -1033,29 +995,46 @@ public class PanelTraspaso extends javax.swing.JPanel {
     }//GEN-LAST:event_TextBoleta1ActionPerformed
 
     private void Bus_Boleta_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Boleta_3ActionPerformed
-        // TODO add your handling code here:
-         String textoBoleta = TextBoleta.getText().trim();
+        // TODO add your handling code here:   
+        String textoBoleta = TextBoleta1.getText().trim();
 
     if (!textoBoleta.isEmpty()) {
         try {
-            int boleta = Integer.parseInt(textoBoleta);
+            int boletaBuscada = Integer.parseInt(textoBoleta);
 
-            // Buscar en la lista circular
-            Vehiculo resultado = listaCircular.buscarPorBoleta(boleta);
-
-            if (resultado == null) {
-                JOptionPane.showMessageDialog(this, "No se encontraron registros con esa boleta.");
-            } else {
-                // Mostrar solo el resultado en la tabla
-                // Se asume que tienes un método que convierte Vehiculo a Object[] o algo similar
-                Object[][] datos = { resultado.toArray() };
-                llenarTablaConDatos(datos);
+            DefaultTableModel modeloOriginal = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
+            DefaultTableModel modeloFiltrado = new DefaultTableModel();
+            
+            // Copiamos las columnas del modelo original
+            for (int i = 0; i < modeloOriginal.getColumnCount(); i++) {
+                modeloFiltrado.addColumn(modeloOriginal.getColumnName(i));
             }
+
+            // Recorremos las filas del JTable
+            for (int i = 0; i < modeloOriginal.getRowCount(); i++) {
+                Object valorBoleta = modeloOriginal.getValueAt(i, 0); // columna 0 = BOLETA
+
+                if (valorBoleta != null && Integer.parseInt(valorBoleta.toString()) == boletaBuscada) {
+                    // Si coincide, añadimos la fila al modelo filtrado
+                    Object[] fila = new Object[modeloOriginal.getColumnCount()];
+                    for (int j = 0; j < modeloOriginal.getColumnCount(); j++) {
+                        fila[j] = modeloOriginal.getValueAt(i, j);
+                    }
+                    modeloFiltrado.addRow(fila);
+                }
+            }
+
+            if (modeloFiltrado.getRowCount() > 0) {
+                Tabla_Dat_Traspaso.setModel(modeloFiltrado);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontraron registros con esa boleta.");
+            }
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "La boleta debe ser un número entero.");
         }
     } else {
-        JOptionPane.showMessageDialog(this, "Ingrese un número de boleta para buscar");
+        JOptionPane.showMessageDialog(this, "Ingrese un número de boleta para buscar.");
     }
     }//GEN-LAST:event_Bus_Boleta_3ActionPerformed
 
@@ -1063,7 +1042,7 @@ public class PanelTraspaso extends javax.swing.JPanel {
         // TODO add your handling code here:
         // Limpiar campos de búsqueda
     TextPlaca.setText("");
-    TextBoleta.setText("");
+    TextBoleta1.setText("");
 
     long inicio = System.nanoTime();
 
@@ -1092,27 +1071,6 @@ public class PanelTraspaso extends javax.swing.JPanel {
     }
     }//GEN-LAST:event_Buscar_Fch_3ActionPerformed
 
-    private void PreOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreOrdenActionPerformed
-        // TODO add your handling code here:
-         ArbolBinarioTraspaso arbol = construirArbolDesdeListaCircular();
-    List<Traspaso> ordenados = (List<Traspaso>) arbol.recorrerPreOrden();
-    llenarTablaConLista(ordenados);
-    }//GEN-LAST:event_PreOrdenActionPerformed
-
-    private void PosOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PosOrdenActionPerformed
-        // TODO add your handling code here:
-        ArbolBinarioTraspaso arbol = construirArbolDesdeListaCircular();
-    List<Traspaso> ordenados = (List<Traspaso>) arbol.recorrerPosOrden();
-    llenarTablaConLista(ordenados);
-    }//GEN-LAST:event_PosOrdenActionPerformed
-
-    private void InOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InOrdenActionPerformed
-        // TODO add your handling code here:
-        ArbolBinarioTraspaso arbol = construirArbolDesdeListaCircular();
-    List<Traspaso> ordenados = (List<Traspaso>) arbol.recorrerInOrden();
-    llenarTablaConLista(ordenados);
-    }//GEN-LAST:event_InOrdenActionPerformed
-
     private void Bt_TraspasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bt_TraspasoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Bt_TraspasoActionPerformed
@@ -1133,9 +1091,6 @@ public class PanelTraspaso extends javax.swing.JPanel {
     private javax.swing.JButton Guardar;
     private javax.swing.JButton Home;
     private javax.swing.JButton Home1;
-    private javax.swing.JButton InOrden;
-    private javax.swing.JButton PosOrden;
-    private javax.swing.JButton PreOrden;
     private javax.swing.JButton Refresh_Boleta;
     private javax.swing.JButton Refresh_Boleta1;
     private javax.swing.JButton Refresh_Placa;

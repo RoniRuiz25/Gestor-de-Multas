@@ -34,5 +34,13 @@ public class Traspaso {
     public String getFechaAnterior() { return fechaAnterior; }
     public String getDpiNuevo() { return dpiNuevo; }
     public String getNombreNuevo() { return nombreNuevo; }
+
+    Object[] toArray() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    int getBoleta() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
 
