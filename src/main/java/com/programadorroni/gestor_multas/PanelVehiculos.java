@@ -128,6 +128,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         jLabel12 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        Incriptar = new javax.swing.JButton();
+        DES_INCRIPTAR = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         Usuario = new javax.swing.JButton();
         User_Indicator = new javax.swing.JLabel();
@@ -317,6 +319,20 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             }
         });
 
+        Incriptar.setText("Incriptar");
+        Incriptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IncriptarActionPerformed(evt);
+            }
+        });
+
+        DES_INCRIPTAR.setText("Des Incriptar");
+        DES_INCRIPTAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DES_INCRIPTARActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout Desplegable1Layout = new javax.swing.GroupLayout(Desplegable1);
         Desplegable1.setLayout(Desplegable1Layout);
         Desplegable1Layout.setHorizontalGroup(
@@ -329,11 +345,16 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(Desplegable1Layout.createSequentialGroup()
-                        .addGroup(Desplegable1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(Desplegable1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Desplegable1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(DES_INCRIPTAR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Incriptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Desplegable1Layout.setVerticalGroup(
             Desplegable1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,7 +367,11 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                     .addComponent(jLabel12))
                 .addGap(26, 26, 26)
                 .addComponent(jButton1)
-                .addContainerGap(642, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(Incriptar)
+                .addGap(18, 18, 18)
+                .addComponent(DES_INCRIPTAR)
+                .addContainerGap(560, Short.MAX_VALUE))
         );
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
@@ -778,7 +803,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         // TODO add your handling code here:
-       if (!BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
+      if (!BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
         JOptionPane.showMessageDialog(null, "Seleccione un árbol (AVL o ABB).");
         return;
     }
@@ -787,7 +812,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Guardar archivo de vehículos");
     fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto (*.txt)", "txt"));
-    
+
     int userSelection = fileChooser.showSaveDialog(this);
 
     if (userSelection != JFileChooser.APPROVE_OPTION) {
@@ -809,9 +834,16 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoGuardar))) {
         for (Vehiculo v : listaVehiculos) {
-            String linea = v.getPlaca() + "," + v.getDpi() + "," + v.getNombre() + "," +
-                           v.getDepartamento() + "," + v.getMarca() + "," + v.getModelo() + "," +
-                           v.getAño() + "," + v.getMultas() + "," + v.getTraspasos();
+            String linea = CifradoAES.encriptar(v.getPlaca()) + "," +
+                           CifradoAES.encriptar(v.getDpi()) + "," +
+                           CifradoAES.encriptar(v.getNombre()) + "," +
+                           CifradoAES.encriptar(v.getDepartamento()) + "," +
+                           CifradoAES.encriptar(v.getMarca()) + "," +
+                           CifradoAES.encriptar(v.getModelo()) + "," +
+                           CifradoAES.encriptar(v.getAño()) + "," +
+                           CifradoAES.encriptar(v.getMultas()) + "," +
+                           CifradoAES.encriptar(v.getTraspasos());
+
             writer.write(linea);
             writer.newLine();
         }
@@ -821,14 +853,15 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         long duracionNs = fin - inicio;
         long duracionMs = duracionNs / 1_000_000;
 
-        JOptionPane.showMessageDialog(null, "Archivo guardado correctamente en:\n" + 
-                archivoGuardar.getAbsolutePath() + 
+        JOptionPane.showMessageDialog(null, "Archivo encriptado guardado correctamente en:\n" +
+                archivoGuardar.getAbsolutePath() +
                 "\nTiempo: " + duracionMs + " ms (" + duracionNs + " ns)");
 
     } catch (IOException ex) {
         JOptionPane.showMessageDialog(null, "Error al guardar el archivo: " + ex.getMessage());
         ex.printStackTrace();
     }
+
     }//GEN-LAST:event_GuardarActionPerformed
 
     private void TextPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextPlacaActionPerformed
@@ -1386,6 +1419,51 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void IncriptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IncriptarActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
+
+    for (int row = 0; row < model.getRowCount(); row++) {
+        for (int col = 0; col < model.getColumnCount(); col++) {
+            Object valor = model.getValueAt(row, col);
+            if (valor != null) {
+                String texto = valor.toString();
+                String encriptado = CifradoAES.encriptar(texto);
+                model.setValueAt(encriptado, row, col);
+            }
+        }
+    }
+
+    JOptionPane.showMessageDialog(this, "Datos encriptados correctamente.");
+    }//GEN-LAST:event_IncriptarActionPerformed
+
+    private void DES_INCRIPTARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DES_INCRIPTARActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
+
+    // Validar si hay datos
+    if (model.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "La tabla no contiene datos para desencriptar.");
+        return;
+    }
+
+    try {
+        for (int fila = 0; fila < model.getRowCount(); fila++) {
+            for (int col = 0; col < model.getColumnCount(); col++) {
+                String datoEncriptado = (String) model.getValueAt(fila, col);
+                String datoDesencriptado = CifradoAES.desencriptar(datoEncriptado);
+                model.setValueAt(datoDesencriptado, fila, col);
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, "Datos desencriptados correctamente.");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al desencriptar los datos: " + e.getMessage());
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_DES_INCRIPTARActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Asignar;
     private javax.swing.JRadioButton BOTON_ABB;
@@ -1394,6 +1472,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private javax.swing.JButton Bus_Placa_2;
     private javax.swing.JButton Buscar_Fch_2;
     private javax.swing.JButton Buscar_Placa_1;
+    private javax.swing.JButton DES_INCRIPTAR;
     private javax.swing.JPanel Desplegable1;
     private javax.swing.JButton Edit;
     private javax.swing.JButton Eliminar_1;
@@ -1401,6 +1480,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private javax.swing.JButton Guardar;
     private javax.swing.JButton Home1;
     private javax.swing.JButton InOrden;
+    private javax.swing.JButton Incriptar;
     private javax.swing.JButton PosOrden;
     private javax.swing.JButton PreOrden;
     private javax.swing.JButton Refresh_Placa;
