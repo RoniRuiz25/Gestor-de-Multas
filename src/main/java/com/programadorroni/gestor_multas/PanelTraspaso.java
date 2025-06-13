@@ -9,18 +9,15 @@ import java.awt.GridLayout;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -182,6 +179,7 @@ private void llenarTablaConListaCircular() {
         jPanel9 = new javax.swing.JPanel();
         Factura = new javax.swing.JButton();
         Bt_Traspaso = new javax.swing.JButton();
+        Eliminar_1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -607,6 +605,15 @@ private void llenarTablaConListaCircular() {
             }
         });
 
+        Eliminar_1.setBackground(new java.awt.Color(242, 242, 242));
+        Eliminar_1.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-eliminar-24.png")); // NOI18N
+        Eliminar_1.setBorder(null);
+        Eliminar_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Eliminar_1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -614,6 +621,8 @@ private void llenarTablaConListaCircular() {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Bt_Traspaso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Eliminar_1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Factura, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -623,7 +632,9 @@ private void llenarTablaConListaCircular() {
             .addComponent(Factura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Bt_Traspaso)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Eliminar_1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Bt_Traspaso))
                 .addContainerGap())
         );
 
@@ -1182,6 +1193,11 @@ private void llenarTablaConListaCircular() {
     }
     }//GEN-LAST:event_Bt_TraspasoActionPerformed
 
+    private void Eliminar_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_1ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_Eliminar_1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Barra;
     private javax.swing.JButton Bt_Traspaso;
@@ -1193,6 +1209,7 @@ private void llenarTablaConListaCircular() {
     private javax.swing.JButton Buscar_Fch_3;
     private javax.swing.JPanel Desplegable;
     private javax.swing.JPanel Desplegable1;
+    private javax.swing.JButton Eliminar_1;
     private javax.swing.JButton Factura;
     private javax.swing.JButton Guardar;
     private javax.swing.JButton Home;

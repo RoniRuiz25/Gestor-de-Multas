@@ -239,4 +239,34 @@ private Nodo minValueNodo(Nodo nodo) {
 
         return y;
     }
+     // MÉTODO ADICIONAL: Generador de código DOT para visualización del árbol
+    public String generarDot() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("digraph AVL {\n");
+        sb.append("node [shape=box, style=filled, color=lightblue];\n");
+        generarDotRec(raiz, sb);
+        sb.append("}\n");
+        return sb.toString();
+    }
+
+    private void generarDotRec(Nodo nodo, StringBuilder sb) {
+        if (nodo == null) return;
+
+        Vehiculo v = nodo.vehiculo;
+        String id = v.getPlaca().replaceAll("\\s+", "");
+        String label = v.getPlaca() + "\\n" + v.getNombre() + "\\n" + v.getDepartamento();
+        sb.append("\"").append(id).append("\" [label=\"").append(label).append("\"];\n");
+
+        if (nodo.izq != null) {
+            String idIzq = nodo.izq.vehiculo.getPlaca().replaceAll("\\s+", "");
+            sb.append("\"").append(id).append("\" -> \"").append(idIzq).append("\";\n");
+            generarDotRec(nodo.izq, sb);
+        }
+
+        if (nodo.der != null) {
+            String idDer = nodo.der.vehiculo.getPlaca().replaceAll("\\s+", "");
+            sb.append("\"").append(id).append("\" -> \"").append(idDer).append("\";\n");
+            generarDotRec(nodo.der, sb);
+        }
+    }
 }

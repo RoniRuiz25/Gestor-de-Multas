@@ -13,47 +13,23 @@ import java.util.List;
  */
 public class ArbolABB implements Arbol {
 
-    @Override
-    public List<Vehiculo> posOrden() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   private Nodo raiz;
 
-  public Vehiculo buscarVehiculo(String placaBuscada) {
-    return buscarVehiculoRec(raiz, placaBuscada);
-}
-
-private Vehiculo buscarVehiculoRec(Nodo nodo, String placaBuscada) {
-    if (nodo == null) return null;
-
-    int cmp = placaBuscada.compareTo(nodo.vehiculo.getPlaca());
-    if (cmp == 0) return nodo.vehiculo;
-    else if (cmp < 0) return buscarVehiculoRec(nodo.izq, placaBuscada);
-    else return buscarVehiculoRec(nodo.der, placaBuscada);
-}
-
-   public boolean eliminar(String placa) {
-    if (buscarVehiculo(placa) != null) {
-        raiz = eliminarRec(raiz, placa); // usa el método recursivo real
-        return true;
-    }
-    return false;
-}
-
-    private Nodo eliminarRec(Nodo raiz, String placa) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-   class Nodo {
+    // Clase interna Nodo con getter necesario
+    class Nodo {
         Vehiculo vehiculo;
         Nodo izq, der;
 
         Nodo(Vehiculo vehiculo) {
             this.vehiculo = vehiculo;
         }
+
+        public Vehiculo getVehiculo() {
+            return vehiculo;
+        }
     }
 
-    private Nodo raiz;
-
+    // Inserción
     @Override
     public void insertar(Vehiculo vehiculo) {
         raiz = insertarRec(raiz, vehiculo);
@@ -68,6 +44,7 @@ private Vehiculo buscarVehiculoRec(Nodo nodo, String placaBuscada) {
         return nodo;
     }
 
+    // Búsqueda (booleano)
     @Override
     public boolean buscar(String placa) {
         return buscarRec(raiz, placa);
@@ -80,9 +57,58 @@ private Vehiculo buscarVehiculoRec(Nodo nodo, String placaBuscada) {
         else if (cmp < 0) return buscarRec(nodo.izq, placa);
         else return buscarRec(nodo.der, placa);
     }
-    
-    
 
+    // Búsqueda (devolver objeto)
+    public Vehiculo buscarVehiculo(String placaBuscada) {
+        return buscarVehiculoRec(raiz, placaBuscada);
+    }
+
+    private Vehiculo buscarVehiculoRec(Nodo nodo, String placaBuscada) {
+        if (nodo == null) return null;
+
+        int cmp = placaBuscada.compareTo(nodo.vehiculo.getPlaca());
+        if (cmp == 0) return nodo.vehiculo;
+        else if (cmp < 0) return buscarVehiculoRec(nodo.izq, placaBuscada);
+        else return buscarVehiculoRec(nodo.der, placaBuscada);
+    }
+
+    // Eliminar
+    public boolean eliminar(String placa) {
+        if (buscarVehiculo(placa) != null) {
+            raiz = eliminarRec(raiz, placa);
+            return true;
+        }
+        return false;
+    }
+
+    private Nodo eliminarRec(Nodo nodo, String placa) {
+        if (nodo == null) return null;
+
+        int cmp = placa.compareTo(nodo.vehiculo.getPlaca());
+
+        if (cmp < 0) {
+            nodo.izq = eliminarRec(nodo.izq, placa);
+        } else if (cmp > 0) {
+            nodo.der = eliminarRec(nodo.der, placa);
+        } else {
+            // Nodo con un solo hijo o sin hijos
+            if (nodo.izq == null) return nodo.der;
+            else if (nodo.der == null) return nodo.izq;
+
+            // Nodo con dos hijos: obtener el sucesor
+            Nodo sucesor = obtenerMin(nodo.der);
+            nodo.vehiculo = sucesor.vehiculo;
+            nodo.der = eliminarRec(nodo.der, sucesor.vehiculo.getPlaca());
+        }
+        return nodo;
+    }
+
+    private Nodo obtenerMin(Nodo nodo) {
+        while (nodo.izq != null) nodo = nodo.izq;
+        return nodo;
+    }
+
+    // Recorridos
     @Override
     public List<Vehiculo> inOrden() {
         List<Vehiculo> lista = new ArrayList<>();
@@ -113,11 +139,15 @@ private Vehiculo buscarVehiculoRec(Nodo nodo, String placaBuscada) {
         }
     }
 
-    
+    @Override
+    public List<Vehiculo> posOrden() {
+        return postOrden(); // Llama al método corregido
+    }
+
     public List<Vehiculo> postOrden() {
         List<Vehiculo> lista = new ArrayList<>();
-    posOrdenRec(raiz, lista);
-    return lista;
+        posOrdenRec(raiz, lista);
+        return lista;
     }
 
     private void posOrdenRec(Nodo nodo, List<Vehiculo> lista) {
@@ -127,4 +157,34 @@ private Vehiculo buscarVehiculoRec(Nodo nodo, String placaBuscada) {
             lista.add(nodo.vehiculo);
         }
     }
-}   
+
+    // Generación de DOT para visualizar el árbol
+    public String generarDot() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("digraph G {\n");
+        sb.append("node [shape=box, style=filled, color=lightblue];\n");
+        generarDotRecursivo(raiz, sb);
+        sb.append("}\n");
+        return sb.toString();
+    }
+
+    private void generarDotRecursivo(Nodo nodo, StringBuilder sb) {
+        if (nodo == null) return;
+
+        Vehiculo v = nodo.getVehiculo();
+        String id = v.getPlaca();
+
+        String label = String.format("%s\\n%s\\n%s", v.getPlaca(), v.getNombre(), v.getDepartamento());
+        sb.append("\"").append(id).append("\" [label=\"").append(label).append("\"];\n");
+
+        if (nodo.izq != null) {
+            sb.append("\"").append(id).append("\" -> \"").append(nodo.izq.getVehiculo().getPlaca()).append("\";\n");
+            generarDotRecursivo(nodo.izq, sb);
+        }
+
+        if (nodo.der != null) {
+            sb.append("\"").append(id).append("\" -> \"").append(nodo.der.getVehiculo().getPlaca()).append("\";\n");
+            generarDotRecursivo(nodo.der, sb);
+        }
+    } 
+}

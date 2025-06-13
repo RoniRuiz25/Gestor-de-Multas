@@ -5,6 +5,9 @@
 package com.programadorroni.gestor_multas;
 
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,10 +16,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -41,6 +47,41 @@ public class PanelVehiculos extends javax.swing.JPanel {
     }
 private void setArchivoActual(File file) {
     this.archivoActual = file;
+}
+
+private void mostrarImagenConZoom(String rutaImagen) {
+    JFrame ventana = new JFrame("Árbol en Alta Resolución");
+    ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    ventana.setSize(1000, 700);
+
+    ImageIcon originalIcon = new ImageIcon(rutaImagen);
+    JLabel label = new JLabel(originalIcon);
+    JScrollPane scrollPane = new JScrollPane(label);
+
+    ventana.add(scrollPane);
+    ventana.setLocationRelativeTo(null);
+    ventana.setVisible(true);
+
+    scrollPane.addMouseWheelListener(new MouseWheelListener() {
+        double zoom = 1.0;
+
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            int notches = e.getWheelRotation();
+            if (notches < 0) zoom *= 1.1;
+            else zoom /= 1.1;
+
+            ImageIcon zoomedIcon = new ImageIcon(
+                new ImageIcon(rutaImagen).getImage().getScaledInstance(
+                    (int) (originalIcon.getIconWidth() * zoom),
+                    (int) (originalIcon.getIconHeight() * zoom),
+                    Image.SCALE_SMOOTH
+                )
+            );
+            label.setIcon(zoomedIcon);
+            label.revalidate();
+        }
+    });
 }
 
 private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
@@ -86,6 +127,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         Home1 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         Usuario = new javax.swing.JButton();
         User_Indicator = new javax.swing.JLabel();
@@ -268,6 +310,13 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("LOGOTIPO");
 
+        jButton1.setText("Graphviz");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout Desplegable1Layout = new javax.swing.GroupLayout(Desplegable1);
         Desplegable1.setLayout(Desplegable1Layout);
         Desplegable1Layout.setHorizontalGroup(
@@ -276,12 +325,14 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                 .addGap(16, 16, 16)
                 .addGroup(Desplegable1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Desplegable1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(Desplegable1Layout.createSequentialGroup()
                         .addComponent(Home1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(Desplegable1Layout.createSequentialGroup()
+                        .addGroup(Desplegable1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         Desplegable1Layout.setVerticalGroup(
@@ -293,7 +344,9 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                 .addGroup(Desplegable1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Home1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addContainerGap(691, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(jButton1)
+                .addContainerGap(642, Short.MAX_VALUE))
         );
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
@@ -1293,6 +1346,46 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     JOptionPane.showMessageDialog(this, "Refrescado completado en " + duracion / 1_000_000 + " ms (" + duracion + " ns)");
     }//GEN-LAST:event_Refresh_PlacaActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if (!BOTON_AVL.isSelected() && !BOTON_ABB.isSelected()) {
+        JOptionPane.showMessageDialog(this, "Seleccione un árbol (AVL o ABB) para generar el diagrama.");
+        return;
+    }
+
+    try {
+        long inicio = System.nanoTime();
+
+        // Generar contenido .dot del árbol
+        String dotContent = BOTON_AVL.isSelected() ? ArbolAVL.generarDot() : ArbolABB.generarDot();  // usa las instancias, no clases
+
+        // Guardar archivo DOT
+        File dotFile = new File("arbol.dot");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dotFile))) {
+            writer.write(dotContent);
+        }
+
+        // Convertir a imagen PNG usando Graphviz
+        String outputImage = "arbol.png";
+        ProcessBuilder pb = new ProcessBuilder("dot", "-Tpng", "-Gdpi=300", "arbol.dot", "-o", outputImage);
+
+        Process p = pb.start();
+        p.waitFor();
+
+        long fin = System.nanoTime();
+        long duracion = (fin - inicio) / 1_000_000;
+
+        // Mostrar imagen en una ventana con zoom
+        mostrarImagenConZoom(outputImage);
+
+        JOptionPane.showMessageDialog(this, "Diagrama generado correctamente en " + duracion + " ms");
+
+    } catch (IOException | InterruptedException ex) {
+        JOptionPane.showMessageDialog(this, "Error al generar el diagrama: " + ex.getMessage());
+        ex.printStackTrace();
+    }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Asignar;
     private javax.swing.JRadioButton BOTON_ABB;
@@ -1317,6 +1410,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private javax.swing.JLabel Titulo3;
     private javax.swing.JLabel User_Indicator;
     private javax.swing.JButton Usuario;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
