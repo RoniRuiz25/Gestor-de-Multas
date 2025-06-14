@@ -94,6 +94,7 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         Buscar_Placa_1 = new javax.swing.JButton();
         Ticket_1 = new javax.swing.JButton();
         Eliminar_1 = new javax.swing.JButton();
+        Refresh_Placa = new javax.swing.JButton();
         MULTAS = new javax.swing.JButton();
         Titulo = new javax.swing.JLabel();
         TRASPASOS = new javax.swing.JButton();
@@ -251,6 +252,15 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
             }
         });
 
+        Refresh_Placa.setBackground(new java.awt.Color(18, 58, 121));
+        Refresh_Placa.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-recargar-16.png")); // NOI18N
+        Refresh_Placa.setBorder(null);
+        Refresh_Placa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Refresh_PlacaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout Panel_Llenado_1Layout = new javax.swing.GroupLayout(Panel_Llenado_1);
         Panel_Llenado_1.setLayout(Panel_Llenado_1Layout);
         Panel_Llenado_1Layout.setHorizontalGroup(
@@ -264,6 +274,8 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
                         .addComponent(Buscar_Placa_1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Refresh_Placa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Eliminar_1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -281,9 +293,10 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
                         .addComponent(Eliminar_1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Ticket_1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(Buscar_Placa_1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Refresh_Placa, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -404,16 +417,13 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
             .addGap(0, 28, Short.MAX_VALUE)
         );
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\LOGO.png")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\LOGO-1.png")); // NOI18N
 
         javax.swing.GroupLayout Primer_PanelLayout = new javax.swing.GroupLayout(Primer_Panel);
         Primer_Panel.setLayout(Primer_PanelLayout);
         Primer_PanelLayout.setHorizontalGroup(
             Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Primer_PanelLayout.createSequentialGroup()
-                .addGap(146, 146, 146)
-                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(Primer_PanelLayout.createSequentialGroup()
                 .addComponent(Desplegable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -425,35 +435,37 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(Primer_PanelLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addGap(96, 96, 96)
+                        .addComponent(MULTAS, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(TRASPASOS, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(322, 322, 322)
+                        .addComponent(VEHICULOS, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(159, 159, 159))))
+            .addGroup(Primer_PanelLayout.createSequentialGroup()
+                .addGap(146, 146, 146)
+                .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Primer_PanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(Primer_PanelLayout.createSequentialGroup()
-                                .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(Primer_PanelLayout.createSequentialGroup()
-                                .addComponent(MULTAS, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TRASPASOS, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(322, 322, 322)
-                                .addComponent(VEHICULOS, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(159, 159, 159))))))
+                        .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         Primer_PanelLayout.setVerticalGroup(
             Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Primer_PanelLayout.createSequentialGroup()
                 .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Primer_PanelLayout.createSequentialGroup()
-                        .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(Primer_PanelLayout.createSequentialGroup()
                                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24)
-                                .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(Primer_PanelLayout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addComponent(jLabel3)))
-                        .addGap(105, 105, 105)
+                                .addGap(29, 29, 29)
+                                .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(13, 13, 13))
+                            .addComponent(jLabel3))
+                        .addGap(87, 87, 87)
                         .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(MULTAS, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(VEHICULOS, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -895,6 +907,18 @@ try {
         }
     }//GEN-LAST:event_TRASPASOSActionPerformed
 
+    private void Refresh_PlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_PlacaActionPerformed
+        // TODO add your handling code here:
+        EscribirBus.setText("");
+
+        long inicio = System.nanoTime();
+        actualizarTabla(Tabla_Multa_1);  // usa los datos en memoria, no el archivo
+        long fin = System.nanoTime();
+
+        long duracionMs = (fin - inicio) / 1_000_000;
+        JOptionPane.showMessageDialog(this, "Tabla actualizada.\nDuración: " + duracionMs + " ms");
+    }//GEN-LAST:event_Refresh_PlacaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Asignar_Multa;
     private javax.swing.JButton Buscar_Fch;
@@ -907,6 +931,7 @@ try {
     private javax.swing.JButton Nuevo_Doc;
     private javax.swing.JPanel Panel_Llenado_1;
     private javax.swing.JPanel Primer_Panel;
+    private javax.swing.JButton Refresh_Placa;
     private javax.swing.JButton TRASPASOS;
     private javax.swing.JTable Tabla_Multa_1;
     private javax.swing.JButton Ticket_1;

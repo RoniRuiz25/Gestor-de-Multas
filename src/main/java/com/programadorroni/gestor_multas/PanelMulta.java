@@ -19,8 +19,40 @@ public class PanelMulta extends javax.swing.JPanel {
     }
 
     public void setArchivoActual(File archivo) {
-        this.archivoActual = archivo;
-        cargarDesdeArchivo(archivo);
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+        DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
+        modelo.setRowCount(0); // Limpia la tabla visual
+        listaMultas.vaciar(); // Limpia lista en memoria (si tienes método vaciar)
+
+        String linea;
+        int contadorBoleta = 1; // BOLETA auto generada
+
+        while ((linea = reader.readLine()) != null) {
+            String[] datos = linea.split(",");
+
+            if (datos.length >= 6) {
+                String placa = datos[0].trim();
+                String fecha = datos[1].trim();
+                String depto = datos[2].trim();
+                String descripcion = datos[3].trim();
+                double monto = Double.parseDouble(datos[4].trim());
+                String estado = datos[5].trim();
+
+                // Crea la multa con BOLETA autogenerada
+                Multa nueva = new Multa(contadorBoleta, placa, fecha, depto, descripcion, monto, estado);
+                listaMultas.insertarFinal(nueva); // Guardas en lista
+
+                // Agrega a la tabla
+                modelo.addRow(nueva.toArray());
+
+                contadorBoleta++;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Archivo cargado correctamente.");
+    } catch (IOException | NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Error al leer el archivo:\n" + e.getMessage());
+    }
     }
       
     private void guardarCambiosEnArchivo() {
@@ -45,35 +77,105 @@ public class PanelMulta extends javax.swing.JPanel {
     }
 }
        
+    private void cargarDesdeArchivoPanelMulta(File archivo) {
+    listaMultas.limpiar(); // Borra la lista enlazada antes de cargar
+
+    int contadorID = 1; // ID autogenerado para la columna BOLETA
+    int lineasMalFormateadas = 0;
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = reader.readLine()) != null) {
+            String[] datos = linea.split(",");
+            if (datos.length == 6) {
+                try {
+                    double monto = Double.parseDouble(datos[4].trim());
+                    Multa m = new Multa(
+                        contadorID++,           // BOLETA generado automáticamente
+                        datos[0].trim(),        // PLACA
+                        datos[1].trim(),        // FECHA
+                        datos[2].trim(),        // DEPARTAMENTO
+                        datos[3].trim(),        // DESCRIPCION
+                        monto,                  // MONTO
+                        datos[5].trim()         // ESTADO
+                    );
+                    listaMultas.insertarOrdenado(m);
+                } catch (NumberFormatException e) {
+                    lineasMalFormateadas++;
+                }
+            } else {
+                lineasMalFormateadas++;
+            }
+        }
+
+        // Refresca la tabla con los datos cargados
+        mostrarEnTablaPanelMulta(listaMultas.obtenerDatos());
+
+        if (lineasMalFormateadas > 0) {
+            JOptionPane.showMessageDialog(this, 
+                "Carga completada con advertencias.\n" + 
+                "Líneas ignoradas por formato incorrecto: " + lineasMalFormateadas,
+                "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Archivo cargado correctamente.");
+        }
+
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al leer el archivo:\n" + e.getMessage());
+    }
+}
+    
+    private void mostrarEnTablaPanelMulta(Object[][] datos) {
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.setColumnIdentifiers(new String[]{"BOLETA", "Placa", "Fecha", "Departamento", "Descripción", "Monto", "Estado"});
+
+    for (Object[] fila : datos) {
+        modelo.addRow(fila);
+    }
+
+    Tabla_Dat_Multa.setModel(modelo);
+}
+    
         public void cargarDesdeArchivo(File archivo) {
-         listaMultas.limpiar();
-    DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
-    modelo.setRowCount(0);
+        DefaultTableModel modelo = new DefaultTableModel();
+    modelo.setColumnIdentifiers(new String[] {
+        "BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCIÓN", "MONTO", "ESTADO"
+    });
+
+    int contadorID = 1;
 
     try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
         String linea;
-        int id = 1;
         while ((linea = br.readLine()) != null) {
-            String[] partes = linea.split(",");
-            if (partes.length == 6) {
-                Multa multa = new Multa(id, partes[0].trim(), partes[1].trim(), partes[2].trim(), partes[3].trim(), Double.parseDouble(partes[4].trim()), partes[5].trim());
-                listaMultas.insertarOrdenado(multa);
-                modelo.addRow(multa.toArray());
-                id++;
+            String[] datos = linea.split(",");
+
+            if (datos.length == 6) {
+                modelo.addRow(new Object[]{
+                    contadorID++, 
+                    datos[0].trim(), 
+                    datos[1].trim(), 
+                    datos[2].trim(), 
+                    datos[3].trim(), 
+                    Double.parseDouble(datos[4].trim()), 
+                    datos[5].trim()
+                });
             }
         }
+
+        Tabla_Dat_Multa.setModel(modelo);
+        JOptionPane.showMessageDialog(this, "Archivo cargado correctamente.");
     } catch (IOException | NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Error al cargar el archivo: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al cargar archivo: " + e.getMessage());
     }
         }
 
     private void mostrarEnTabla(Object[][] datos) {
          DefaultTableModel modelo = new DefaultTableModel();
-    modelo.setColumnIdentifiers(new String[]{"BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCION", "MONTO", "ESTADO"});
-    for (Object[] fila : datos) {
-        modelo.addRow(fila);
-    }
-    Tabla_Dat_Multa.setModel(modelo);
+        modelo.setColumnIdentifiers(new String[]{"BOLETA", "Placa", "Fecha", "Departamento", "Descripción", "Monto", "Estado"});
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
+        Tabla_Dat_Multa.setModel(modelo);
     }
 
     private void actualizarTabla(JTable tabla) {
@@ -533,7 +635,6 @@ public class PanelMulta extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        Tabla_Dat_Multa.setForeground(new java.awt.Color(255, 255, 255));
         Tabla_Dat_Multa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -993,12 +1094,12 @@ public class PanelMulta extends javax.swing.JPanel {
     private void Buscar_Fch_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_Fch_2ActionPerformed
         // TODO add your handling code here:
        JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", "txt"));
-    int result = fileChooser.showOpenDialog(this);
-    
-    if (result == JFileChooser.APPROVE_OPTION) {
-        File file = fileChooser.getSelectedFile();
-        setArchivoActual(file); // Usa el método ya definido para actualizar archivo y cargar
+    fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos de texto", "txt"));
+    int resultado = fileChooser.showOpenDialog(this);
+
+    if (resultado == JFileChooser.APPROVE_OPTION) {
+        File archivoActual = fileChooser.getSelectedFile();
+        cargarDesdeArchivoPanelMulta(archivoActual);  // Versión adaptada
     }
     }//GEN-LAST:event_Buscar_Fch_2ActionPerformed
 
