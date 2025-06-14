@@ -84,6 +84,92 @@ private void mostrarImagenConZoom(String rutaImagen) {
     });
 }
 
+private void actualizarTotalMultasPorDepartamento() {
+    DefaultTableModel model = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
+
+    int indiceDepartamento = 8;  // Ajusta según tu tabla
+    int indiceMultas = 6;        // Ajusta según tu tabla
+
+    int totalMultasPeten = 0;
+    int totalMultasQuetzaltenango = 0;
+    int totalMultasSanMarcos = 0;
+    int totalMultasSuchitequez = 0;
+    int totalMultasHuehuetenango = 0;
+    int totalMultasGuatemala = 0;
+    int totalMultasAntiguaGuatemala = 0;
+    int totalMultasChimaltenango = 0;
+    int totalMultasChiquimula = 0;
+    int totalMultasEscuintla = 0;
+
+    for (int i = 0; i < model.getRowCount(); i++) {
+        Object deptObj = model.getValueAt(i, indiceDepartamento);
+        Object multasObj = model.getValueAt(i, indiceMultas);
+
+        if (deptObj != null && multasObj != null) {
+            String departamento = deptObj.toString().trim();
+            String multasStr = multasObj.toString().trim();
+
+            int multas = 0;
+            try {
+                multas = Integer.parseInt(multasStr);
+            } catch (NumberFormatException e) {
+                System.err.println("Valor de multas inválido en fila " + i + ": " + multasStr);
+                continue; // Ignora esta fila si no se puede parsear
+            }
+
+            if (departamento.equalsIgnoreCase("Peten")) {
+                totalMultasPeten += multas;
+            } else if (departamento.equalsIgnoreCase("Quetzaltenango")) {
+                totalMultasQuetzaltenango += multas;
+            } else if (departamento.equalsIgnoreCase("San Marcos")) {
+                totalMultasSanMarcos += multas;
+            } else if (departamento.equalsIgnoreCase("Suchitequez") || departamento.equalsIgnoreCase("Suchitepequez")) {
+                totalMultasSuchitequez += multas;
+            } else if (departamento.equalsIgnoreCase("Huehuetenango")) {
+                totalMultasHuehuetenango += multas;
+            } else if (departamento.equalsIgnoreCase("Guatemala")) {
+                totalMultasGuatemala += multas;
+            } else if (departamento.equalsIgnoreCase("Antigua Guatemala")) {
+                totalMultasAntiguaGuatemala += multas;
+            } else if (departamento.equalsIgnoreCase("Chimaltenango")) {
+                totalMultasChimaltenango += multas;
+            } else if (departamento.equalsIgnoreCase("Chiquimula")) {
+                totalMultasChiquimula += multas;
+            } else if (departamento.equalsIgnoreCase("Escuintla")) {
+                totalMultasEscuintla += multas;
+            }
+        }
+    }
+
+    // Actualiza los JLabel con los totales
+    Peten.setText("" + totalMultasPeten);
+    Quetzaltenango.setText("" + totalMultasQuetzaltenango);
+    San_Marcos.setText("" + totalMultasSanMarcos);
+    Suchitepequez.setText("" + totalMultasSuchitequez);
+    Huehuetenango.setText("" + totalMultasHuehuetenango);
+    Guatemala.setText("" + totalMultasGuatemala);
+    Antigua_Guatemala.setText("" + totalMultasAntiguaGuatemala);
+    Chimaltenango.setText("" + totalMultasChimaltenango);
+    Chiquimula.setText("" + totalMultasChiquimula);
+    Escuintla.setText("" + totalMultasEscuintla);
+}
+
+private void guardarArbolEnArchivo(String rutaArchivo, List<Vehiculo> listaVehiculos) {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaArchivo))) {
+        for (Vehiculo v : listaVehiculos) {
+            String linea = String.join(",",
+                    v.getPlaca(), v.getDpi(), v.getNombre(), v.getDepartamento(),
+                    v.getMarca(), v.getModelo(), v.getAño(), v.getMultas(), v.getTraspasos()
+            );
+            bw.write(linea);
+            bw.newLine();
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, "Error al guardar el archivo: " + e.getMessage());
+    }
+}
+
+
 private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     String[] columnas = {"PLACA", "DPI", "NOMBRE", "MARCA", "MODELO", "AÑO", "MULTAS", "TRASPASOS", "DEPARTAMENTO"};
     DefaultTableModel modelo = new DefaultTableModel(null, columnas);
@@ -95,6 +181,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     Tabla_Dat_Traspaso.setModel(modelo);
     Tabla_Dat_Traspaso.revalidate();
     Tabla_Dat_Traspaso.repaint();
+    
 }
 
     /**
@@ -123,6 +210,16 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         Titulo2 = new javax.swing.JLabel();
+        Suchitepequez = new javax.swing.JLabel();
+        San_Marcos = new javax.swing.JLabel();
+        Quetzaltenango = new javax.swing.JLabel();
+        Peten = new javax.swing.JLabel();
+        Huehuetenango = new javax.swing.JLabel();
+        Guatemala = new javax.swing.JLabel();
+        Escuintla = new javax.swing.JLabel();
+        Chiquimula = new javax.swing.JLabel();
+        Chimaltenango = new javax.swing.JLabel();
+        Antigua_Guatemala = new javax.swing.JLabel();
         Desplegable1 = new javax.swing.JPanel();
         Home1 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
@@ -188,7 +285,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Resumen");
+        jLabel6.setText("Resumen Multas");
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -234,6 +331,46 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         Titulo2.setForeground(new java.awt.Color(255, 255, 255));
         Titulo2.setText("Gestion Geografica");
 
+        Suchitepequez.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Suchitepequez.setForeground(new java.awt.Color(255, 255, 255));
+        Suchitepequez.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        San_Marcos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        San_Marcos.setForeground(new java.awt.Color(255, 255, 255));
+        San_Marcos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Quetzaltenango.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Quetzaltenango.setForeground(new java.awt.Color(255, 255, 255));
+        Quetzaltenango.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Peten.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Peten.setForeground(new java.awt.Color(255, 255, 255));
+        Peten.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Huehuetenango.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Huehuetenango.setForeground(new java.awt.Color(255, 255, 255));
+        Huehuetenango.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Guatemala.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Guatemala.setForeground(new java.awt.Color(255, 255, 255));
+        Guatemala.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Escuintla.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Escuintla.setForeground(new java.awt.Color(255, 255, 255));
+        Escuintla.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Chiquimula.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Chiquimula.setForeground(new java.awt.Color(255, 255, 255));
+        Chiquimula.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Chimaltenango.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Chimaltenango.setForeground(new java.awt.Color(255, 255, 255));
+        Chimaltenango.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Antigua_Guatemala.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Antigua_Guatemala.setForeground(new java.awt.Color(255, 255, 255));
+        Antigua_Guatemala.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -245,19 +382,33 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                     .addComponent(Titulo2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel22))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(58, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel22))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(San_Marcos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Quetzaltenango, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Peten, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Huehuetenango, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Guatemala, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Escuintla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Chiquimula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Chimaltenango, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(Antigua_Guatemala, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(Suchitepequez, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,25 +418,45 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                         .addGap(39, 39, 39)
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel7)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Suchitepequez, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel8)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(San_Marcos, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(17, 17, 17)
-                        .addComponent(jLabel13)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Quetzaltenango, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel15)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Peten, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel14)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Huehuetenango, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel16)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Guatemala, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel19)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Escuintla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel20)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Chiquimula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel21)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Chimaltenango, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel22))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel22)
+                            .addComponent(Antigua_Guatemala, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(Titulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -575,9 +746,9 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                    .addContainerGap(244, Short.MAX_VALUE)
+                    .addContainerGap(235, Short.MAX_VALUE)
                     .addComponent(jLabel9)
-                    .addContainerGap(243, Short.MAX_VALUE)))
+                    .addContainerGap(236, Short.MAX_VALUE)))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -980,6 +1151,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         }
 
         Tabla_Dat_Traspaso.setModel(modelo);
+        actualizarTotalMultasPorDepartamento();
 
         long fin = System.nanoTime();
         long duracion = fin - inicio;
@@ -1047,12 +1219,12 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     JTextField campoPlaca = new JTextField();
     JTextField campoDPI = new JTextField();
     JTextField campoNombre = new JTextField();
-    JTextField campoDepartamento = new JTextField(); // NUEVO
     JTextField campoMarca = new JTextField();
     JTextField campoModelo = new JTextField();
     JTextField campoAnio = new JTextField();
     JTextField campoMultas = new JTextField();
     JTextField campoTraspasos = new JTextField();
+    JTextField campoDepartamento = new JTextField();
 
     // Armar panel con campos
     JPanel panel = new JPanel(new GridLayout(0, 1));
@@ -1072,7 +1244,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     panel.add(campoMultas);
     panel.add(new JLabel("TRASPASOS:"));
     panel.add(campoTraspasos);
-    panel.add(new JLabel("DEPARTAMENTO:")); // NUEVO
+    panel.add(new JLabel("DEPARTAMENTO:"));
     panel.add(campoDepartamento);
 
     // Mostrar cuadro de diálogo
@@ -1089,7 +1261,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             String anio = campoAnio.getText().trim();
             String multas = campoMultas.getText().trim();
             String traspasos = campoTraspasos.getText().trim();
-             String departamento = campoDepartamento.getText().trim(); // NUEVO
+             String departamento = campoDepartamento.getText().trim();
 
             // Crear objeto Vehiculo con nuevo campo
             Vehiculo nuevoVehiculo = new Vehiculo(
@@ -1115,6 +1287,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     }
     }//GEN-LAST:event_AsignarActionPerformed
 
+    private final String rutaArchivoVehiculos = "vehiculos.txt";
+    
     private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
         // TODO add your handling code here:
         String placaBuscada = TextPlaca.getText().trim();
@@ -1144,23 +1318,23 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     JTextField campoPlaca = new JTextField(resultado.getPlaca());
     JTextField campoDPI = new JTextField(resultado.getDpi());
     JTextField campoNombre = new JTextField(resultado.getNombre());
-    JTextField campoDepartamento = new JTextField(resultado.getDepartamento());
     JTextField campoMarca = new JTextField(resultado.getMarca());
     JTextField campoModelo = new JTextField(resultado.getModelo());
     JTextField campoAnio = new JTextField(resultado.getAño());
     JTextField campoMultas = new JTextField(resultado.getMultas());
     JTextField campoTraspasos = new JTextField(resultado.getTraspasos());
+    JTextField campoDepartamento = new JTextField(resultado.getDepartamento());
 
     JPanel panel = new JPanel(new GridLayout(0, 1));
     panel.add(new JLabel("PLACA:")); panel.add(campoPlaca);
     panel.add(new JLabel("DPI:")); panel.add(campoDPI);
     panel.add(new JLabel("NOMBRE:")); panel.add(campoNombre);
-    panel.add(new JLabel("DEPARTAMENTO:")); panel.add(campoDepartamento);
     panel.add(new JLabel("MARCA:")); panel.add(campoMarca);
     panel.add(new JLabel("MODELO:")); panel.add(campoModelo);
     panel.add(new JLabel("AÑO:")); panel.add(campoAnio);
     panel.add(new JLabel("MULTAS:")); panel.add(campoMultas);
     panel.add(new JLabel("TRASPASOS:")); panel.add(campoTraspasos);
+    panel.add(new JLabel("DEPARTAMENTO:")); panel.add(campoDepartamento);
 
     int result = JOptionPane.showConfirmDialog(null, panel, "Editar Vehículo",
             JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -1177,12 +1351,12 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                 campoPlaca.getText().trim(),
                 campoDPI.getText().trim(),
                 campoNombre.getText().trim(),
-                campoDepartamento.getText().trim(),
                 campoMarca.getText().trim(),
                 campoModelo.getText().trim(),
                 campoAnio.getText().trim(),
                 campoMultas.getText().trim(),
-                campoTraspasos.getText().trim()
+                campoTraspasos.getText().trim(),
+                campoDepartamento.getText().trim()
         );
 
         if (BOTON_AVL.isSelected()) {
@@ -1196,7 +1370,11 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                 ? ArbolAVL.inOrden()
                 : ArbolABB.inOrden();
 
+        // Actualizar JTable
         actualizarTablaDesdeLista(listaActualizada);
+
+        // Guardar en archivo
+        guardarArbolEnArchivo(rutaArchivoVehiculos, listaActualizada);
 
         long fin = System.nanoTime();
         long tiempoMs = (fin - inicio) / 1_000_000;
@@ -1277,6 +1455,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     }
 
     Tabla_Dat_Traspaso.setModel(modelo);
+    
+    actualizarTotalMultasPorDepartamento();
     }//GEN-LAST:event_Buscar_Placa_1ActionPerformed
 
     private void Eliminar_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_1ActionPerformed
@@ -1465,6 +1645,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     }//GEN-LAST:event_DES_INCRIPTARActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Antigua_Guatemala;
     private javax.swing.JButton Asignar;
     private javax.swing.JRadioButton BOTON_ABB;
     private javax.swing.JRadioButton BOTON_AVL;
@@ -1472,18 +1653,27 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private javax.swing.JButton Bus_Placa_2;
     private javax.swing.JButton Buscar_Fch_2;
     private javax.swing.JButton Buscar_Placa_1;
+    private javax.swing.JLabel Chimaltenango;
+    private javax.swing.JLabel Chiquimula;
     private javax.swing.JButton DES_INCRIPTAR;
     private javax.swing.JPanel Desplegable1;
     private javax.swing.JButton Edit;
     private javax.swing.JButton Eliminar_1;
     private javax.swing.JTextField EscribirBus;
+    private javax.swing.JLabel Escuintla;
     private javax.swing.JButton Guardar;
+    private javax.swing.JLabel Guatemala;
     private javax.swing.JButton Home1;
+    private javax.swing.JLabel Huehuetenango;
     private javax.swing.JButton InOrden;
     private javax.swing.JButton Incriptar;
+    private javax.swing.JLabel Peten;
     private javax.swing.JButton PosOrden;
     private javax.swing.JButton PreOrden;
+    private javax.swing.JLabel Quetzaltenango;
     private javax.swing.JButton Refresh_Placa;
+    private javax.swing.JLabel San_Marcos;
+    private javax.swing.JLabel Suchitepequez;
     private javax.swing.JTable Tabla_Dat_Traspaso;
     private javax.swing.JTextField TextPlaca;
     private javax.swing.JLabel Titulo2;

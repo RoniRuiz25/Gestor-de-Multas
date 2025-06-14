@@ -12,25 +12,25 @@ public class Vehiculo {
     private String placa;
     private String dpi;
     private String nombre;
-    private String departamento;
     private String marca;
     private String modelo;
     private String año;
     private String multas;
     private String traspasos;
+    private String departamento;
 
     // Constructor completo con DEPARTAMENTO
-    public Vehiculo(String placa, String dpi, String nombre, String departamento,
-                    String marca, String modelo, String año, String multas, String traspasos) {
+    public Vehiculo(String placa, String dpi, String nombre,
+                    String marca, String modelo, String año, String multas, String traspasos, String departamento) {
         this.placa = placa;
         this.dpi = dpi;
         this.nombre = nombre;
-        this.departamento = departamento;
         this.marca = marca;
         this.modelo = modelo;
         this.año = año;
         this.multas = multas;
         this.traspasos = traspasos;
+        this.departamento = departamento;
     }
 
     // Getters
@@ -44,10 +44,6 @@ public class Vehiculo {
 
     public String getNombre() {
         return nombre;
-    }
-
-    public String getDepartamento() {
-        return departamento;
     }
 
     public String getMarca() {
@@ -69,10 +65,14 @@ public class Vehiculo {
     public String getTraspasos() {
         return traspasos;
     }
+    
+     public String getDepartamento() {
+        return departamento;
+    }
 
     // Representación en JTable
     public Object[] toRow() {
-        return new Object[]{placa, dpi, nombre, departamento, marca, modelo, año, multas, traspasos};
+        return new Object[]{placa, dpi, nombre, marca, modelo, año, multas, traspasos, departamento};
     }
 
     Object getAnio() {
