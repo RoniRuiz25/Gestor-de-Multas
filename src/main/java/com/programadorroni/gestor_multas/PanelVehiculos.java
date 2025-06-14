@@ -220,6 +220,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         Chiquimula = new javax.swing.JLabel();
         Chimaltenango = new javax.swing.JLabel();
         Antigua_Guatemala = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         Desplegable1 = new javax.swing.JPanel();
         Home1 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
@@ -230,7 +231,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         jPanel10 = new javax.swing.JPanel();
         Usuario = new javax.swing.JButton();
         User_Indicator = new javax.swing.JLabel();
-        Barra = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla_Dat_Traspaso = new javax.swing.JTable();
@@ -371,15 +371,22 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         Antigua_Guatemala.setForeground(new java.awt.Color(255, 255, 255));
         Antigua_Guatemala.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\MARCADOR-1.png")); // NOI18N
+        jLabel3.setToolTipText("");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel1)
-                    .addComponent(Titulo2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Titulo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -456,7 +463,9 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                             .addComponent(jLabel22)
                             .addComponent(Antigua_Guatemala, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(Titulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Titulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(13, Short.MAX_VALUE))
@@ -479,8 +488,10 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("LOGOTIPO");
+        jLabel2.setText("Gestor de Multas");
 
+        jButton1.setBackground(new java.awt.Color(242, 242, 242));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setText("Graphviz");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -488,6 +499,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             }
         });
 
+        Incriptar.setBackground(new java.awt.Color(242, 242, 242));
+        Incriptar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         Incriptar.setText("Incriptar");
         Incriptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -495,6 +508,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             }
         });
 
+        DES_INCRIPTAR.setBackground(new java.awt.Color(242, 242, 242));
+        DES_INCRIPTAR.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         DES_INCRIPTAR.setText("Des Incriptar");
         DES_INCRIPTAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -555,17 +570,12 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
         User_Indicator.setText("Roni Ruiz");
 
-        Barra.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        Barra.setText("=");
-
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Barra, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(1030, Short.MAX_VALUE)
                 .addComponent(User_Indicator, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Usuario)
@@ -576,10 +586,10 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Usuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(User_Indicator)
-                        .addComponent(Barra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(Usuario, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(User_Indicator)))
                 .addContainerGap())
         );
 
@@ -626,6 +636,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
 
         Guardar.setBackground(new java.awt.Color(242, 242, 242));
         Guardar.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-guardar-16.png")); // NOI18N
+        Guardar.setText("GUARDAR");
         Guardar.setBorder(null);
         Guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -676,7 +687,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Guardar)
+                        .addComponent(Guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15))))
         );
         jPanel8Layout.setVerticalGroup(
@@ -780,6 +791,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Agregar Fichero Existente");
 
+        PosOrden.setBackground(new java.awt.Color(242, 242, 242));
         PosOrden.setText("Pos Orden");
         PosOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -787,6 +799,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             }
         });
 
+        InOrden.setBackground(new java.awt.Color(242, 242, 242));
         InOrden.setText("In Orden");
         InOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -794,6 +807,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             }
         });
 
+        PreOrden.setBackground(new java.awt.Color(242, 242, 242));
         PreOrden.setText("Pre Orden");
         PreOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -806,6 +820,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel24.setText("Tipos de Ordenamientos");
 
+        Asignar.setBackground(new java.awt.Color(242, 242, 242));
         Asignar.setText("Asignar Nuevo Vehiculo");
         Asignar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -813,6 +828,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
             }
         });
 
+        Edit.setBackground(new java.awt.Color(242, 242, 242));
         Edit.setText("Editar Vehiculo");
         Edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -844,7 +860,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
         jLabel25.setText("Gestion Vehicular");
 
         Eliminar_1.setBackground(new java.awt.Color(17, 34, 61));
-        Eliminar_1.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-eliminar-24.png")); // NOI18N
+        Eliminar_1.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\PAPELETA.png")); // NOI18N
         Eliminar_1.setBorder(null);
         Eliminar_1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -889,8 +905,8 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
                                         .addGap(18, 18, 18)
                                         .addComponent(Edit)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Eliminar_1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(32, 32, 32))
+                                .addComponent(Eliminar_1)
+                                .addGap(25, 25, 25))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -1647,7 +1663,6 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private javax.swing.JButton Asignar;
     private javax.swing.JRadioButton BOTON_ABB;
     private javax.swing.JRadioButton BOTON_AVL;
-    private javax.swing.JButton Barra;
     private javax.swing.JButton Bus_Placa_2;
     private javax.swing.JButton Buscar_Fch_2;
     private javax.swing.JButton Buscar_Placa_1;
@@ -1695,6 +1710,7 @@ private void actualizarTablaDesdeLista(List<Vehiculo> lista) {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
