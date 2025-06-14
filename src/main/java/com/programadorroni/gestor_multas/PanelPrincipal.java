@@ -97,7 +97,6 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         MULTAS = new javax.swing.JButton();
         Titulo = new javax.swing.JLabel();
         TRASPASOS = new javax.swing.JButton();
-        RESUMEN = new javax.swing.JButton();
         VEHICULOS = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         Usuario = new javax.swing.JButton();
@@ -256,7 +255,7 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
                     .addComponent(jScrollPane1)
                     .addGroup(Panel_Llenado_1Layout.createSequentialGroup()
                         .addComponent(Buscar_Placa_1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                         .addComponent(EscribirBus, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(992, 992, 992)
                         .addComponent(Eliminar_1)
@@ -298,8 +297,6 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
                 TRASPASOSActionPerformed(evt);
             }
         });
-
-        RESUMEN.setText("RESUMEN");
 
         VEHICULOS.setText("VEHICULOS");
         VEHICULOS.addActionListener(new java.awt.event.ActionListener() {
@@ -409,15 +406,13 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         Primer_PanelLayout.setHorizontalGroup(
             Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Primer_PanelLayout.createSequentialGroup()
-                .addGap(263, 263, 263)
+                .addGap(304, 304, 304)
                 .addComponent(MULTAS, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(230, 230, 230)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(TRASPASOS)
-                .addGap(250, 250, 250)
+                .addGap(343, 343, 343)
                 .addComponent(VEHICULOS)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
-                .addComponent(RESUMEN)
-                .addGap(146, 146, 146))
+                .addGap(221, 221, 221))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Primer_PanelLayout.createSequentialGroup()
                 .addGap(146, 146, 146)
@@ -450,8 +445,7 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
                         .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(MULTAS)
                             .addComponent(TRASPASOS)
-                            .addComponent(VEHICULOS)
-                            .addComponent(RESUMEN))
+                            .addComponent(VEHICULOS))
                         .addGap(75, 75, 75)
                         .addGroup(Primer_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -534,6 +528,9 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
             fileToSave = new File(fileToSave.getAbsolutePath() + ".txt");
         }
 
+        long startMillis = System.currentTimeMillis();
+        long startNano = System.nanoTime();
+
         try {
             if (!fileToSave.exists()) {
                 boolean creado = fileToSave.createNewFile();
@@ -559,6 +556,19 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
             e.printStackTrace(); // Muestra error en consola
             JOptionPane.showMessageDialog(this, "Error al crear el archivo: " + e.getMessage());
         }
+
+        long endMillis = System.currentTimeMillis();
+        long endNano = System.nanoTime();
+
+        long elapsedMillis = endMillis - startMillis;
+        long elapsedNano = endNano - startNano;
+
+        JOptionPane.showMessageDialog(this,
+            "Tiempo total para crear el archivo:\n" +
+            elapsedMillis + " milisegundos\n" +
+            elapsedNano + " nanosegundos",
+            "Tiempo de ejecución",
+            JOptionPane.INFORMATION_MESSAGE);
     }
     }//GEN-LAST:event_Nuevo_DocActionPerformed
 
@@ -581,6 +591,9 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
 
     int result = JOptionPane.showConfirmDialog(null, panel, "Asignar Multa", JOptionPane.OK_CANCEL_OPTION);
     if (result == JOptionPane.OK_OPTION) {
+        long startMillis = System.currentTimeMillis();
+        long startNano = System.nanoTime();
+
         try {
             double montoValor = Double.parseDouble(monto.getText());
 
@@ -596,6 +609,19 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
 
             listaMultas.insertarOrdenado(nueva); // Inserta ordenado
             refrescarTabla();                     // Refresca la tabla con nuevo orden
+
+            long endMillis = System.currentTimeMillis();
+            long endNano = System.nanoTime();
+
+            long elapsedMillis = endMillis - startMillis;
+            long elapsedNano = endNano - startNano;
+
+            JOptionPane.showMessageDialog(this,
+                "Tiempo total para asignar multa y refrescar tabla:\n" +
+                elapsedMillis + " milisegundos\n" +
+                elapsedNano + " nanosegundos",
+                "Tiempo de ejecución",
+                JOptionPane.INFORMATION_MESSAGE);
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "El monto debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -615,7 +641,16 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
         return;
     }
 
+    long startMillis = System.currentTimeMillis();
+    long startNano = System.nanoTime();
+
     Multa resultado = listaMultas.buscarPorPlaca(placaBuscada);
+
+    long endMillis = System.currentTimeMillis();
+    long endNano = System.nanoTime();
+
+    long elapsedMillis = endMillis - startMillis;
+    long elapsedNano = endNano - startNano;
 
     DefaultTableModel modeloFiltrado = new DefaultTableModel(
         new Object[]{"BOLETA", "PLACA", "FECHA", "DEPARTAMENTO", "DESCRIPCIÓN", "MONTO", "ESTADO"}, 0
@@ -624,57 +659,113 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
     if (resultado != null) {
         modeloFiltrado.addRow(resultado.toArray());
         Tabla_Multa_1.setModel(modeloFiltrado);
+
+        JOptionPane.showMessageDialog(this,
+            "Búsqueda completada en:\n" +
+            elapsedMillis + " milisegundos\n" +
+            elapsedNano + " nanosegundos",
+            "Tiempo de Búsqueda",
+            JOptionPane.INFORMATION_MESSAGE);
     } else {
-        JOptionPane.showMessageDialog(this, "No se encontraron registros para la placa ingresada.");
+        JOptionPane.showMessageDialog(this,
+            "No se encontraron registros para la placa ingresada.\n\n" +
+            "Tiempo de búsqueda:\n" +
+            elapsedMillis + " milisegundos\n" +
+            elapsedNano + " nanosegundos");
     }
     }//GEN-LAST:event_Buscar_Placa_1ActionPerformed
 
     private void Ticket_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ticket_1ActionPerformed
         // TODO add your handling code here:
            String idStr = JOptionPane.showInputDialog(this, "Ingrese el número de BOLETA:");
-    if (idStr == null || idStr.trim().isEmpty()) return;
+if (idStr == null || idStr.trim().isEmpty()) return;
 
-    try {
-        int id = Integer.parseInt(idStr.trim());
-        Nodo actual = listaMultas.cabeza;
-        while (actual != null) {
-            if (actual.dato.id == id) {
-                String ticket = "----- TICKET DE PAGO -----\n"
-                        + "BOLETA: " + actual.dato.id + "\n"
-                        + "PLACA: " + actual.dato.placa + "\n"
-                        + "FECHA: " + actual.dato.fecha + "\n"
-                        + "DEPARTAMENTO: " + actual.dato.departamento + "\n"
-                        + "DESCRIPCIÓN: " + actual.dato.descripcion + "\n"
-                        + "MONTO: Q" + actual.dato.monto + "\n"
-                        + "ESTADO: " + actual.dato.estado + "\n"
-                        + "---------------------------";
-                JOptionPane.showMessageDialog(this, ticket);
-                return;
-            }
-            actual = actual.siguiente;
+try {
+    int id = Integer.parseInt(idStr.trim());
+
+    long startMillis = System.currentTimeMillis();
+    long startNano = System.nanoTime();
+
+    Nodo actual = listaMultas.cabeza;
+    while (actual != null) {
+        if (actual.dato.id == id) {
+            String ticket = "----- TICKET DE PAGO -----\n"
+                    + "BOLETA: " + actual.dato.id + "\n"
+                    + "PLACA: " + actual.dato.placa + "\n"
+                    + "FECHA: " + actual.dato.fecha + "\n"
+                    + "DEPARTAMENTO: " + actual.dato.departamento + "\n"
+                    + "DESCRIPCIÓN: " + actual.dato.descripcion + "\n"
+                    + "MONTO: Q" + actual.dato.monto + "\n"
+                    + "ESTADO: " + actual.dato.estado + "\n"
+                    + "---------------------------";
+
+            long endMillis = System.currentTimeMillis();
+            long endNano = System.nanoTime();
+
+            long elapsedMillis = endMillis - startMillis;
+            long elapsedNano = endNano - startNano;
+
+            JOptionPane.showMessageDialog(this,
+                ticket + "\n\nTiempo de búsqueda:\n" +
+                elapsedMillis + " milisegundos\n" +
+                elapsedNano + " nanosegundos",
+                "Ticket de Pago",
+                JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
-
-        JOptionPane.showMessageDialog(this, "No se encontró una multa con ese número de BOLETA.");
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Número de BOLETA inválido.");
+        actual = actual.siguiente;
     }
+
+    long endMillis = System.currentTimeMillis();
+    long endNano = System.nanoTime();
+
+    long elapsedMillis = endMillis - startMillis;
+    long elapsedNano = endNano - startNano;
+
+    JOptionPane.showMessageDialog(this,
+        "No se encontró una multa con ese número de BOLETA.\n\nTiempo de búsqueda:\n" +
+        elapsedMillis + " milisegundos\n" +
+        elapsedNano + " nanosegundos");
+
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Número de BOLETA inválido.");
+}
     }//GEN-LAST:event_Ticket_1ActionPerformed
 
     private void Eliminar_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_1ActionPerformed
         // TODO add your handling code here:
          String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID que desea eliminar:");
-        if (idStr == null || idStr.trim().isEmpty()) return;
-        try {
-            int id = Integer.parseInt(idStr.trim());
-            if (listaMultas.eliminarPorID(id)) {
-                JOptionPane.showMessageDialog(this, "Registro eliminado correctamente.");
-                refrescarTabla();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró un registro con ese ID.");
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "ID inválido.");
+    if (idStr == null || idStr.trim().isEmpty()) return;
+
+    try {
+        int id = Integer.parseInt(idStr.trim());
+
+        long startMillis = System.currentTimeMillis();
+        long startNano = System.nanoTime();
+
+        boolean eliminado = listaMultas.eliminarPorID(id);
+        if (eliminado) {
+            refrescarTabla();
+
+            long endMillis = System.currentTimeMillis();
+            long endNano = System.nanoTime();
+
+            long elapsedMillis = endMillis - startMillis;
+            long elapsedNano = endNano - startNano;
+
+            JOptionPane.showMessageDialog(this,
+                "Registro eliminado correctamente.\n" +
+                "Tiempo total para eliminar y refrescar tabla:\n" +
+                elapsedMillis + " milisegundos\n" +
+                elapsedNano + " nanosegundos",
+                "Operación completada",
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró un registro con ese ID.");
         }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "ID inválido.");
+    }
     }//GEN-LAST:event_Eliminar_1ActionPerformed
 
     private void Descargar_Fich_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Descargar_Fich_1ActionPerformed
@@ -805,7 +896,6 @@ import com.programadorroni.gestor_multas.ListaDobleMulta;
     private javax.swing.JButton Nuevo_Doc;
     private javax.swing.JPanel Panel_Llenado_1;
     private javax.swing.JPanel Primer_Panel;
-    private javax.swing.JButton RESUMEN;
     private javax.swing.JButton TRASPASOS;
     private javax.swing.JTable Tabla_Multa_1;
     private javax.swing.JButton Ticket_1;

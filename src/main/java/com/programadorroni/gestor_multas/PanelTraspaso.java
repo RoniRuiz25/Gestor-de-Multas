@@ -7,6 +7,8 @@ package com.programadorroni.gestor_multas;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.swing.JFileChooser;
@@ -45,67 +47,84 @@ public class PanelTraspaso extends javax.swing.JPanel {
     });
 }
    
-    private ArbolBinarioTraspaso construirArbolDesdeListaCircular() {
-    ArbolBinarioTraspaso arbol = new ArbolBinarioTraspaso();
-    for (Traspaso t : listaCircular.obtenerTodos()) {
-        arbol.insertar(t);
-    }
-    return arbol;
-}
-   
-    private int generarBoletaTraspaso() {
-    DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
-    int max = 0;
-    for (int i = 0; i < modelo.getRowCount(); i++) {
-        Object valor = modelo.getValueAt(i, 0); // Columna de BOLETA
-        if (valor != null) {
-            try {
-                int id = Integer.parseInt(valor.toString());
-                if (id > max) max = id;
-            } catch (NumberFormatException e) {
-                // Ignorar si no es numérico
-            }
+    private void guardarCambiosEnArchivo() {
+    if (archivoActual == null) return;
+
+    try (java.io.PrintWriter writer = new java.io.PrintWriter(archivoActual)) {
+        for (Traspaso t : listaCircular.obtenerTodos()) {
+            writer.println(t.getBoleta() + "," + t.getPlaca() + "," + t.getDpiAnterior() + "," +
+                           t.getNombreAnterior() + "," + t.getFechaAnterior() + "," +
+                           t.getDpiNuevo() + "," + t.getNombreNuevo() + "," + t.getDepartamento());
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al guardar el archivo.");
     }
-    return max + 1;
 }
-  
+    
     private void setArchivoActual(File file) {
-    archivoActual = file;
+     archivoActual = file;
     listaCircular = new ListaCircular(); // Reiniciar
     try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(file))) {
         String linea;
+        int contadorBoleta = 1; // BOLETA interna para UI
+
         while ((linea = reader.readLine()) != null) {
             String[] partes = linea.split(",");
             if (partes.length >= 6) {
-                // Asumiendo que partes[0]..partes[5] son:
-                // PLACA, DPI ANTERIOR, NOMBRE ANTERIOR, FECHA, DPI NUEVO, NOMBRE NUEVO
-                // Y que la columna DEPARTAMENTO viene después (7 columnas en total),
-                // pero dices que vienen 6 columnas en el archivo, entonces DEPARTAMENTO debe ser parte[5]
-                // Por eso aquí asignamos partes[5] a departamento, y DPI NUEVO y NOMBRE NUEVO se ajustarían si hay 7 columnas.
-                
-                // Si DEPARTAMENTO es la 7ª columna, partes.length >= 7 y el último es departamento:
                 String departamento = partes.length >= 7 ? partes[6].trim() : "";
 
                 Traspaso t = new Traspaso(
-                    partes[0].trim(),   // PLACA
-                    partes[1].trim(),   // DPI ANTERIOR
-                    partes[2].trim(),   // NOMBRE ANTERIOR
-                    partes[3].trim(),   // FECHA
-                    partes[4].trim(),   // DPI NUEVO
-                    partes[5].trim(),   // NOMBRE NUEVO
-                    departamento         // DEPARTAMENTO
+                    contadorBoleta++,           // BOLETA generado para lista/tablas, NO para archivo
+                    partes[0].trim(),           // PLACA
+                    partes[1].trim(),           // DPI ANTERIOR
+                    partes[2].trim(),           // NOMBRE ANTERIOR
+                    partes[3].trim(),           // FECHA
+                    partes[4].trim(),           // DPI NUEVO
+                    partes[5].trim(),           // NOMBRE NUEVO
+                    departamento                // DEPARTAMENTO
                 );
+
                 listaCircular.insertar(t);
             }
         }
+
         llenarTablaConListaCircular();
+
     } catch (Exception e) {
         e.printStackTrace();
         javax.swing.JOptionPane.showMessageDialog(this, "Error al leer el archivo");
     }
 }
 
+    private void guardarArchivo() {
+    if (archivoActual == null) {
+        JOptionPane.showMessageDialog(this, "No hay archivo para guardar.");
+        return;
+    }
+
+    try (PrintWriter writer = new PrintWriter(new FileWriter(archivoActual))) {
+        for (Traspaso t : listaCircular.obtenerTodos()) {
+            // Aquí decides si quieres guardar la boleta en archivo o no
+            // Por ejemplo, si no quieres guardarla, no la agregues al texto:
+            String linea = String.join(",",
+                t.getPlaca(),
+                t.getDpiAnterior(),
+                t.getNombreAnterior(),
+                t.getFechaAnterior(),
+                t.getDpiNuevo(),
+                t.getNombreNuevo(),
+                t.getDepartamento()
+            );
+            writer.println(linea);
+        }
+        JOptionPane.showMessageDialog(this, "Archivo guardado correctamente.");
+    } catch (IOException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al guardar el archivo.");
+    }
+}
+    
 private void llenarTablaConListaCircular() {
     // Agregamos la columna DEPARTAMENTO en el modelo
     String[] columnas = {"BOLETA", "PLACA", "DPI ANTERIOR", "NOMBRE ANTERIOR", "FECHA", "DPI", "NOMBRE", "DEPARTAMENTO"};
@@ -178,9 +197,10 @@ private void llenarTablaConListaCircular() {
         Titulo = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         Factura = new javax.swing.JButton();
-        Bt_Traspaso = new javax.swing.JButton();
         Eliminar_1 = new javax.swing.JButton();
+        Editar_Traspaso = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        Bt_Traspaso = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla_Dat_Traspaso = new javax.swing.JTable();
@@ -598,13 +618,6 @@ private void llenarTablaConListaCircular() {
             }
         });
 
-        Bt_Traspaso.setText("TRASPASO");
-        Bt_Traspaso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Bt_TraspasoActionPerformed(evt);
-            }
-        });
-
         Eliminar_1.setBackground(new java.awt.Color(242, 242, 242));
         Eliminar_1.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\icons8-eliminar-24.png")); // NOI18N
         Eliminar_1.setBorder(null);
@@ -614,14 +627,21 @@ private void llenarTablaConListaCircular() {
             }
         });
 
+        Editar_Traspaso.setText("EDITAR");
+        Editar_Traspaso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Editar_TraspasoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Bt_Traspaso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Editar_Traspaso)
+                .addGap(18, 18, 18)
                 .addComponent(Eliminar_1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Factura, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -632,13 +652,20 @@ private void llenarTablaConListaCircular() {
             .addComponent(Factura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Eliminar_1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Bt_Traspaso))
+                    .addComponent(Editar_Traspaso))
                 .addContainerGap())
         );
 
         jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\isaia\\Documents\\NetBeansProjects\\Gestor_Multas\\Iconos\\carro1-.png")); // NOI18N
+
+        Bt_Traspaso.setText("TRASPASO");
+        Bt_Traspaso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Bt_TraspasoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -651,7 +678,9 @@ private void llenarTablaConListaCircular() {
                         .addGap(232, 232, 232)
                         .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addComponent(Bt_Traspaso, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel7)))
                 .addContainerGap())
         );
@@ -661,8 +690,13 @@ private void llenarTablaConListaCircular() {
                 .addContainerGap()
                 .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel7)
-                .addGap(33, 33, 33)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(33, 33, 33))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(Bt_Traspaso)
+                        .addGap(84, 84, 84)))
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -874,11 +908,14 @@ private void llenarTablaConListaCircular() {
     }//GEN-LAST:event_TextPlacaActionPerformed
 
     private void Bus_Placa_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Placa_2ActionPerformed
-        String placaBuscar = TextPlaca.getText().trim();
+       String placaBuscar = TextPlaca.getText().trim();
     if (placaBuscar.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Ingrese una placa para buscar.");
         return;
     }
+
+    // Iniciar cronómetro
+    long inicio = System.nanoTime();
 
     // Buscar en la lista circular los registros con esa placa
     List<Traspaso> resultados = new java.util.ArrayList<>();
@@ -888,30 +925,41 @@ private void llenarTablaConListaCircular() {
         }
     }
 
+    long fin = System.nanoTime(); // Termina cronómetro
+    long duracionNano = fin - inicio;
+    long duracionMili = duracionNano / 1_000_000;
+
     if (resultados.isEmpty()) {
         JOptionPane.showMessageDialog(this, "No se encontraron registros con esa placa.");
         return;
     }
 
-    // Llenar la tabla con los resultados filtrados
-    String[] columnas = {"BOLETA", "PLACA", "DPI ANTERIOR", "NOMBRE ANTERIOR", "FECHA", "DPI", "NOMBRE"};
+    // Llenar la tabla con los resultados encontrados
+    String[] columnas = {"BOLETA", "PLACA", "DPI ANTERIOR", "NOMBRE ANTERIOR", "FECHA", "DPI NUEVO", "NOMBRE NUEVO", "DEPARTAMENTO"};
     DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-    int boleta = 1;
     for (Traspaso t : resultados) {
         Object[] fila = {
-            boleta++,
+            t.getBoleta(),
             t.getPlaca(),
             t.getDpiAnterior(),
             t.getNombreAnterior(),
             t.getFechaAnterior(),
             t.getDpiNuevo(),
-            t.getNombreNuevo()
+            t.getNombreNuevo(),
+            t.getDepartamento()
         };
         modelo.addRow(fila);
     }
 
     Tabla_Dat_Traspaso.setModel(modelo);
+
+    // Mostrar tiempo de búsqueda
+    JOptionPane.showMessageDialog(this,
+        "Búsqueda completada.\n" +
+        "Tiempo: " + duracionNano + " nanosegundos\n" +
+        "        " + duracionMili + " milisegundos"
+    );
     }//GEN-LAST:event_Bus_Placa_2ActionPerformed
 
     private void Refresh_PlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Refresh_PlacaActionPerformed
@@ -972,6 +1020,9 @@ private void llenarTablaConListaCircular() {
             DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
             boolean encontrada = false;
 
+            // Inicia medición de tiempo
+            long inicio = System.nanoTime();
+
             for (int i = 0; i < modelo.getRowCount(); i++) {
                 int boletaFila = Integer.parseInt(modelo.getValueAt(i, 0).toString());
                 if (boletaFila == numBoleta) {
@@ -996,8 +1047,19 @@ private void llenarTablaConListaCircular() {
                 }
             }
 
-            if (!encontrada) {
-                JOptionPane.showMessageDialog(this, "No se encontró la boleta #" + numBoleta, "Boleta no encontrada", JOptionPane.WARNING_MESSAGE);
+            // Fin de tiempo
+            long fin = System.nanoTime();
+            long duracionNano = fin - inicio;
+            long duracionMili = duracionNano / 1_000_000;
+
+            if (encontrada) {
+                JOptionPane.showMessageDialog(this,
+                    "Factura generada correctamente.\n" +
+                    "Tiempo de búsqueda: " + duracionNano + " nanosegundos\n" +
+                    "                     " + duracionMili + " milisegundos");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró la boleta #" + numBoleta,
+                        "Boleta no encontrada", JOptionPane.WARNING_MESSAGE);
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Número de boleta inválido.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1068,32 +1130,48 @@ private void llenarTablaConListaCircular() {
         try {
             int boletaBuscada = Integer.parseInt(textoBoleta);
 
-            DefaultTableModel modeloOriginal = (DefaultTableModel) Tabla_Dat_Traspaso.getModel();
-            DefaultTableModel modeloFiltrado = new DefaultTableModel();
-            
-            // Copiamos las columnas del modelo original
-            for (int i = 0; i < modeloOriginal.getColumnCount(); i++) {
-                modeloFiltrado.addColumn(modeloOriginal.getColumnName(i));
-            }
+            // Iniciar cronómetro
+            long inicio = System.nanoTime();
 
-            // Recorremos las filas del JTable
-            for (int i = 0; i < modeloOriginal.getRowCount(); i++) {
-                Object valorBoleta = modeloOriginal.getValueAt(i, 0); // columna 0 = BOLETA
-
-                if (valorBoleta != null && Integer.parseInt(valorBoleta.toString()) == boletaBuscada) {
-                    // Si coincide, añadimos la fila al modelo filtrado
-                    Object[] fila = new Object[modeloOriginal.getColumnCount()];
-                    for (int j = 0; j < modeloOriginal.getColumnCount(); j++) {
-                        fila[j] = modeloOriginal.getValueAt(i, j);
-                    }
-                    modeloFiltrado.addRow(fila);
+            // Buscar en la lista circular
+            Traspaso encontrado = null;
+            for (Traspaso t : listaCircular.obtenerTodos()) {
+                if (t.getBoleta() == boletaBuscada) {
+                    encontrado = t;
+                    break;
                 }
             }
 
-            if (modeloFiltrado.getRowCount() > 0) {
-                Tabla_Dat_Traspaso.setModel(modeloFiltrado);
+            long fin = System.nanoTime(); // Fin del cronómetro
+            long duracionNano = fin - inicio;
+            long duracionMili = duracionNano / 1_000_000;
+
+            if (encontrado != null) {
+                // Mostrar resultado en la tabla
+                String[] columnas = {"BOLETA", "PLACA", "DPI ANTERIOR", "NOMBRE ANTERIOR", "FECHA", "DPI NUEVO", "NOMBRE NUEVO", "DEPARTAMENTO"};
+                DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+                Object[] fila = {
+                    encontrado.getBoleta(),
+                    encontrado.getPlaca(),
+                    encontrado.getDpiAnterior(),
+                    encontrado.getNombreAnterior(),
+                    encontrado.getFechaAnterior(),
+                    encontrado.getDpiNuevo(),
+                    encontrado.getNombreNuevo(),
+                    encontrado.getDepartamento()
+                };
+                modelo.addRow(fila);
+
+                Tabla_Dat_Traspaso.setModel(modelo);
+
+                JOptionPane.showMessageDialog(this,
+                    "Búsqueda completada.\n" +
+                    "Tiempo: " + duracionNano + " nanosegundos\n" +
+                    "        " + duracionMili + " milisegundos"
+                );
             } else {
-                JOptionPane.showMessageDialog(this, "No se encontraron registros con esa boleta.");
+                JOptionPane.showMessageDialog(this, "No se encontró la boleta: " + boletaBuscada);
             }
 
         } catch (NumberFormatException e) {
@@ -1139,15 +1217,14 @@ private void llenarTablaConListaCircular() {
 
     private void Bt_TraspasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bt_TraspasoActionPerformed
         // TODO add your handling code here:
-        JTextField campoPlaca = new JTextField(10);
+         JTextField campoPlaca = new JTextField(10);
     JTextField campoDpiAnt = new JTextField(10);
     JTextField campoNombreAnt = new JTextField(10);
     JTextField campoFecha = new JTextField(10);
     JTextField campoDpiNuevo = new JTextField(10);
     JTextField campoNombreNuevo = new JTextField(10);
-    JTextField campoDepartamento = new JTextField(10); // NUEVO CAMPO
+    JTextField campoDepartamento = new JTextField(10);
 
-    // Crear panel de formulario
     JPanel panel = new JPanel(new GridLayout(0, 2, 10, 5));
     panel.add(new JLabel("PLACA:"));
     panel.add(campoPlaca);
@@ -1161,42 +1238,175 @@ private void llenarTablaConListaCircular() {
     panel.add(campoDpiNuevo);
     panel.add(new JLabel("NOMBRE NUEVO:"));
     panel.add(campoNombreNuevo);
-    panel.add(new JLabel("DEPARTAMENTO:"));           // Etiqueta nueva
-    panel.add(campoDepartamento);                      // Campo nuevo
+    panel.add(new JLabel("DEPARTAMENTO:"));
+    panel.add(campoDepartamento);
 
     int resultado = JOptionPane.showConfirmDialog(this, panel, "Nuevo Traspaso",
             JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
     if (resultado == JOptionPane.OK_OPTION) {
-        // Obtener datos
         String placa = campoPlaca.getText().trim();
         String dpiAnt = campoDpiAnt.getText().trim();
         String nombreAnt = campoNombreAnt.getText().trim();
         String fecha = campoFecha.getText().trim();
         String dpiNuevo = campoDpiNuevo.getText().trim();
         String nombreNuevo = campoNombreNuevo.getText().trim();
-        String departamento = campoDepartamento.getText().trim();  // NUEVO CAMPO
+        String departamento = campoDepartamento.getText().trim();
 
         if (placa.isEmpty() || dpiAnt.isEmpty() || nombreAnt.isEmpty() ||
             fecha.isEmpty() || dpiNuevo.isEmpty() || nombreNuevo.isEmpty() ||
-            departamento.isEmpty()) {  // Validar nuevo campo
+            departamento.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor llena todos los campos.");
             return;
         }
 
-        // Crear objeto Traspaso e insertar en lista circular
-        Traspaso nuevoTraspaso = new Traspaso(placa, dpiAnt, nombreAnt, fecha, dpiNuevo, nombreNuevo, departamento);
-        listaCircular.insertar(nuevoTraspaso); // Insertar en la lista circular
+        // Comenzar a medir tiempo
+        long inicio = System.nanoTime();
 
-        // Actualizar tabla (mejor recargar toda la tabla desde la lista para mantener sincronía)
+        // Obtener nuevo número de boleta
+        int nuevaBoleta = 1;
+        for (Traspaso t : listaCircular.obtenerTodos()) {
+            if (t.getBoleta() >= nuevaBoleta) {
+                nuevaBoleta = t.getBoleta() + 1;
+            }
+        }
+
+        // Crear e insertar el nuevo Traspaso
+        Traspaso nuevoTraspaso = new Traspaso(nuevaBoleta, placa, dpiAnt, nombreAnt, fecha, dpiNuevo, nombreNuevo, departamento);
+        listaCircular.insertar(nuevoTraspaso);
+
+        // Guardar cambios en archivo si deseas aquí
+        // guardarCambiosEnArchivo();
+
+        // Refrescar la tabla
         llenarTablaConListaCircular();
+
+        // Finalizar tiempo
+        long fin = System.nanoTime();
+        long duracionNano = fin - inicio;
+        long duracionMili = duracionNano / 1_000_000;
+
+        JOptionPane.showMessageDialog(this,
+            "Traspaso agregado exitosamente.\n" +
+            "Tiempo: " + duracionNano + " nanosegundos\n" +
+            "        " + duracionMili + " milisegundos"
+        );
     }
     }//GEN-LAST:event_Bt_TraspasoActionPerformed
 
     private void Eliminar_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_1ActionPerformed
         // TODO add your handling code here:
-        
+        String input = JOptionPane.showInputDialog(this, "Ingrese el número de boleta a eliminar:");
+    
+    if (input != null && !input.trim().isEmpty()) {
+        try {
+            int boleta = Integer.parseInt(input.trim());
+
+            // Iniciar cronómetro
+            long inicio = System.nanoTime();
+
+            boolean eliminado = listaCircular.eliminarPorBoleta(boleta);
+
+            long fin = System.nanoTime(); // Fin cronómetro
+            long duracionNano = fin - inicio;
+            long duracionMili = duracionNano / 1_000_000;
+
+            if (eliminado) {
+                llenarTablaConListaCircular(); // Actualiza la JTable
+                JOptionPane.showMessageDialog(this, 
+                    "Registro eliminado correctamente.\n" +
+                    "Tiempo: " + duracionNano + " nanosegundos\n" +
+                    "        " + duracionMili + " milisegundos"
+                );
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró una boleta con ese número.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un número de boleta válido.");
+        }
+    }
     }//GEN-LAST:event_Eliminar_1ActionPerformed
+
+    private void Editar_TraspasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Editar_TraspasoActionPerformed
+        // TODO add your handling code here:
+        int filaSeleccionada = Tabla_Dat_Traspaso.getSelectedRow();
+
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Por favor selecciona un traspaso para editar.");
+        return;
+    }
+
+    // Obtener datos actuales de la fila seleccionada
+    int boleta = Integer.parseInt(Tabla_Dat_Traspaso.getValueAt(filaSeleccionada, 0).toString());
+    String placa = Tabla_Dat_Traspaso.getValueAt(filaSeleccionada, 1).toString();
+    String dpiAnt = Tabla_Dat_Traspaso.getValueAt(filaSeleccionada, 2).toString();
+    String nombreAnt = Tabla_Dat_Traspaso.getValueAt(filaSeleccionada, 3).toString();
+    String fecha = Tabla_Dat_Traspaso.getValueAt(filaSeleccionada, 4).toString();
+    String dpiNuevo = Tabla_Dat_Traspaso.getValueAt(filaSeleccionada, 5).toString();
+    String nombreNuevo = Tabla_Dat_Traspaso.getValueAt(filaSeleccionada, 6).toString();
+    String departamento = Tabla_Dat_Traspaso.getValueAt(filaSeleccionada, 7).toString();
+
+    // Crear campos de edición
+    JTextField campoPlaca = new JTextField(placa, 10);
+    JTextField campoDpiAnt = new JTextField(dpiAnt, 10);
+    JTextField campoNombreAnt = new JTextField(nombreAnt, 10);
+    JTextField campoFecha = new JTextField(fecha, 10);
+    JTextField campoDpiNuevo = new JTextField(dpiNuevo, 10);
+    JTextField campoNombreNuevo = new JTextField(nombreNuevo, 10);
+    JTextField campoDepartamento = new JTextField(departamento, 10);
+
+    // Crear panel del formulario
+    JPanel panel = new JPanel(new GridLayout(0, 2, 10, 5));
+    panel.add(new JLabel("PLACA:"));
+    panel.add(campoPlaca);
+    panel.add(new JLabel("DPI ANTERIOR:"));
+    panel.add(campoDpiAnt);
+    panel.add(new JLabel("NOMBRE ANTERIOR:"));
+    panel.add(campoNombreAnt);
+    panel.add(new JLabel("FECHA:"));
+    panel.add(campoFecha);
+    panel.add(new JLabel("DPI NUEVO:"));
+    panel.add(campoDpiNuevo);
+    panel.add(new JLabel("NOMBRE NUEVO:"));
+    panel.add(campoNombreNuevo);
+    panel.add(new JLabel("DEPARTAMENTO:"));
+    panel.add(campoDepartamento);
+
+    int resultado = JOptionPane.showConfirmDialog(this, panel, "Editar Traspaso",
+            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    if (resultado == JOptionPane.OK_OPTION) {
+        long inicioTiempo = System.nanoTime(); // Inicio tiempo
+
+        // Crear el nuevo objeto actualizado
+        Traspaso actualizado = new Traspaso(
+            boleta,
+            campoPlaca.getText().trim(),
+            campoDpiAnt.getText().trim(),
+            campoNombreAnt.getText().trim(),
+            campoFecha.getText().trim(),
+            campoDpiNuevo.getText().trim(),
+            campoNombreNuevo.getText().trim(),
+            campoDepartamento.getText().trim()
+        );
+
+        // Reemplazar el traspaso en la lista circular
+        boolean editado = listaCircular.editarTraspasoPorBoleta(boleta, actualizado);
+
+        if (editado) {
+            guardarCambiosEnArchivo(); // Guarda el archivo actualizado
+            llenarTablaConListaCircular(); // Refresca tabla
+
+            long finTiempo = System.nanoTime(); // Fin tiempo
+            long duracion = finTiempo - inicioTiempo;
+
+            JOptionPane.showMessageDialog(this,
+                "Traspaso editado exitosamente.\nTiempo: " + duracion + " nanosegundos");
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo encontrar el traspaso para editar.");
+        }
+    }
+    }//GEN-LAST:event_Editar_TraspasoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Barra;
@@ -1209,6 +1419,7 @@ private void llenarTablaConListaCircular() {
     private javax.swing.JButton Buscar_Fch_3;
     private javax.swing.JPanel Desplegable;
     private javax.swing.JPanel Desplegable1;
+    private javax.swing.JButton Editar_Traspaso;
     private javax.swing.JButton Eliminar_1;
     private javax.swing.JButton Factura;
     private javax.swing.JButton Guardar;

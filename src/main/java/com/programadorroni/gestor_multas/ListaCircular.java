@@ -36,7 +36,18 @@ public class ListaCircular {
         return resultado;
     }
     
-    
+    public boolean editarTraspasoPorBoleta(int boleta, Traspaso nuevo) {
+    if (inicio == null) return false;
+    Nodo actual = inicio;
+    do {
+        if (actual.dato.getBoleta() == boleta) {
+            actual.dato = nuevo;
+            return true;
+        }
+        actual = actual.siguiente;
+    } while (actual != inicio);
+    return false;
+}
 
     private NodoArbol construirArbolDesdeLista() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -57,6 +68,40 @@ public class ListaCircular {
     Vehiculo buscarPorBoleta(int boleta) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+   public boolean eliminarPorBoleta(int boleta) {
+    if (inicio == null) return false;
+
+    Nodo actual = inicio;
+    Nodo anterior = null;
+
+    do {
+        if (actual.dato != null && actual.dato.getBoleta() == boleta) {
+            if (actual == inicio) {
+                if (inicio == fin) {
+                    // Solo hay un nodo
+                    inicio = null;
+                    fin = null;
+                } else {
+                    // Más de un nodo, eliminar inicio
+                    fin.siguiente = inicio.siguiente;
+                    inicio = inicio.siguiente;
+                }
+            } else {
+                // Eliminar nodo intermedio o final
+                anterior.siguiente = actual.siguiente;
+                if (actual == fin) {
+                    fin = anterior;
+                }
+            }
+            return true;
+        }
+        anterior = actual;
+        actual = actual.siguiente;
+    } while (actual != inicio);
+
+    return false; // No se encontró la boleta
+}
 
     private static class Nodo {
         Traspaso dato;

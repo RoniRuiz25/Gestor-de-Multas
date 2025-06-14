@@ -9,6 +9,7 @@ package com.programadorroni.gestor_multas;
  * @author isaia
  */
 public class Traspaso {
+     private int boleta;
     private String placa;
     private String dpiAnterior;
     private String nombreAnterior;
@@ -17,7 +18,8 @@ public class Traspaso {
     private String nombreNuevo;
     private String departamento; 
 
-    public Traspaso(String placa, String dpiAnterior, String nombreAnterior, String fechaAnterior, String dpiNuevo, String nombreNuevo, String departamento) {
+    public Traspaso(int boleta,String placa, String dpiAnterior, String nombreAnterior, String fechaAnterior, String dpiNuevo, String nombreNuevo, String departamento) {
+        this.boleta = boleta;
         this.placa = placa;
         this.dpiAnterior = dpiAnterior;
         this.nombreAnterior = nombreAnterior;
@@ -28,6 +30,10 @@ public class Traspaso {
     }
 
     // Getters
+    public int getBoleta() {
+    return boleta; // o el campo equivalente si el nombre es diferente
+}
+    
     public String getPlaca() {
         return placa != null ? placa.trim().toUpperCase() : "";
     }
@@ -54,18 +60,6 @@ public class Traspaso {
 
     public String getDepartamento() {
         return departamento != null ? departamento.trim().toUpperCase() : "";
-    }   
-
-
-    // Métodos opcionales, puedes implementar o eliminar si no usas
-    /*
-    public Object[] toArray() {
-        // Implementa si quieres devolver un arreglo con todos los campos
-    }
-
-    public int getBoleta() {
-        // Si usas un campo boleta interno, implementa aquí
-    }
-    */
+    }    
 }
 

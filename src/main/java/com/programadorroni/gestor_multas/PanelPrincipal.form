@@ -42,15 +42,13 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="263" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="304" max="-2" attributes="0"/>
                   <Component id="MULTAS" min="-2" pref="87" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="230" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="TRASPASOS" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="250" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="343" max="-2" attributes="0"/>
                   <Component id="VEHICULOS" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="227" max="32767" attributes="0"/>
-                  <Component id="RESUMEN" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="221" max="-2" attributes="0"/>
               </Group>
               <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
               <Group type="102" alignment="1" attributes="0">
@@ -93,7 +91,6 @@
                               <Component id="MULTAS" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="TRASPASOS" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="VEHICULOS" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="RESUMEN" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -129,7 +126,7 @@
                           <Component id="jScrollPane1" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="Buscar_Placa_1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="33" max="32767" attributes="0"/>
                               <Component id="EscribirBus" min="-2" pref="123" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="992" max="-2" attributes="0"/>
                               <Component id="Eliminar_1" min="-2" max="-2" attributes="0"/>
@@ -367,11 +364,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TRASPASOSActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="RESUMEN">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="RESUMEN"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="VEHICULOS">
           <Properties>

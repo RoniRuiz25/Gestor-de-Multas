@@ -44,8 +44,7 @@ public class PanelMulta extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Error al guardar el archivo: " + e.getMessage());
     }
 }
-    
-    
+       
         public void cargarDesdeArchivo(File archivo) {
          listaMultas.limpiar();
     DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
@@ -704,7 +703,18 @@ public class PanelMulta extends javax.swing.JPanel {
     String placa = TextPlaca.getText().trim();
 
     if (!placa.isEmpty()) {
+        // Inicio de la medición
+        long startMillis = System.currentTimeMillis();
+        long startNano = System.nanoTime();
+
         Object[][] resultados = listaMultas.buscarMultasPorPlaca(placa);
+
+        // Fin de la medición
+        long endMillis = System.currentTimeMillis();
+        long endNano = System.nanoTime();
+
+        long elapsedMillis = endMillis - startMillis;
+        long elapsedNano = endNano - startNano;
 
         if (resultados.length == 0) {
             JOptionPane.showMessageDialog(this, "No se encontraron registros con esa placa.");
@@ -726,7 +736,6 @@ public class PanelMulta extends javax.swing.JPanel {
                             double monto = Double.parseDouble(fila[5].toString());
                             totalPendientes += monto;
                         } catch (NumberFormatException e) {
-                            // Si no se puede convertir el monto, ignorar esta fila
                             System.err.println("Error al convertir monto: " + fila[5]);
                         }
                     } else if (estado.equals("PAGADO")) {
@@ -742,6 +751,14 @@ public class PanelMulta extends javax.swing.JPanel {
             // Mostrar el total de montos pendientes en el JLabel
             L_Total_P.setText("Q. " + String.format("%.2f", totalPendientes));
         }
+
+        // Mostrar tiempo transcurrido en un mensaje (opcional)
+        JOptionPane.showMessageDialog(this,
+            "Tiempo de búsqueda:\n" +
+            elapsedMillis + " milisegundos\n" +
+            elapsedNano + " nanosegundos"
+        );
+
     } else {
         JOptionPane.showMessageDialog(this, "Ingrese una placa para buscar.");
     }
@@ -750,15 +767,37 @@ public class PanelMulta extends javax.swing.JPanel {
     private void Bus_Boleta_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bus_Boleta_2ActionPerformed
         // TODO add your handling code here:
         String textoBoleta = TextBoleta.getText().trim();
+
     if (!textoBoleta.isEmpty()) {
         try {
             int boleta = Integer.parseInt(textoBoleta);
+
+            // Inicio medición
+            long startMillis = System.currentTimeMillis();
+            long startNano = System.nanoTime();
+
             Multa resultado = listaMultas.buscarPorBoleta(boleta);
+
+            // Fin medición
+            long endMillis = System.currentTimeMillis();
+            long endNano = System.nanoTime();
+
+            long elapsedMillis = endMillis - startMillis;
+            long elapsedNano = endNano - startNano;
+
             if (resultado == null) {
                 JOptionPane.showMessageDialog(this, "No se encontraron registros con esa boleta.");
             } else {
                 mostrarEnTabla(new Object[][]{resultado.toArray()});
             }
+
+            // Mostrar tiempo transcurrido en un mensaje (opcional)
+            JOptionPane.showMessageDialog(this,
+                "Tiempo de búsqueda:\n" +
+                elapsedMillis + " milisegundos\n" +
+                elapsedNano + " nanosegundos"
+            );
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "La boleta debe ser un número entero.");
         }
@@ -851,6 +890,9 @@ public class PanelMulta extends javax.swing.JPanel {
     int filaSeleccionada = Tabla_Dat_Multa.getSelectedRow();
 
     if (filaSeleccionada >= 0) {
+        long startMillis = System.currentTimeMillis();
+        long startNano = System.nanoTime();
+
         // Actualiza el modelo visual
         modelo.setValueAt("PAGADO", filaSeleccionada, 6);
 
@@ -865,8 +907,19 @@ public class PanelMulta extends javax.swing.JPanel {
 
         // Sobrescribe el archivo con los datos actualizados
         guardarCambiosEnArchivo();
-        
-        JOptionPane.showMessageDialog(this, "Estado cambiado a PAGADO.");
+
+        long endMillis = System.currentTimeMillis();
+        long endNano = System.nanoTime();
+
+        long elapsedMillis = endMillis - startMillis;
+        long elapsedNano = endNano - startNano;
+
+        JOptionPane.showMessageDialog(this,
+            "Estado cambiado a PAGADO.\n" +
+            "Tiempo del proceso:\n" +
+            elapsedMillis + " milisegundos\n" +
+            elapsedNano + " nanosegundos"
+        );
     } else {
         JOptionPane.showMessageDialog(this, "Seleccione una fila para emitir el pago.");
     }
@@ -879,6 +932,10 @@ public class PanelMulta extends javax.swing.JPanel {
     if (input != null && !input.trim().isEmpty()) {
         try {
             int numBoleta = Integer.parseInt(input.trim());
+
+            long startMillis = System.currentTimeMillis();
+            long startNano = System.nanoTime();
+
             DefaultTableModel modelo = (DefaultTableModel) Tabla_Dat_Multa.getModel();
             boolean encontrada = false;
 
@@ -924,9 +981,23 @@ public class PanelMulta extends javax.swing.JPanel {
                 }
             }
 
+            long endMillis = System.currentTimeMillis();
+            long endNano = System.nanoTime();
+
+            long elapsedMillis = endMillis - startMillis;
+            long elapsedNano = endNano - startNano;
+
             if (!encontrada) {
                 JOptionPane.showMessageDialog(this, "No se encontró la boleta #" + numBoleta);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "Tiempo total de proceso:\n" +
+                    elapsedMillis + " milisegundos\n" +
+                    elapsedNano + " nanosegundos",
+                    "Tiempo de ejecución",
+                    JOptionPane.INFORMATION_MESSAGE);
             }
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Número de boleta inválido.");
         }
